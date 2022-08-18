@@ -10,7 +10,7 @@ This website uses screenshots of war scoreboards submitted by the community to g
 
   War stats are submitted in our official discord server (which is linked on the website), in conjunction witha discord bot I created, it takes those screenshots and uses the Microsoft Computervision API to get all of the data we need! From there we verify the data is correct, and then run a bot command to add the stats to the databse.
 
-								Discord Login and Verification System:
+							Discord Login and Verification System
 ![image](https://user-images.githubusercontent.com/22628539/185343191-77456ff6-44e5-4fb6-8c02-dc9d8ed3c19a.png)
 ![image](https://user-images.githubusercontent.com/22628539/185343284-0e13baa8-c143-4c58-82d2-530c77a432b3.png)
 
