@@ -24,7 +24,7 @@ def extract_text(images, war_name, server):
     endpoint = config.endpoint
 
 
-    computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+    computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(config.subscription_key))
     '''
     OCR: Read File using the Read API, extract text - remote
     This example will extract text in an image, then print results, line by line.
