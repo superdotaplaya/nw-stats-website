@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+<head>
+    {% block title %}User Settings - Black Tuna Stats{% endblock %}
+
+        <title><meta name="title" content="User Settings"></title>
+        <meta name="description" content="Change the way the site looks and functions by logging in with Discord!">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="User Settings" />
+        <meta property="og:description" content="Change the way the site looks and functions by logging in with Discord!" />
+        <meta property="og:url" content="www.blacktunastats.com/settings" />
+        <meta property="og:image" content="https://www.blacktunastats.com/static/images/tuna_logo.png" />
+</head>
+<html>
+{% block content %}
+<h2 style="text-align: center; color: white;">{{message}}</h2>
+<h1 style="text-align: cetner; color: white;">User Settings</h1>
+<form style="text-align: center" action="/settings" method = "POST">
+    <h3 style="color: white;">Character Name: <input type="text" name="player_name" value="{{user_settings[1]}}" required></h3>
+     <h3 style="color: white;"> Server: </h3><select name="server" required>
+        <option value="cos">Castle of Steel</option>
+        <option value="ygg">Yggdrasil</option>
+        <option value="del">Delos</option>
+        <option value="val">Valhalla</option>
+    </select>
+
+
+<h1 style="text-align: center; color: white;">Website Customization</h1>
+    <h3 style="color: white; text-align: center">Header Color: &nbsp <input type="color" id="head" name="header_color" value={{user_settings[2]}} action="/settings" method = "POST"> </h3>
+    <h3 style="color: white; text-align: center">Background Color: &nbsp <input type="color" id="head" name="background_color" value={{user_settings[3]}} action="/settings" method = "POST"> </h3>
+    <h3 style="color: white; text-align: center">Defender Scoreboard Color: &nbsp <input type="color" id="head" name="scoreboard_color1" value={{user_settings[4]}} action="/settings" method = "POST"> </h3>
+    <h3 style="color: white; text-align: center">Attacker Scoreboard Color: &nbsp <input type="color" id="head" name="scoreboard_color2" value={{user_settings[5]}} action="/settings" method = "POST"> </h3>
+    <h3 style="color: white; text-align: center">Scoreboard Text Color: &nbsp <input type="color" id="head" name="scoreboard_text_color" value={{user_settings[6]}} action="/settings" method = "POST"> </h3>
+<button class="myButton" input type = "submit"/ style="color: white;">Save Settings</button>
+</form>
+
+
+<div class="Reset" style="width: 99.75%; text-align: center; margin-top: 4%;">
+<a href="https://discord.gg/UeSpRpf6Z6"><button class="myButton" style="color: green; text-align: center; width: 20%;">Verify Account</button></a>
+</div>
+<p style="color:white;text-align:center;">Verifying your account allows you to edit the role you play in each war, to make your stats more accurately portray your skill in multiple roles!</p>
+
+
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+
+<div class="Reset" style="width: 99.75%; text-align: center; margin-top: 4%;">
+<a href="https://www.blacktunastats.com/reset"><button class="myButton" style="color: red; text-align: center; width: 15%;">Reset Settings To Default</button></a>
+</div>
+{% endblock %}
+</html>

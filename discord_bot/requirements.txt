@@ -1,0 +1,11 @@
+PIL
+threading
+asyncio
+langdetect
+bs4
+beautifulsoup
+lxml
+azure
+azure-cognitiveservices-vision-computervision
+PIL
+mysql-connector-python

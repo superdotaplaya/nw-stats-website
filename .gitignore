@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# config files
+config.py
+credentials.json
+ads.txt
+Agent
+/discord_bot/config.py

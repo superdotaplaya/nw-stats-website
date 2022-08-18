@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+<!doctype html>
+<html>
+<link rel="icon" type="image/x-icon" href="/static/images/tuna_logo.png">
+<style>
+
+body {
+  background-color: #39414a;
+   background-size:cover;
+}
+
+h2 {
+    font-size: 30px;
+    color: {{user_settings[2]}};
+}
+a {
+    style: none;
+}
+</style>
+    {% block content %}
+    <head>
+    {% block title %}Player VS. Role Comparison{% endblock %}
+
+        <meta name="title" content="Player VS. Role Comparison">
+        <meta name="description" content="View how a player compares to other people whop play the same role!">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Player VS. Role Comparison" />
+        <meta property="og:description" content="View how a player compares to other people whop play the same role!" />
+        <meta property="og:url" content="www.nw-stats.com" />
+        <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
+</head>
+
+
+
+
+   <style>
+		table {
+			border:2px white;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 5px;
+			color: {{user_settings[6]}};
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    font-style: bold;
+		}
+		tr:nth-child(even) {
+    background-color: {{user_settings[4]}};
+    color: {{user_settings[6]}};
+}
+    tr:nth-child(odd) {
+    background-color: {{user_settings[5]}};
+    color: {{user_settings[6]}};
+}
+
+	</style>
+
+
+<div class="Stats1" style="text-align: center; float: left; width: 90%; margin-left: 5%;">
+
+    <div class="PlayerBio" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; text-align: center; margin-top: 2.5%;">
+	<h1 style="color: white;">{{player.upper()}}'s Profile</th></h1>
+
+
+
+        <div class="PlayerBio1" style="display: inline-block; color: white;">
+    {% if player_info[2] %}
+        <h2 style="display: inline-block; margin-right: 10px; color: white; font-size: 28px;">Company:</h2><a href="https://www.nw-stats.com/company/{{player_info[2]}}" style="padding: 4px; font-size: 32px; background-color: {{user_settings[2]}}; color: black;">{{player_info[2]}} <a href="https://www.nw-stats.com/player_info" target="_blank" style="color: white;">&nbsp;(Edit)</a>
+    {% else %}
+         <h2 style="display: inline-block; margin-right: 10px; color: white; font-size: 28px;">Company:</h2><a href="https://www.nw-stats.com/player_info" style="padding: 4px; font-size: 32px; background-color: {{user_settings[2]}}; color: black;">Click here to submit your information!</a>
+
+    {% endif %}
+</div>
+
+<div class="PlayerBio2" style="display: inline-block; color: white;">
+    <h2 class="t1" style="display: inline-block; margin-right: 10px; color: white; font-size: 28px;">Faction:</h2>
+    {% if player_info[0] %}
+
+        <a href="https://www.nw-stats.com/player_info" target="_blank" style="padding: 4px; font-size: 32px; background-color: {{user_settings[2]}}; color: black;">{{player_info[0]}}</h2><a href="https://www.nw-stats.com/player_info" target="_blank" style="color: white;">&nbsp;(Edit)</a><br>
+
+    {% else %}
+
+        <a href="https://www.nw-stats.com/player_info" style="padding: 4px; font-size: 32px; background-color: {{user_settings[2]}}; margin-right: 10px; color: black;">Click here to submit your information!</a>
+
+    {% endif %}
+    </div>
+
+<div class="PlayerBio3" style="display: inline-block; color: white;">
+    <h2 class="t1" style="display: inline-block; margin-right: 10px; color: white; font-size: 32px;">
+    Role:</h2>
+    {% if player_info[1] %}
+
+       <a href="https://www.nw-stats.com/player_info" target="_blank" style="padding: 4px; font-size: 32px; background-color: {{user_settings[2]}}; color: black;">{{player_info[1]}}</h2><a href="https://www.nw-stats.com/player_info" target="_blank" style="color: white;"></h2>&nbsp;(Edit)</a>
+
+    {% else %}
+
+    <a href="https://www.nw-stats.com/player_info" style="padding: 4px; font-size: 32px; background-color: {{user_settings[2]}}; font-size: 32px; color: black;">Click here to submit your information!</a>
+
+    {% endif %}
+    </div>
+
+    </div>
+
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29;">
+
+    <h2 title="Since June 1st, 2022" style="color:white; margin-bottom: 3%; font-size: 40px;">Record Since June 1st, 2022</h2>
+    <div id="average1" style="display: inline-block; padding: 10px;">
+    <h2 title="Since June 1st, 2022" style="color: {{user_settings[2]}}; font-size: 35px;">{{info[26]}} wins || {{info[27]}} losses</h2>
+    </div>
+
+
+</div>
+
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29;">
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px;">Averages</h2>
+    <p style="color:white">Figures that contain a "-" are below average for the players role by the amount shown, those without are above average for the players role by the amount shown!</p>
+    <div id="average1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/score_icon.png" style="height: 70px; margin-top: 30px; color: white;"> <h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Score</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[0]|int)}}<h3 style="color: white">({{compare_role_stats[0]}})</h3></h2>
+        </div>
+        <div id="average2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Kills</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[1]|float)}}<h3 style="color: white">({{compare_role_stats[1]}})</h3></h2>
+        </div>
+        <div id="average3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/death_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Deaths</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[2]|float)}}<h3 style="color: white">({{compare_role_stats[2]}})</h3></h2>
+        </div>
+        <div id="average4" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Assists</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[3]|float)}}<h3 style="color: white">({{compare_role_stats[3]}})</h3></h2>
+        </div>
+        <div id="average5" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Healing</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[4]|float)}}<h3 style="color: white">({{compare_role_stats[4]}})</h3></h2>
+        </div>
+        <div id="average6" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Damage</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[5]|float)}}<h3 style="color: white">({{compare_role_stats[5]}})</h3></h2>
+        </div>
+        <div id="average7" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Kill Participation</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[28]|float)}}%</h2>
+        </div>
+        <br>
+
+
+</div>
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; color: {{user_settings[2]}};">
+
+    <div id="Record1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white;"> <h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Highest kills</h3>
+        <h2 style="color: {{user_settings[2]}};  text-decoration: underline; font-size: 36px;"><a href="https://www.nw-stats.com/{{server}}/war/{{info[22]}}" style=" color: {{user_settings[2]}};">{{"{:,}".format(info[8]|int)}}</a></h2>
+        </div>
+        <div id="Record2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Highest Healing</h3>
+        <h2 style="color: {{user_settings[2]}};  text-decoration: underline; font-size: 36px;"><a href="https://www.nw-stats.com/{{server}}/war/{{info[21]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(info[9]|int)}}</a></h2>
+        </div>
+        <div id="Record3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Highest Damage</h3>
+        <h2 style="color: {{user_settings[2]}};  text-decoration: underline; font-size: 36px;"><a href="https://www.nw-stats.com/{{server}}/war/{{info[24]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(info[10]|int)}}</a></h2>
+        </div>
+        <div id="Record3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Highest Assists</h3>
+        <h2 style="color: {{user_settings[2]}};  text-decoration: underline; font-size: 36px;"><a href="https://www.nw-stats.com/{{server}}/war/{{info[23]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(info[25]|int)}}</a></h2>
+        </div>
+
+</div>
+
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29">
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px;">Per Death Stats</h2>
+        <p style="color:white">Figures that contain a "-" are below average for the players role by the amount shown, those without are above average for the players role by the amount shown!</p>
+    <div id="PerDeath1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white;"> <h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Healing Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[6]|float)}}<h3 style="color: white">({{compare_role_stats[6]}})</h3></h2>
+        </div>
+        <div id="PerDeath2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Damage Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[7]|float)}}<h3 style="color: white">({{compare_role_stats[7]}})</h3></td></h2>
+        </div>
+        <div id="PerDeath3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Assists Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[11]|float)}}<h3 style="color: white">({{compare_role_stats[8]}})</h3></td> </h2>
+        </div>
+        <div id="PerDeath4" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Kills Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[18]|float)}}<h3 style="color: white">({{compare_role_stats[9]}})</h3></td> </h2>
+        </div>
+        <div id="PerDeath4" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Kills + Assists Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[17]|float)}}<h3 style="color: white">({{compare_role_stats[10]}})</h3></td> </h2>
+        </div>
+</div>
+
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; margin-bottom: 3%;">
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px;">Running Totals</h2>
+    <div id="Total1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Kills</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[12]|int)}}</h2>
+        </div>
+        <div id="Total2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/death_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Deaths</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[13]|int)}}</td></h2>
+        </div>
+        <div id="Total3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Assists</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[14]|int)}}</td> </h2>
+        </div>
+        <div id="Total4" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Healing</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[16]|int)}}</td></h2>
+        </div>
+        <div id="Total5" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Damage</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[15]|int)}}</td> </h2>
+        </div>
+
+</div>
+
+<table class=t1 style="margin-bottom: 25px;">
+    <tr><th colspan="10">{{player}}'s Past Attacks</th></tr>
+        <th>War Number</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    {% for item in war_logs[0][:5] %}
+    <tr>
+        <td>{{war_logs[0][::-1].index(item) + 1}}</td>
+        <td><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        <td>{{item[3]}}</td>
+        <td>{{item[4]}}</td>
+        <td>{{item[5]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
+        <td>{{item[8]}}</td>
+        <td>{{item[11]}}%</td>
+        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
+        <td>{{item[15]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+<table class=t1 style="margin-bottom: 25px;">
+    <tr><th colspan="11">{{player}}'s Past Defenses</th></tr>
+        <th>War Number</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    {% for item in war_logs[1][:5] %}
+    <tr>
+        <td>{{war_logs[1][::-1].index(item) + 1}}</td>
+        <td><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        <td>{{item[3]}}</td>
+        <td>{{item[4]}}</td>
+        <td>{{item[5]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
+        <td>{{item[8]}}</td>
+        <td>{{item[11]}}%</td>
+        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
+        <td>{{item[15]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<table class=t1 style="margin-bottom: 25px;">
+    <tr><th colspan="11">{{player}}'s Past Misc. wars (Attack/Defense Unknown)</th></tr>
+        <th>War Number</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    {% for item in war_logs[2][:5] %}
+    <tr>
+        <td>{{war_logs[2][::-1].index(item) + 1}}</td>
+        <td><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        <td>{{item[3]}}</td>
+        <td>{{item[4]}}</td>
+        <td>{{item[5]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
+        <td>{{item[8]}}</td>
+        <td>{{item[11]}}%</td>
+        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
+        <td>{{item[15]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<div style="width: 100%; text-align: center;">
+<a style="text-align: center"href="https://www.nw-stats.com/{{server}}/player/{{player}}/wars"><button class="myButton" style="margin-top: 40px; margin-bottom: 20px; background-color: {{user_settings[2]}}; text-align: center; font-size: 20px; width: 35%; margin-bottom: 2%;">View All Players Wars</button></a>
+</div>
+
+<div class="grid" style="text-align: center; width: 95%; background-color: white; display: grid; grid-template-columns: auto auto;">
+<div><embed>{{info[19]|safe}}</embed></div>
+<div><embed>{{info[20]|safe}}</embed></div>
+</div>
+
+
+{% endblock %}
+</div>
+</html>

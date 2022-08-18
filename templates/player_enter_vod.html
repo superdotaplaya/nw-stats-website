@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+<head>
+    <title>{% block title %}Submit a VOD or Clip of War{% endblock %}</title>
+    <meta name="title" content="Submit a VOD or Clip of War">
+    <meta name="description" content="Submit a VOD or Clip of War">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Submit a VOD or Clip of War" />
+    <meta property="og:description" content="Submit a VOD or Clip of War" />
+    <meta property="og:url" content="www.nw-stats.com/search" />
+    <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
+    <style>
+</head>
+
+{% block content %}
+
+<h1 style="color: white; text-align: center">Submit Video or Clip</h1>
+<h2 style="color: white; text-align: center">{{player}}</h2>
+<form class="form" action="/{{server}}/player/{{player}}/submit_clip" method = "POST" style="text-align: center; color: white;">
+<h3 style="color: white;">Link to Clip: <input type="text" name="submitted_vod" value="" required></h3>
+<h3 style="color: white;">Description (Include player name and role): <input type="text" name="submitted_vod_desc" value="" required></h3>
+<button class="myButton" input type = "submit"/ style="color: white; margin-bottom: 3%; margin-top: 2%;">Submit Clip</button>
+</form>
+
+
+<h3 style="color:white; text-align:center;">{{message}}</h3>
+<div class="BackToWar">
+<a href="https://www.nw-stats.com/{{server}}/player/{{player}}" target="_blank"><button class="myButton" style="color: white; padding: 5px; text-align: center; margin-left: 40%; width: 20%;"><h3 style="color: white; text-align: center;">Back To Player Page</h3></button></a>
+</div>
+
+
+
+{% endblock %}

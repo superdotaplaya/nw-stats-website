@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+<!doctype html>
+<html>
+
+<link rel="icon" type="image/x-icon" href="/static/images/tuna_logo.png">
+<style>
+
+body {
+  background-color: #39414a;
+   background-size:cover;
+}
+</style>
+
+    <head>
+        {% block title %}Search Black Tuna Database {% endblock %}
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Search - Black Tuna Stats" />
+        <meta property="og:description" content="Search for players, companies, or wars to view stats." />
+        <meta property="og:url" content="www.blacktunastats.com/search" />
+        <meta property="og:image" content="https://www.blacktunastats.com/static/images/tuna_logo.png" />
+        <style>
+        h1 {
+        text-align: center;
+        }
+        li {
+        text-align: center;
+        }
+        #topnav{
+            background-color: #d7920d;
+           border: 10px hidden #FFAD0F;
+border-radius: 10px 10px 0px 0px;
+        }
+         a {
+  text-decoration: none;
+  color: black;
+  font-style: bold;
+  cursor: url("/static/images/tuna_cursor.png"), url("tuna.cur"), pointer;
+    }
+
+    body {
+  background: #6ca3a3;
+  font-family: Helvetica;
+}
+        </style>
+         <div id="topnav">
+        <a href="http://www.blacktunastats.com/">
+
+            <image src="/static/images/tuna_logo.png" alt="Back to homepage" style="display: inline-block; float: left;">
+
+        </a>
+        <H1 style="display: inline-block; font-size: 60px; padding-left: 15px; color: black;">Black Tuna War Records</a></H1>
+
+    </head>
+    </div>
+
+        {% block content %}
+
+<form style="text-align:center;" action="/search" method = "POST" >
+    <h2 style="color: white;">Search Black Tuna Stats</h2>
+    <input type = "text" name = "searched_term" value= "{{searched_term}}"/ style="font-size: 25px;">
+    <p style="color: white;""><button class="myButton" input type = "submit"/ style="background-color: {{user_settings[2]}};">Take A Swim</button></p>
+</form>
+    <div style="text-align: center; font-size: 30px;">
+    {% if player_results %}
+    <h2 style="color: white;">Player Search Results</h2>
+    {% for player in player_results %}
+        <p style="color: white;"><a href="{{player[1]}}" class="myButton" style="background-color: {{user_settings[2]}};">{{player[0]}}</a></p>
+    {% endfor %}
+    {% endif %}
+    <br></p>
+    {% if company_results %}
+    <h2 style="color: white;">Company Search Results</h2>
+    {% for company in company_results %}
+        <p style="color: white;"><a href="{{company[1]}}" class="myButton" style="background-color: {{user_settings[2]}};">{{company[0]}}</a></p>
+    {% endfor %}
+    {% endif %}
+    <br></p>
+    {% if war_results %}
+    <h2 style="color: white;">War Search Results</h2>
+    {% for war in war_results %}
+        <p style="color: white;"><a href="https://www.blacktunastats.com/{{war[2].lower()}}/war/{{war[1]}}" class="myButton" style="background-color: {{user_settings[2]}};">{{war[0]}}</a></p><br>
+    {% endfor %}
+    {% endif %}
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7210973826242979"
+     crossorigin="anonymous"></script>
+<!-- war pages -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7210973826242979"
+     data-ad-slot="9406921772"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+            {% endblock %}
+</div>
+
+
+</html>

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+<!doctype html>
+<html>
+<link rel="icon" type="image/x-icon" href="/static/images/tuna_logo.png">
+<style>
+
+body {
+  background-color: #39414a;
+   background-size:cover;
+}
+
+</style>
+    {% block content %}
+    <head>
+        {% block title %}{{role.title()}} Stats ({{server.upper()}}){% endblock %}
+
+        <meta name="title" content="{{role.title()}} Stats">
+        <meta name="description" content="View the stats of all {{role}}s">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{role.title()}} Stats" />
+        <meta property="og:description" content="View the stats of all {{role}} players!" />
+        <meta property="og:url" content="www.nw-stats.com/{{role}}" />
+        <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
+
+    </div>
+
+
+
+
+   <style>
+		table {
+			border:2px white;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 5px;
+
+			color: {{user_settings[6]}};
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    color: {{user_settings[6]}};
+		    font-style: bold;
+		}
+		tr:nth-child(even) {
+    background-color: {{user_settings[4]}};
+}
+    tr:nth-child(odd) {
+    background-color: {{user_settings[5]}};
+}
+
+	</style>
+
+<H1 style="color: white;">Below you will find the stats for the role you requested. These stats are gathered from players who have submitted their information to the website to get more accurate results. If you would like to help make these more accurate, consider adding your stats!</H1>
+<div style="width: 100%; text-align: center;">
+<a style="text-align: center"href="https://www.nw-stats.com/player_info"><button class="myButton" style="margin-top: 40px; margin-bottom: 20px; background-color: {{user_settings[2]}}; text-align: center; font-size: 20px; width: 35%; margin-bottom: 2%;">Submit My Character Information</button></a>
+</div>
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; text-align: center">
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px;">{{role.title()}} Averages</h2>
+    <div id="average1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/score_icon.png" style="height: 70px; margin-top: 30px; color: white;"> <h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Score</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[0]|float)}}</h2>
+        </div>
+        <div id="average2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Kills</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[1]|float)}}</h2>
+        </div>
+        <div id="average3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/death_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Deaths</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[2]|float)}}</h2>
+        </div>
+        <div id="average4" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Assists</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[3]|float)}}</h2>
+        </div>
+        <div id="average5" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Healing</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[4]|float)}}</h2>
+        </div>
+        <div id="average6" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Average Damage</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[5]|float)}}</h2>
+        </div>
+        <br>
+
+
+</div>
+
+
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; text-align: center">
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px;">{{role.title()}} Per Death Stats</h2>
+    <div id="PerDeath1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white;"> <h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Healing Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[6]|float)}}</h2>
+        </div>
+        <div id="PerDeath2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Damage Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[7]|float)}}</td></h2>
+        </div>
+        <div id="PerDeath3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Assists Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[11]|float)}}</td> </h2>
+        </div>
+        <div id="PerDeath4" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Kills Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[18]|float)}}</td> </h2>
+        </div>
+        <div id="PerDeath4" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Kills + Assists Per Death</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[17]|float)}}</td> </h2>
+        </div>
+</div>
+
+<div class="AverageStatsContainer" style="width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; margin-bottom: 3%; text-align: center">
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px;">{{role.title()}} Running Totals</h2>
+    <div id="Total1" style="display: inline-block; padding: 10px;">
+       <img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Kills</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[12]|int)}}</h2>
+        </div>
+        <div id="Total2" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/death_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Deaths</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[13]|int)}}</td></h2>
+        </div>
+        <div id="Total3" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Assists</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[14]|int)}}</td> </h2>
+        </div>
+        <div id="Total4" style="display: inline-block; margin-left: 7.5%;">
+       <img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Healing</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[16]|int)}}</td></h2>
+        </div>
+        <div id="Total5" style="display: inline-block; margin-left: 7.5%;">
+        <img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; display: inline-block;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Total Damage</h3>
+        <h2 style="color: {{user_settings[2]}}; font-size: 36px;">{{"{:,}".format(info[15]|int)}}</td> </h2>
+        </div>
+
+</div>
+{% endblock %}
+</html>

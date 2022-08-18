@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+<!doctype html>
+<html>
+
+<link rel="icon" type="image/x-icon" href="/static/images/tuna_logo.png">
+
+
+    <head>
+        <title>{% block title %}Hall of Fame{% endblock %}</title>
+
+        <meta name="title" content="Hall of Fame">
+        <meta name="description" content="View the current record scores and stats for all recorded wars!">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Hall of Fame" />
+        <meta property="og:description" content="View the current record scores and stats for all recorded wars!" />
+        <meta property="og:url" content="www.nw-stats.com/records" />
+        <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
+
+    <style>
+
+    @media screen and (max-width: 1250px) {
+  /* For mobile phones: */
+
+     #RecordStatsHolder1, #RecordStatsHolder2, #RecordStatsHolder3 {
+       width: 100% !important;
+       float: none !important;
+       margin-left: none !important;
+   }
+
+
+}
+        h1 {
+        text-align: center;
+        }
+        li {
+        text-align: center;
+        }
+        #topnav{
+            background-color: #d7920d;
+           border: 10px hidden #FFAD0F;
+border-radius: 10px 10px 0px 0px;
+max-width: 100%;
+        }
+         a {
+  text-decoration: none;
+  color: white;
+  font-style: bold;
+  cursor: url("/static/images/tuna_cursor.png"), url("tuna.cur"), pointer;
+    }
+
+    html, body {
+  background: #6ca3a3;
+  font-family: Helvetica;
+  color: white;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#RecordStatsHolder1, #RecordStatsHolder2, #RecordStatsHolder3 {
+
+
+}
+
+
+
+        </style>
+
+
+
+         <div id="topnav" style="width: 99.5%;">
+        <a href="http://www.nw-stats.com/">
+
+            <image src="/static/images/tuna_logo.png" alt="Back to homepage" style="display: inline-block; float: left;">
+
+        </a>
+        <H1 style="display: inline-block; font-size: 60px; padding-left: 15px; color: black;">Black Tuna War Records</a></H1>
+
+    </head>
+    </div>
+
+
+{% block content %}
+
+<div class="PageHeader" style="max-width: 100%;"><h1 style="color: white; margin-top: 2%;">Welcome to the Hall of Fame!</h1>
+<p style=" font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%;">
+    Here you will be able to track current server records. Server records will be updated after every war that is recorded within Black Tuna records.
+</p>
+<br>
+</div>
+<div id="recordContainer" style="max-width: 100%; text-align: center; margin-left: 6%; text-align: center;">
+<div id="RecordStatsHolder1" class="myButton2" style=" display: inline-grid; float: left; width: 25%;">
+<img src="/static/images/kill_icon.png" style="display: inline-block; float: left; height: 70px; margin-top: 30px; margin-left: 45%;"><h2 style="color: white;"> Record Kills | <a href = "https://www.nw-stats.com/{{server}}/war/{{record_wars[0][9]}}" style="display: inline-block; color: {{user_settings[2]}};">{{record_wars[0][4]}}</a><br><a href="https://www.nw-stats.com/{{server}}/player/{{record_wars[0][2]}}" style="display: inline-block;color: {{user_settings[2]}};">{{record_wars[0][2]}}</a></h2>
+<br>
+<img src="/static/images/assist_icon.png" style="display: inline-block; float: left; height: 70px; margin-top: 30px; margin-left: 45%; color: white;"><h2 style="color: white;"> Record Assists | <a href = "https://www.nw-stats.com/{{server}}/war/{{record_wars[2][9]}}" style="color: {{user_settings[2]}};">{{record_wars[2][6]}}</a><br><a href="https://www.nw-stats.com/{{server}}/player/{{record_wars[2][2]}}" style="color: {{user_settings[2]}};">{{record_wars[2][2]}}</a></h2>
+<br>
+</div>
+<div id="RecordStatsHolder2" class="myButton2" style=" display: inline-grid; margin-left: 5%; float: left; width: 25%;">
+<img src="/static/images/healing_icon.png" style="display: inline-block; float: left; height: 70px; margin-top: 30px; margin-left: 45%; padding-right: 10px; color: white;"><h2 style="color: white;"> Record Healing | <a href = "https://www.nw-stats.com/{{server}}/war/{{record_wars[3][9]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(record_wars[3][7]|float)}}</a><br><a href="https://www.nw-stats.com/{{server}}/player/{{record_wars[3][2]}}" style="color: {{user_settings[2]}};">{{record_wars[3][2]}}</a></h2>
+<br>
+<img src="/static/images/damage_icon.png" style="display: inline-block; float: left; height: 70px; margin-top: 30px; margin-left: 45%; padding-right: 10px; color: white;"><h2 style="color: white;"> Record Damage | <a href = "https://www.nw-stats.com/{{server}}/war/{{record_wars[4][9]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(record_wars[4][8]|float)}}</a><br><a href="https://www.nw-stats.com/{{server}}/player/{{record_wars[4][2]}}" style="color: {{user_settings[2]}};">{{record_wars[4][2]}}</a></h2>
+<br>
+<img src="/static/images/assist_icon.png" style="display: inline-block; float: left; height: 70px; margin-top: 30px; margin-left: 45%; padding-right: 10px; color: white;"><h2 style="color: white;"> Record Kill Participation | <a href = "https://www.nw-stats.com/{{server}}/war/{{record_wars[6][9]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(record_wars[6][11]|float)}}%</a><br><a href="https://www.nw-stats.com/{{server}}/player/{{record_wars[6][2]}}" style="color: {{user_settings[2]}};">{{record_wars[6][2]}}</a></h2>
+<br>
+</div>
+
+<div id="RecordStatsHolder3" class="myButton2" style=" display: inline-grid; margin-left: 5%; float: left; width: 25%;">
+<img src="/static/images/score_icon.png" style="display: inline-block; float: left; height: 70px; margin-top: 30px; margin-left: 45%; padding-right: 10px; color: white;"><h2 style="color: white;"> Record Score | <a href = "https://www.nw-stats.com/{{server}}/war/{{record_wars[5][9]}}" style="color: {{user_settings[2]}};">{{"{:,}".format(record_wars[5][3]|float)}}</a><br><a href="https://www.nw-stats.com/{{server}}/player/{{record_wars[5][2]}}" style="color: {{user_settings[2]}};">{{record_wars[5][2]}}</a></h2>
+<br>
+
+</div>
+
+</div>
+<br><br><br><br>
+<div class="end" style="clear: both; max-width: 100%; margin-top: 10%;">
+
+     <style>
+
+    @media screen and (max-width: 1250px) {
+  /* For mobile phones: */
+
+     #RecordStatsHolder1, #RecordStatsHolder2 , #RecordStatsHolder3 {
+       width: 95% !important;
+       float: none !important;
+
+   }
+
+   #recordContainer{
+       width: 95% !important;
+   }
+    }
+   </style>
+   <div>
+
+   </div>
+{% endblock %}
+</div>
+</html>

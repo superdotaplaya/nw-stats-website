@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+<head>
+    <link rel="stylesheet" type="text/css" href="war.css" media=”screen” />
+</head>
+
+
+<title>{%block title %}Player Stats Search{% endblock %}</title>
+
+
+
+
+{% block content  %}
+<form action="/player" method = "POST">
+    <p>Player Name: <input type = "text" name = "Player Name" id="player_name" /></p>
+
+</form>
+{% endblock %}

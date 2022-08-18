@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+
+    <head>
+        <title>{% block title %}Change Role Played{% endblock %}</title>
+        <meta name="title" content="Change Role Played">
+        <meta name="description" content="Change Role Played">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Change Role Played" />
+        <meta property="og:description" content="Change Role Played" />
+        <meta property="og:url" content="www.nw-stats.com" />
+        <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
+        <style>
+    </head>
+    {% block content %}
+<style>
+
+		table {
+			border:2px #a6c9d9;
+			border-collapse:separate;
+			padding: 2px;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+			font-size: 24px;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 8px;
+			color: {{user_settings[6]}};
+			font-size: 20px;
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    color: {{user_settings[6]}};
+		    font-style: bold;
+		}
+
+		a:hover{
+		    color: white;
+            font-size: 22px;
+		}
+
+		th a{
+            color: white;
+		}
+		th a:hover{
+		    color:gray;
+		    font-size: 20px;
+		}
+
+        h3{
+            text-align: center;
+
+        }
+
+        h1{
+            color: white;
+            text-align: center;
+
+        }
+        select{
+            height:auto;
+            width:auto;
+            font-size: 20px;
+            text-align: center;
+
+        }
+        select option{
+            font-size: 20px;
+            text-align: center;
+        }
+
+
+
+		tr:nth-child(even) {
+    background-color: {{user_settings[4]}};
+}
+    tr:nth-child(odd) {
+    background-color: {{user_settings[5]}};
+}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 60px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: {{user_settings[2]}}; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 24px; /* Increase font size */
+}
+
+
+#myBtn:hover {
+  background-color: white; /* Add a dark-grey background on hover */
+  color: black;
+}
+
+	</style>
+
+<h1 style="color: white;">Update your Role in "{{selected_war[0]}}"</h1>
+
+<p style="color: white; font-size: 20px; width: 80%; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; width: 80%; margin-left: 10%;">If you played something you normally do not play (or that is different from what you entered in the player info google form, Select the role you played below! You do not need to fill this out if you played the role you previosly selected in the google form!)</p>
+
+<div style="max-width: 80%; background-color: #2b2b29; border-radius: 20px; box-sizing: border-box; padding: 20px; text-align: center; margin-left: 10%;">
+<table style="margin-bottom: 3%;">
+
+        <th>Rank</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    <tr>
+        <td><b>{{selected_war[1]}}</b></td>
+        <td>{{selected_war[2]}}</td>
+        <td>{{"{:,}".format(selected_war[3].replace("*","")|int)}}</td>
+        <td>{{"{:,}".format(selected_war[4].replace("*","")|int)}}</td>
+        <td>{{"{:,}".format(selected_war[5].replace("*","")|int)}}</td>
+        <td>{{"{:,}".format(selected_war[6].replace("*","")|int)}}</td>
+        <td>{{"{:,}".format(selected_war[7].replace("*","")|int)}}</td>
+        <td>{{"{:,}".format(selected_war[8].replace("*","")|int)}}</td>
+        <td>{{selected_war[11]}}%</td>
+        <td>{{"{:,}".format(selected_war[12].replace("*","")|int)}}</td>
+        <td>{{selected_war[15]}}</td>
+    </tr>
+
+
+<form class="form" action="/{{server}}/update_role/{{selected_war[2]}}/{{selected_war[9]}}" method = "POST">
+        <h3 style="color: white;"> Role Played: </h3><select name="role_played">
+        <option value="Healer">Healer</option>
+        <option value="Tank">Tank</option>
+        <option value="Melee DPS">Melee DPS</option>
+        <option value="Ranged DPS">Ranged DPS</option>
+        <option value="Utility">Utility</option>
+        <option value="Siege">Siege</option>
+        <option value="Assassin">Assassin</option>
+    </select>
+<button class="myButton" input type = "submit"/ style="color: white; margin-bottom: 3%; margin-left: 50px; margin-top: 2%;">Save</button>
+
+
+<h1>{{message}}</h1>
+</form>
+</table>
+
+
+<div style="margin-bottom: 3%;">
+<a href="https://www.nw-stats.com/{{server}}/war/{{selected_war[9]}}"><button class="myButton" style="color: white;">Back to War</button></a>
+<a href="https://www.nw-stats.com/{{server}}/player/{{selected_war[2]}}"><button class="myButton" style="color: white; margin-left:5%">View my Profile</button></a>
+</div>
+</div>
+
+
+
+
+{% endblock %}

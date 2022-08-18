@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 style="color:white; text-align:center;">A popup should appear, click allow to get notifications from the website when new wars are added and when there is news to be shared! These notifications will appear on your desktop!</h1>
+<h3 style="color:white; text-align:center;">If a popup does not display, make sure your settings are set to allow them for this website!</h3>
+
+
+<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+    <script>
+  const beamsClient = new PusherPushNotifications.Client({
+    instanceId: 'f6813920-87b9-4622-a2a7-b3f64b3c6498',
+  });
+
+  beamsClient.start()
+    .then(() => beamsClient.addDeviceInterest('hello'))
+    .then(() => console.log('Successfully registered and subscribed!'))
+    .catch(console.error);
+</script>
+{% endblock %}

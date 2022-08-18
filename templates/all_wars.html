@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+<style>
+body {
+  background-color: #39414a;
+   background-size:cover;
+}
+
+h2 {
+    font-size: 30px;
+    color: {{user_settings[2]}};
+}
+a {
+    style: none;
+}
+</style>
+    {% block content %}
+    <head>
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{player}}'s Stats" />
+        <meta property="og:description" content="A place to view {{player}}'s stats in New World wars!" />
+        <meta property="og:url" content="www.blacktunastats.com/player/{{player}}" />
+        <meta property="og:image" content="https://www.blacktunastats.com/static/images/tuna_logo.png" />
+
+    </div>
+
+   <style>
+		table {
+			border:2px white;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 5px;
+			color: {{user_settings[6]}};
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    font-style: bold;
+		}
+		tr:nth-child(even) {
+    background-color: {{user_settings[4]}};
+    color: {{user_settings[6]}};
+}
+    tr:nth-child(odd) {
+    background-color: {{user_settings[5]}};
+    color: {{user_settings[6]}};
+}
+
+	</style>
+<div class="PageHeader" style="max-width: 100%;"><h1 style="color: white; margin-top: 2%;">{{player}}'s War Logs</h1>
+<p style=" font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%;">
+    Here you can view all wars that {{player}} has participated in!
+</p>
+<br>
+</div>
+
+
+<table class=t1 style="margin-bottom: 25px;">
+    <tr><th colspan="11">{{player}}'s Past Attacks</th></tr>
+        <th>War Number</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    {% for item in war_logs[0] %}
+    <tr>
+        <td>{{war_logs[0][::-1].index(item) + 1}}</td>
+        {% if user_settings[8] == item[2] and session['discord_id'] == user_settings[0] %}
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.blacktunastats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        {% else %}
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        {% endif %}
+        <td>{{item[3]}}</td>
+        <td>{{item[4]}}</td>
+        <td>{{item[5]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
+        <td>{{item[8]}}</td>
+        <td>{{item[11]}}%</td>
+        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
+        <td>{{item[15]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+<table class=t1 style="margin-bottom: 25px;">
+    <tr><th colspan="11">{{player}}'s Past Defenses</th></tr>
+        <th>War Number</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    {% for item in war_logs[1] %}
+    <tr>
+        <td>{{war_logs[1][::-1].index(item) + 1}}</td>
+        {% if user_settings[8] == item[2] and session['discord_id'] == user_settings[0] %}
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.blacktunastats.com/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        {% else %}
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        {% endif %}
+        <td>{{item[3]}}</td>
+        <td>{{item[4]}}</td>
+        <td>{{item[5]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
+        <td>{{item[8]}}</td>
+        <td>{{item[11]}}%</td>
+        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
+        <td>{{item[15]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<table class=t1 style="margin-bottom: 25px;">
+    <tr><th colspan="11">{{player}}'s Past Misc. wars (Attack/Defense Unknown)</th></tr>
+        <th>War Number</th>
+        <th>War Name</th>
+        <th>Score</th></th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+        <th>Healing</th>
+        <th>Damage</th>
+        <th>Kpar</th>
+        <th>Damage Kpar</th>
+        <th>Role</th>
+
+    {% for item in war_logs[2] %}
+    <tr>
+        <td>{{war_logs[2][::-1].index(item) + 1}}</td>
+        {% if user_settings[8] == item[2] and session['discord_id'] == user_settings[0] %}
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.blacktunastats.com/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        {% else %}
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        {% endif %}
+        <td>{{item[3]}}</td>
+        <td>{{item[4]}}</td>
+        <td>{{item[5]}}</td>
+        <td>{{item[6]}}</td>
+        <td>{{item[7]}}</td>
+        <td>{{item[8]}}</td>
+        <td>{{item[11]}}%</td>
+        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
+        <td>{{item[15]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

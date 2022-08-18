@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+
+		table {
+			border:2px #a6c9d9;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+			font-size: 24px;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 8px;
+			color: {{user_settings[6]}};
+			font-size: 20px;
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    color: {{user_settings[6]}};
+		    font-style: bold;
+		}
+
+		a:hover{
+		    color: white;
+            font-size: 22px;
+		}
+
+		th a{
+            color: white;
+		}
+		th a:hover{
+		    color:gray;
+		    font-size: 20px;
+		}
+
+        h3{
+            text-align: center;
+
+        }
+
+
+
+		tr:nth-child(even) {
+    background-color: {{user_settings[4]}};
+}
+    tr:nth-child(odd) {
+    background-color: {{user_settings[5]}};
+}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 60px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: {{user_settings[2]}}; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 24px; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: white; /* Add a dark-grey background on hover */
+  color: black;
+}
+
+	</style>
+
+<h1 style="color: white">Player Verification</h1>
+
+<h2 style="text-align: center; color: white;">We are looking to make stats more accurate for all users!</h2>
+
+<p style="text-align: center; color: white"></p>
+
+<p style="color:white;text-align:center">To verify yourself, login with discord (the upper right corner) and go to settings!
+<p style="color:white;text-align:center">Click the "Verify Account" button and follow the instructions in that discord channel!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

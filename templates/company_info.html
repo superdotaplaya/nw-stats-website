@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+<!doctype html>
+<html>
+<link rel="icon" type="image/x-icon" href="/static/images/tuna_logo.png">
+
+    {% block content %}
+
+
+
+
+
+   <style>
+		table {
+		    text-align: center;
+			border:2px #a6c9d9;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 5px;
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    color: {{user_settings[6]}};
+		    font-style: bold;
+		}
+		tr:nth-child(even) {
+    background-color: {{user_settings[4]}};
+}
+    tr:nth-child(odd) {
+    background-color: {{user_settings[5]}};
+}
+
+
+	</style>
+
+<table style="margin-top: 2%;">
+    <th>{{company_name.upper()}} Roster</th>
+    {% for player in roster %}
+    <tr>
+        <td><a href="https://www.blacktunastats.com/player/{{player}}">{{player}}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+<style>
+.aligncenter {
+    text-align: center;
+}
+</style>
+
+
+
+
+
+
+{% endblock %}
+
+<footer>
+    <p style="position: center; bottom: 5px; text-align: center; color: white; margin-top: 10%;">Site programmed by: Superdotaplaya || Site stylized by: H3rsh3yb3ar</p>
+</footer>
+</html>
