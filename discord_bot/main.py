@@ -754,7 +754,7 @@ async def fixwarstats(ctx, server: Option(str, "What server did the war occur on
         await ctx.respond(f"Stats for https://www.nw-stats.com/{server}/war/{war_id} have been updated to reflect the information in the spreadsheet!")
     except:
         await ctx.respond("Could not enter war, try again later, or ensure all information is filled in correctly in the spreadsheet!")
-bot.run('OTE4NDAxNjA3NTg1MTA3OTY5.YbGuJg.9KD1FnKMC8-zv4I1SiTpyv87uAY')
+bot.run(config.discord_token)
 
 
 #run the bot
