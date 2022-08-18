@@ -2,7 +2,7 @@
 
 **NW-Stats.com is a stat tracking website for the New World game made by Amazon Game Studios.**
 
-This website uses screenshots of war scoreboards submitted by the community to gather stats about players. All stats are recorded into a database that allows for data analysis to take place and offer it to the players! See below for a list of features that are currently implemented on the website!
+This website uses screenshots of war scoreboards submitted by the community to gather stats about players. All stats are recorded into a database that allows for data analysis to take place and offer it to the players! See below for a list of features that are currently implemented on the website! This project has been created in Python using the Flask framework for loading webpages and information into them.
 
 War stat submission:
 ![image](https://user-images.githubusercontent.com/22628539/185343098-37bd7470-469e-4cfa-bbe4-0186f99f8204.png)
