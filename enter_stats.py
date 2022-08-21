@@ -11,7 +11,7 @@ beams_client = PushNotifications(
 )
 
 # Set to "Add" to add the latest war to the database, Set to "All, to reload the entire database, Set to war number to reload stats for that war, Set to "Repair" to remove duplicate wars.
-updating = "2"
+updating = "Add"
 server = "COS"
 
 
@@ -421,4 +421,4 @@ def remove_war(war_id):
     mycursor.execute(sql, val)
     mydb.commit()
 
-remove_war("191")
+add_war()

@@ -736,24 +736,28 @@ async def warregister(ctx, player_name: Option(str, "Enter your in game name.", 
 
 @bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
 async def enterwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(int,"What war Id are you adding to the database?")):
-    try:
-        print(f"{server} + {war_id}")
-        enter_stats.add_war(server,war_id)
-        await ctx.respond("War has been added to the database, check the website to ensure everything is correct!")
-    except:
-        await ctx.send("Could not fully enter stats, plase try again later after checking to make sure the spreadsheet is correctly filled out!")
+
+        await ctx.send(enter_stats.add_war(server,war_id))
+
 
 @bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
 async def fixwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you fixing the stats for?")):
-    try:
-        war_id = war_id
-        server = server
-        print(war_id)
-        print(server)
-        enter_stats.fix_stats(server,war_id)
-        await ctx.respond(f"Stats for https://www.nw-stats.com/{server}/war/{war_id} have been updated to reflect the information in the spreadsheet!")
-    except:
-        await ctx.respond("Could not enter war, try again later, or ensure all information is filled in correctly in the spreadsheet!")
+
+    war_id = war_id
+    server = server
+    print(war_id)
+    print(server)
+    await ctx.send(enter_stats.fix_stats(server,war_id))
+
+@bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
+async def deletewar(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you deleting from the website?")):
+
+    war_id = war_id
+    server = server
+    print(war_id)
+    print(server)
+    await ctx.send(enter_stats.remove_war(server,war_id))
+
 bot.run(config.discord_token)
 
 
