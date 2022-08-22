@@ -45,6 +45,8 @@ def update_stats(player_info):
         sh = gc.open('Delos war records')
     elif server == "VAL":
         sh = gc.open('Valhalla war records')
+    elif server.lower() == "oro":
+        sh = gc.open('Orofena war records')
     info = sh.worksheets()
     sheet_id = 1
     war_name = ""
@@ -160,6 +162,8 @@ def add_war(server,war_num):
             sh = gc.open('Delos war records')
         elif server.lower() == "val":
             sh = gc.open('Valhalla war records')
+        elif server.lower() == "oro":
+            sh = gc.open('Orofena war records')
 
         wks = sh.worksheet_by_title(str(war_num))
         returned_values = wks.get_values_batch( ['A1:J500'] )
@@ -301,6 +305,8 @@ def fix_stats(server,updating_war):
             sh = gc.open('Delos war records')
         elif server.lower() == "val":
             sh = gc.open('Valhalla war records')
+        elif server.lower() == "oro":
+            sh = gc.open('Orofena war records')
         wks = sh.worksheet_by_title(str(updating_war))
         returned_values = wks.get_values_batch( ['A1:J500'] )
         war_name_sheet = sh.worksheet_by_title("War List")

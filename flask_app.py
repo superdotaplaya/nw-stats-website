@@ -419,6 +419,8 @@ def get_war_list(page, server):
         sh = gc.open('Delos war records')
     elif server == "val":
         sh = gc.open('Valhalla war records')
+    elif server == "oro":
+        sh = gc.open('Orofena war records')
     wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:C1000'] )
     if page == 1:
@@ -445,6 +447,8 @@ def get_total_wars(page, server):
         sh = gc.open('Delos war records')
     elif server == "val":
         sh = gc.open('Valhalla war records')
+    elif server == "oro":
+        sh = gc.open('Orofena war records')
     wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:C1000'] )
     total_wars = len(returned_values[0])
@@ -472,6 +476,8 @@ def get_total_wars_global():
     wks = sh.worksheet_by_title("War List")
     sh = gc.open('Valhalla war records')
     wks = sh.worksheet_by_title("War List")
+    sh = gc.open('Orofena war records')
+    wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:C1000'] )
     total_wars += len(returned_values[0])
     return(total_wars)
@@ -496,6 +502,8 @@ def get_war_title(war_id, server):
         sh = gc.open('Delos war records')
     elif server == "val":
         sh = gc.open('Valhalla war records')
+    elif server == "oro":
+        sh = gc.open('Orofena war records')
     wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:F1000'] )
     for item in returned_values[0]:

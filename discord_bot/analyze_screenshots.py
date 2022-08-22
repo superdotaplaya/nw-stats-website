@@ -83,6 +83,8 @@ def extract_text(images, war_name, server):
         sh = gc.open('Delos war records')
     elif server.lower() == "val":
         sh = gc.open('Valhalla war records')
+    elif server.lower() == "oro":
+        sh = gc.open('Orofena war records')
     info = sh.worksheets()
     last_sheet = info[-1].title
     sh.add_worksheet(title=str(int(last_sheet)+1), rows=100, cols=26, src_tuple=None, src_worksheet=None, index=None)
