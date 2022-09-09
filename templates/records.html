@@ -48,6 +48,10 @@ max-width: 100%;
   cursor: url("/static/images/tuna_cursor.png"), url("tuna.cur"), pointer;
     }
 
+    p {
+        font-family: Helvetica;
+    }
+
     html, body {
   background: #6ca3a3;
   font-family: Helvetica;
@@ -81,9 +85,9 @@ max-width: 100%;
 
 {% block content %}
 
-<div class="PageHeader" style="max-width: 100%;"><h1 style="color: white; margin-top: 2%;">Welcome to the Hall of Fame!</h1>
-<p style=" font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%;">
-    Here you will be able to track current server records. Server records will be updated after every war that is recorded within Black Tuna records.
+<div class="PageHeader" style="max-width: 100%;"><h1 style="color: white; margin-top: 2%; text-align: center; font-family: Helvetica;">Welcome to the Hall of Fame!</h1>
+<p style=" font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; font-family: Helvetica;">
+    Here you will be able to track current server records. Server records will be updated after every war that is recorded within NW-Stats.
 </p>
 <br>
 </div>

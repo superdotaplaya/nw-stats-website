@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+<head>
+    {% block title %}User Settings - Black Tuna Stats{% endblock %}
+
+        <title><meta name="title" content="User Settings"></title>
+        <meta name="description" content="Change the way the site looks and functions by logging in with Discord!">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="User Settings" />
+        <meta property="og:description" content="Change the way the site looks and functions by logging in with Discord!" />
+        <meta property="og:url" content="www.blacktunastats.com/settings" />
+        <meta property="og:image" content="https://www.blacktunastats.com/static/images/tuna_logo.png" />
+</head>
+<html>
+    <div>
+{% block content %}
+<h2 style="text-align: center; color: white;">{{message}}</h2>
+
+<form style="text-align: center" action="/submit_info" method = "POST">
+
+<h1 style="text-align: center; color: white;">Character Info</h1>
+    <h3 style="color: white; text-align: center">Company Name: &nbsp <input type="text" id="head" name="company_name" value="{{player_info[3]}}" action="/settings" method = "POST"> </h3>
+    <h3 style="color: white; text-align: center">Role: &nbsp <select name = "role">
+            {% if player_info[2] == "Assassin" %}
+            <option value = "Assassin" selected>Assassin</option>
+            {% else %}
+            <option value = "Assassin">Assassin</option>
+            {% endif %}
+            {% if player_info[2] == "Healer" %}
+            <option value = "Healer" selected>Healer</option>
+            {% else %}
+            <option value = "Healer">Healer</option>
+            {% endif %}
+            {% if player_info[2] == "Tank" %}
+            <option value = "Tank" selected>Tank</option>
+            {% else %}
+            <option value = "Tank">Tank</option>
+            {% endif %}
+            {% if player_info[2] == "Ranged DPS" %}
+            <option value = "Ranged DPS" selected>Ranged DPS</option>
+            {% else %}
+            <option value = "Ranged DPS">Ranged DPS</option>
+            {% endif %}
+            {% if player_info[2] == "Melee DPS" %}
+            <option value = "Melee DPS" selected>Melee DPS</option>
+            {% else %}
+            <option value = "Melee DPS">Melee DPS</option>
+            {% endif %}
+            {% if player_info[2] == "Utility" %}
+            <option value = "Utility" selected>Utility</option>
+            {% else %}
+            <option value = "Utility">Utility</option>
+            {% endif %}
+         </select> </h3>
+    <h3 style="color: white; text-align: center">Faction</h3>: &nbsp <select name = "faction">
+            {% if player_info[1] == "Covenant" %}
+            <option value = "Covenant" selected>Covenant</option>
+            {% else %}
+            <option value = "Covenant">Covenant</option>
+            {% endif %}
+            {% if player_info[1] == "Marauder" %}
+            <option value = "Marauder" selected>Marauder</option>
+            {% else %}
+            <option value = "Marauder">Marauder</option>
+            {% endif %}
+            {% if player_info[1] == "Syndicate" %}
+            <option value = "Syndicate" selected>Syndicate</option>
+            {% else %}
+            <option value = "Syndicate">Syndicate</option>
+            {% endif %}
+
+         </select> </h3> </h3>
+         <p></p>
+         <p></p>
+         <p></p>
+         <p></p>
+<button class="myButton" input type = "submit"/ style="color: white;">Save Info</button>
+
+</form>
+</div>
+
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+
+<div class="Reset" style="width: 99.75%; text-align: center; margin-top: 4%;">
+<a href="https://www.blacktunastats.com/reset"><button class="myButton" style="color: red; text-align: center; width: 15%;">Reset Settings To Default</button></a>
+</div>
+{% endblock %}
+</html>

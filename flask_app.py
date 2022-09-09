@@ -277,7 +277,9 @@ def search_war_results(searched_term):
     )
     mycursor = mydb.cursor()
     # loop through the rows
-    mycursor.execute("SELECT * FROM player_records")
+    run_string = "SELECT * FROM player_records WHERE war_name LIKE %s"
+    data = ('%' + searched_term + '%',)
+    mycursor.execute(run_string,data)
     myresult = mycursor.fetchall()
     war_results = []
     wars = []
@@ -286,6 +288,30 @@ def search_war_results(searched_term):
             war_results.append([row[0], row[9], row[16]])
             wars.append(row[0])
     return(war_results)
+
+def remove_vod(removed_vod,war,server):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    sql = "DELETE FROM player_vods WHERE vod = %s AND server = %s AND war_id = %s"
+    data = (removed_vod, server, war)
+    mycursor.execute(sql,data)
+    mydb.commit()
+    sql = "DELETE FROM player_twitch_videos WHERE vod = %s AND server = %s AND war_id = %s"
+    data = (removed_vod, server, war)
+    mycursor.execute(sql,data)
+    mydb.commit()
+    sql = "DELETE FROM player_youtube_videos WHERE vod = %s AND server = %s AND war_id = %s"
+    data = (removed_vod, server, war)
+    mycursor.execute(sql,data)
+    mydb.commit()
+
+    return("Done!")
+
 
 def setup_user_account(chosen_account):
 
@@ -353,7 +379,9 @@ def search_player_results(searched_term):
     )
     mycursor = mydb.cursor()
     # loop through the rows
-    mycursor.execute("SELECT * FROM player_records")
+    run_string = "SELECT * FROM player_records  WHERE name LIKE %s"
+    data = ('%' + searched_term + '%',)
+    mycursor.execute(run_string,data)
     myresult = mycursor.fetchall()
     player_results = []
     players = []
@@ -363,17 +391,7 @@ def search_player_results(searched_term):
             players.append(row[2])
     return(player_results)
 
-def search_company_results(searched_term):
-    sh = gc.open('blacktunastats.com player responses')
-    wks = sh.worksheet_by_title("Form Responses 1")
-    returned_values = wks.get_values_batch( ['A2:E1000'] )
-    company_results = []
-    companies = []
-    for item in returned_values[0]:
-        if searched_term.lower() in item[4].lower() and item[4] not in companies:
-            company_results.append([item[4], f"https://www.nw-stats.com/company/{item[4]}"])
-            companies.append(item[4])
-    return(company_results)
+
 
 def get_record_wars(server):
     mydb = mysql.connector.connect(
@@ -421,6 +439,8 @@ def get_war_list(page, server):
         sh = gc.open('Valhalla war records')
     elif server == "oro":
         sh = gc.open('Orofena war records')
+    elif server == "mar":
+        sh = gc.open('Maramma war records')
     wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:C1000'] )
     if page == 1:
@@ -449,6 +469,8 @@ def get_total_wars(page, server):
         sh = gc.open('Valhalla war records')
     elif server == "oro":
         sh = gc.open('Orofena war records')
+    elif server == "mar":
+        sh = gc.open('Maramma war records')
     wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:C1000'] )
     total_wars = len(returned_values[0])
@@ -478,6 +500,8 @@ def get_total_wars_global():
     wks = sh.worksheet_by_title("War List")
     sh = gc.open('Orofena war records')
     wks = sh.worksheet_by_title("War List")
+    sh = gc.open('Maramma war records')
+    wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:C1000'] )
     total_wars += len(returned_values[0])
     return(total_wars)
@@ -504,6 +528,8 @@ def get_war_title(war_id, server):
         sh = gc.open('Valhalla war records')
     elif server == "oro":
         sh = gc.open('Orofena war records')
+    elif server == "mar":
+        sh = gc.open('Maramma war records')
     wks = sh.worksheet_by_title("War List")
     returned_values = wks.get_values_batch( ['A1:F1000'] )
     for item in returned_values[0]:
@@ -532,7 +558,42 @@ def get_player_info(usr):
             found = True
             return([item[2],item[3],item[4]])
 
+def get_player_logo(player_name):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_info WHERE player_name = %s"
+    val = (player_name,)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
 
+    for row in myresult:
+        if row[0].lower() == player_name.lower() and row[4] != None:
+            return(row[4])
+    return("/static/images/pfp.png")
+
+def get_player_entered_info(player_name):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_info WHERE player_name = %s"
+    val = (player_name,)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+
+    for row in myresult:
+        if row[0].lower() == player_name.lower():
+            return(row)
 
 def get_player_settings():
     if session['discord_id'] != "":
@@ -1127,8 +1188,8 @@ def user(usr, server):
     player = usr
     role = "All"
     servers_played = get_servers_played(usr)
-    return render_template("player_stats.html", info= sql_stuff.calc_stats(usr,server), war_logs=sql_stuff.get_user_wars(usr, role, server), role = role, player = usr, player_info = get_player_info(usr), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
-, vods = get_submitted_vods(player, server), server = server, servers_played = servers_played)
+    return render_template("player_stats.html", info= sql_stuff.calc_stats(usr,server), war_logs=sql_stuff.get_user_wars(usr, role, server), role = role, player = usr, player_info = get_player_entered_info(usr), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
+, vods = get_submitted_vods(player, server), server = server, servers_played = servers_played, player_logo = get_player_logo(usr))
 
 @app.route("/<server>/player/<usr>/<player_role>")
 def user_role_stats(usr,player_role, server):
@@ -1136,8 +1197,8 @@ def user_role_stats(usr,player_role, server):
     print(player_role)
     info = get_player_role_stats(usr,player_role, server)
     servers_played = get_servers_played(usr)
-    return render_template("player_stats.html", info= info, war_logs=sql_stuff.get_user_wars_role(usr,player_role, server), player = usr, role = player_role, player_info = get_player_info(usr), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
-, vods = get_submitted_vods(usr, server), server = server, servers_played = servers_played)
+    return render_template("player_stats.html", info= info, war_logs=sql_stuff.get_user_wars_role(usr,player_role, server), player = usr, role = player_role, player_info = get_player_entered_info(usr), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
+, vods = get_submitted_vods(usr, server), server = server, servers_played = servers_played, player_logo = get_player_logo(usr))
 
 
 @app.route("/<server>/update_role/<usr>/<war_id>", methods = ['POST', 'GET'])
@@ -1147,10 +1208,10 @@ def enter_role(server,usr,war_id):
         message = set_war_role(usr,war_id,role,server)
 
         return render_template("enter_role_info.html", player = usr, logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
-    , selected_war = get_selected_war(war_id, usr), war_id = war_id, message = message, server = server)
+    , selected_war = get_selected_war(war_id, usr), war_id = war_id, message = message, server = server, player_logo = get_player_logo(usr))
     else:
         return render_template("enter_role_info.html", player = usr, logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
-    , selected_war = get_selected_war(war_id, usr), war_id = war_id, message = "", server = server)
+    , selected_war = get_selected_war(war_id, usr), war_id = war_id, message = "", server = server, player_logo = get_player_logo(usr))
 
 @app.route("/<server>/war/<war_id>/submit_clip", methods = ['POST','GET'])
 def submit_vod_page(war_id, server):
@@ -1206,7 +1267,7 @@ def search():
         print(request.form)
         form_data = request.form
         search_term = form_data['searched_term']
-        return(render_template('search.html',form_data = form_data, player_results = search_player_results(search_term), company_results = search_company_results(search_term), war_results= search_war_results(search_term), searched_term = search_term, logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route, server = server
+        return(render_template('search.html',form_data = form_data, player_results = search_player_results(search_term), war_results= search_war_results(search_term), searched_term = search_term, logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route, server = server
     ))
 
 @app.route("/<server>/records")
@@ -1247,7 +1308,8 @@ def oauth_callback():
     response = discord.get(base_discord_api_url + '/users/@me/guilds/892232759513350174/member')
     response2 = discord.get(base_discord_api_url + '/users/@me')
     session['discord_id'] = response2.json()['id']
-
+    player_logo = f"https://cdn.discordapp.com/avatars/{session['discord_id']}/{response2.json()['avatar']}.jpg"
+    print(player_logo)
     player_settings = get_player_settings()
     if player_settings[0] == '1':
         chosen_account = {'discord_id':response2.json()['id'],
@@ -1264,16 +1326,38 @@ def oauth_callback():
         password=config.db_pass,
         database="superdotaplaya$war_stats"
             )
-        data = (session['discord_id'], chosen_account['player_name'], chosen_account['header_color'], chosen_account['background_color'], chosen_account['scoreboard_color1'],chosen_account['scoreboard_color2'], chosen_account['scoreboard_text_color'], "False","")
+        data = (session['discord_id'], chosen_account['player_name'], chosen_account['header_color'], chosen_account['background_color'], chosen_account['scoreboard_color1'],chosen_account['scoreboard_color2'], chosen_account['scoreboard_text_color'], "False","", player_logo)
         insert_stmt = (
-        "INSERT INTO player_accounts(discord_id, default_profile, header_color, background_color, scoreboard_color1, scoreboard_color2, scoreboard_text_color, verified, verified_name)"
-        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        "INSERT INTO player_accounts(discord_id, default_profile, header_color, background_color, scoreboard_color1, scoreboard_color2, scoreboard_text_color, verified, verified_name, player_logo)"
+        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             )
         print(data)
         mycursor = mydb.cursor()
         mycursor.execute(insert_stmt, data)
         mydb.commit()
-
+    else:
+        mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+            )
+        sql = "UPDATE player_accounts SET player_logo = %s WHERE discord_id = %s"
+        val = (player_logo, session['discord_id'])
+        mycursor = mydb.cursor()
+        mycursor.execute(sql, val)
+        mydb.commit()
+        mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+            )
+        sql = "UPDATE player_info SET player_logo = %s WHERE player_name = %s"
+        val = (player_logo, player_settings[8])
+        mycursor = mydb.cursor()
+        mycursor.execute(sql, val)
+        mydb.commit()
     print(session['discord_id'])
     session['logged_in'] = True
     if '978549544340041728' in response.json()['roles']:
@@ -1292,15 +1376,17 @@ def profile():
     # loop through the rows
     mycursor.execute("SELECT * FROM player_accounts")
     myresult = mycursor.fetchall()
+
     role = "All"
     selected_player = ""
-
+    player_log = ""
     for row in myresult:
 
         if int(row[0]) == int(session['discord_id']):
             selected_player = str(row[1])
-    return render_template("player_stats.html", info= sql_stuff.calc_stats(selected_player.lower(), get_player_settings()[9]), war_logs=sql_stuff.get_user_wars(selected_player,role, get_player_settings()[9]), role = "N/A", player = selected_player, player_info = get_player_info(selected_player), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
-, vods = get_submitted_vods(selected_player, get_player_settings()[9]), server = get_player_settings()[9], servers_played = get_servers_played(selected_player.lower()))
+
+    return render_template("player_stats.html", info= sql_stuff.calc_stats(selected_player.lower(), get_player_settings()[9]), war_logs=sql_stuff.get_user_wars(selected_player,role, get_player_settings()[9]), role = "N/A", player = selected_player, player_info = get_player_entered_info(selected_player.lower()), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
+, vods = get_submitted_vods(selected_player, get_player_settings()[9]), server = get_player_settings()[9], servers_played = get_servers_played(selected_player.lower()), player_logo = get_player_logo(selected_player))
 
 @app.route("/settings", methods = ['POST', 'GET'])
 def edit_settings():
@@ -1327,6 +1413,30 @@ def role_stats(role, server):
 def news():
     return render_template('feedback_and_news.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "")
 
+@app.route("/submit_info", methods = ['POST', 'GET'])
+def submit_info():
+    user_settings = get_player_settings()
+    player_name = user_settings[8]
+    if request.method == "GET":
+        return render_template('info_submission.html', message = "", logged_in = is_logged_in(), user_settings = user_settings, has_ads = has_ads(), page = app.route, server = "", player_info = get_player_entered_info(player_name))
+    if request.method == 'POST':
+        print(request.form)
+        form_data = request.form
+        mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+            )
+        sql = "UPDATE player_info SET player_company = %s, player_role = %s, faction = %s WHERE player_name = %s"
+        val = (form_data['company_name'],form_data['role'],form_data['faction'], player_name)
+        mycursor = mydb.cursor()
+        mycursor.execute(sql, val)
+        mydb.commit()
+        user_settings = get_player_settings()
+        player_name = user_settings[8]
+        return render_template('info_submission.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", player_info = get_player_entered_info(player_name))
+
 @app.route("/notifications")
 def notifications():
     return render_template('get_notifications.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "")
@@ -1335,7 +1445,21 @@ def notifications():
 def server_select():
     return render_template('server_selection.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "")
 
-# End discord login
+@app.route("/remove_vod", methods = ['POST', 'GET'])
+def remove_vod_page():
+
+    if request.method == "GET":
+        return redirect("https://www.nw-stats.com")
+    if request.method == 'POST':
+        form_data = request.form
+        removed_vod = form_data['vod']
+        player = form_data['player']
+        server = form_data['server']
+        remove_vod(removed_vod,player,server)
+        return redirect(f"https://www.nw-stats.com/{server}/player/{player}")
+
+
+
 @app.route("/logout")
 def offlog():
     session['logged_in'] = False
@@ -1351,4 +1475,4 @@ def not_found(e):
   return render_template("404.html", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), server = "")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

@@ -692,7 +692,7 @@ async def submitwarstats(ctx, server: Option(str, "What server did the war occur
     await ctx.respond("Stats are being submitted, this may take a few minutes!")
     await ctx.send(analyze_screenshots.extract_text(images, war_name, server))
 
-@bot.slash_command(guild_ids=[892232759513350174], description = "Returns a given players monthly stat card")
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Returns a given players monthly stat card")
 async def submit_stats(ctx):
     mydb = mysql.connector.connect(
     host="superdotaplaya.mysql.pythonanywhere-services.com",
@@ -734,30 +734,168 @@ async def warregister(ctx, player_name: Option(str, "Enter your in game name.", 
     pygsheets.datarange.DataRange(start="A1", end="C1000", worksheet=wks).update_values(values=returned_values[0])
     await ctx.respond("Your registration information has been registered!")
 
-@bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
 async def enterwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(int,"What war Id are you adding to the database?")):
+        await ctx.respond("Attempting to add stats to the website, please wait a moment!")
+        upload_stats = enter_stats.add_war(server,war_id)
+        if upload_stats == f"Stats for this war are now live at: https://www.nw-stats.com/{server.lower()}/war/{war_id}":
+            await ctx.send(upload_stats)
+            await bot.get_channel(int(1017194084647047288)).send(f"New war added to NW-Stats.com for {server.upper()}. View it here: https://www.nw-stats.com/{server.lower()}/war/{war_id}")
+        else:
+            await ctx.send(upload_stats)
 
-        await ctx.send(enter_stats.add_war(server,war_id))
 
-
-@bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
 async def fixwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you fixing the stats for?")):
-
+    await ctx.respond("Attempting to fix stats on the website, please wait a moment!")
     war_id = war_id
     server = server
     print(war_id)
     print(server)
     await ctx.send(enter_stats.fix_stats(server,war_id))
 
-@bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
 async def deletewar(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you deleting from the website?")):
-
+    await ctx.respond("Attempting to remove war from the site!")
     war_id = war_id
     server = server
     print(war_id)
     print(server)
     await ctx.send(enter_stats.remove_war(server,war_id))
 
+@bot.slash_command(description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
+async def playerstats(ctx, server: Option(str, "What server is the player on? COS, YGG, VAL, DEL, ORO"), player_name: Option(str, "What is the players name?")):
+    await ctx.respond("Attempting to find Stats, please wait a moment!")
+    data = calc_stats(player_name,server)
+    embed = discord.Embed(
+    title=f"{player_name}'s NW-Stats Profile ({server})", description="A breakdown of player stats gathered from war screenshots!", color=0x336EFF)
+    embed.add_field(name="Average Kills", value=f"{data[1]}", inline=False)
+    embed.add_field(name="Record Kills", value=f"{'{:,}'.format(int(data[8]))}", inline=False)
+    embed.add_field(name="Average Damage", value=f"{'{:,}'.format(float(data[5]))}", inline=False)
+    embed.add_field(name="Record Damage", value=f"{'{:,}'.format(int(data[10]))}", inline=False)
+    embed.add_field(name="Average Healing", value=f"{'{:,}'.format(float(data[4]))}", inline=False)
+    embed.add_field(name="Record Healing", value=f"{'{:,}'.format(float(data[9]))}", inline=False)
+    embed.add_field(name="Average Assists", value=f"{'{:,}'.format(float(data[3]))}", inline=False)
+    embed.add_field(name="Record Assists", value=f"{'{:,}'.format(float(data[25]))}", inline=False)
+    embed.add_field(name="Profile Link", value=f"https://www.nw-stats.com/{server}/player/{player_name}", inline=False)
+    embed.set_image(url="https://www.nw-stats.com/static/images/nw-stats%20logo.png")
+    await ctx.send(embed=embed)
+
+
+def calc_stats(usr,server):
+
+    requested_player = usr
+    print(f"sql_stuff {requested_player} {server}")
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+
+    mycursor = mydb.cursor()
+    # loop through the rows
+    mycursor.execute("SELECT * FROM player_records")
+    myresult = mycursor.fetchall()
+    player_results = []
+    player_score = []
+    player_kills = []
+    player_deaths = []
+    player_assists = []
+    player_healing = []
+    player_damage = []
+    war_names = []
+    player_kpars = []
+    wins = []
+    losses = []
+    roles_played = []
+    wars_played_in = []
+    for row in myresult:
+        # Get the players won and lost wars for win/loss stats
+
+        if row[2].lower() == requested_player.lower() and row[16].lower() == server.lower():
+            roles_played.append(row[15].lower())
+            if "*" not in row[3]:
+                player_results.append(row)
+                wars_played_in.append(row[9])
+            if row[13] == row[14] and row[14] != "N/A":
+                wins.append(row)
+            elif row[13] != row[14] and row[14] != "N/A":
+                losses.append(row)
+    if len(player_results) != 0:
+        player_results.sort(key = lambda x: int(x[4].replace("*","").replace("^","")), reverse = True)
+        max_kill_war = player_results[0][9]
+        player_results.sort(key = lambda x: int(x[7].replace("*","").replace("^","")), reverse = True)
+        max_healing_war = player_results[0][9]
+        player_results.sort(key = lambda x: int(x[8].replace("*","").replace("^","")), reverse = True)
+        max_damage_war = player_results[0][9]
+        player_results.sort(key = lambda x: int(x[6].replace("*","").replace("^","")), reverse = True)
+        max_assists_war = player_results[0][9]
+        for player_entry in player_results:
+
+            if "*" not in player_entry[3]:
+                print(player_entry)
+                score = player_entry[3]
+                kills = player_entry[4]
+                deaths = player_entry[5]
+                assists = player_entry[6]
+                healing = player_entry[7]
+                damage = player_entry[8]
+                player_score.append(int(score))
+                player_kills.append(int(kills))
+                player_deaths.append(int(deaths))
+                player_assists.append(int(assists))
+                player_healing.append(int(healing))
+                player_damage.append(int(damage))
+                if player_entry[11] != "N/A":
+                    player_kpars.append(float(player_entry[11]))
+
+        avg_score = sum(player_score)/len(player_score)
+        avg_kills = sum(player_kills)/len(player_kills)
+        avg_deaths = sum(player_deaths)/len(player_deaths)
+        avg_assists = sum(player_assists)/len(player_assists)
+        avg_healing = sum(player_healing)/len(player_healing)
+        avg_damage = sum(player_damage)/len(player_damage)
+        if sum(player_deaths) != 0:
+            healing_per_death = sum(player_healing)/sum(player_deaths)
+            damage_per_death = sum(player_damage)/sum(player_deaths)
+            assists_per_death = sum(player_assists)/sum(player_deaths)
+            kills_per_death = sum(player_kills)/sum(player_deaths)
+            kills_plus_assists_per_death = (sum(player_kills)+sum(player_assists))/sum(player_deaths)
+        else:
+            healing_per_death = sum(player_healing)/1
+            damage_per_death = sum(player_damage)/1
+            assists_per_death = sum(player_assists)/1
+            kills_per_death = sum(player_kills)/1
+            kills_plus_assists_per_death = (sum(player_kills)+sum(player_assists))/1
+        max_kills = max(player_kills)
+        max_healing = max(player_healing)
+        max_damage = max(player_damage)
+        max_assists = max(player_assists)
+        total_healing = sum(player_healing)
+        total_assists = sum(player_assists)
+        total_damage = sum(player_damage)
+        total_deaths = sum(player_deaths)
+        total_kills = sum(player_kills)
+        total_wins = len(wins)
+        total_losses = len(losses)
+        average_kpar = sum(player_kpars)/len(player_kpars)
+
+
+        def get_healing_graph(player_healing, wars_played_in):
+            return(0)
+
+
+
+        def get_damage_graph(player_damage, wars_played_in):
+            return(0)
+
+
+        player_stats = ["{:.2f}".format(avg_score),"{:.2f}".format(avg_kills),"{:.2f}".format(avg_deaths),"{:.2f}".format(avg_assists),"{:.2f}".format(avg_healing),"{:.2f}".format(avg_damage), "{:.2f}".format(healing_per_death), "{:.2f}".format(damage_per_death), max_kills, max_healing, max_damage, "{:.2f}".format(assists_per_death), total_kills, total_deaths, total_assists, total_damage, total_healing, "{:.2f}".format(kills_plus_assists_per_death),"{:.2f}".format(kills_per_death),get_healing_graph(player_healing, wars_played_in),get_damage_graph(player_damage, wars_played_in),max_healing_war,max_kill_war,max_assists_war,max_damage_war, max_assists, total_wins, total_losses, "{:.2f}".format(average_kpar), roles_played]
+
+        return(player_stats)
+    else:
+        return([0,0,0,0,0,0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0, 0, 0, 0, 0, []])
 bot.run(config.discord_token)
 
 

@@ -9,7 +9,7 @@
         <meta property="og:title" content="{{war_title[0]}} Scoreboard" />
         <meta property="og:description" content="View the scoreboard for {{war_title[0]}}" />
         <meta property="og:url" content="www.nw-stats.com/war/{{war_link}}" />
-        <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
+        <meta property="og:image" content="https://www.nw-stats.com/static/images/nw-stats logo.png" />
 </head>
 
 
@@ -18,7 +18,7 @@
     <style>
 
 		table {
-			border:2px #a6c9d9;
+            border-spacing: 0px;
 			border-collapse:separate;
 			padding: 2px;
             margin-left: auto;
@@ -27,7 +27,6 @@
 
 		}
 		table th {
-			border:2px #a6c9d9;
 			padding: 5px;
 			background: #000000;
 			color: #fff;
@@ -36,7 +35,6 @@
             top: 0;
 		}
 		table td {
-			border:2px #a6c9d9;
 			text-align:center;
 			padding: 8px;
 			color: {{user_settings[6]}};
@@ -54,7 +52,7 @@
 
 		a:hover{
 		    color: white;
-            font-size: 22px;
+
 		}
 
 		th a{
@@ -79,6 +77,7 @@
 
 #myBtn {
   display: none; /* Hidden by default */
+  padding: 2px;
   position: fixed; /* Fixed/sticky position */
   bottom: 20px; /* Place the button at the bottom of the page */
   right: 60px; /* Place the button 30px from the right */
@@ -130,6 +129,7 @@
 	</style>
 
 	<body>
+
 	    <button onclick="topFunction()" id="myBtn" title="Go to top">Back To Top</button>
 	    <a href="#vods"><button id="myBtn2" title="Go to vods">Go To VODs</button></a>
 
@@ -137,7 +137,6 @@
     {% endif %}
 
     <h1 style="color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; width: 80%; margin-left: 10%; font-size: 38px;">{{war_title[0]}} ({{war_title[1]}})</h1>
-    <p style="color: white; font-size: 20px; width: 80%; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; width: 80%; margin-left: 10%;"> War stats from {{war_title[0]}} are below.<br><br> Click the table headings to sort by specific statistics | Click on player names to veiw their individual profile and statistics. <br><br>If you notice something wrong with these stats, please reach out via discord by clicking the "Report an Error" button.</p>
 	<div style="width: 50%; margin-left: 25%; text-align: center; padding-bottom: 20px;">
 	<a href="https://www.nw-stats.com/{{server}}"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Return To War List</h3></button></a>
 	<a href="https://discord.gg/zCcMDbXvEs" target="_blank"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Report an Error</h3></button></a>
@@ -157,7 +156,7 @@
 
         <div class="flex-container">
 
-        <div class="flex-child attacker-logo" style="text-align:center; padding-top: 1%; padding-bottom: 1%;">
+        <div class="flex-child attacker-logo" style="text-align:center; padding-top: 3%; padding-bottom: 3%;">
             <img style="text-align:right" src="/static/images/damage_icon.png" width = 200 height = 200></img>
             {% if war_title[2] == "N/A" %}
             <h2 style="color: {{user_settings[6]}}; font-size: 28px;">Attackers</h2>
@@ -168,13 +167,13 @@
 
           <div class="flex-child attacker" style="padding-top: 1%;">
             <h2 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; text-decoration: underline; font-size:34;">Attackers Totals</h2>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[4])}} Damage</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[6])}} Healing</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[8])}} Kills</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[10])}} Deaths</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[12])}} Assists</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[4])}} Damage</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[6])}} Healing</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[8])}} Kills</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[10])}} Deaths</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[12])}} Assists</h3>
 
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[14])}} Dmg/Kill</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[14])}} Dmg/Kill</h3>
 
 
           </div>
@@ -182,19 +181,19 @@
 
 
 
-          <div class="flex-child defender" style="padding-top: 1%;">
+          <div class="flex-child defender" style="padding-top: 1%;" >
             <h2 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px; text-decoration: underline; font-size:34;">Defenders Totals</h2>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:30;">{{"{:,}".format(info[5])}} Damage</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:30;">{{"{:,}".format(info[7])}} Healing</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:30;">{{"{:,}".format(info[9])}} Kills</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:30;">{{"{:,}".format(info[11])}} Deaths</h3>
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:30;">{{"{:,}".format(info[13])}} Assists</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:20;">{{"{:,}".format(info[5])}} Damage</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:20;">{{"{:,}".format(info[7])}} Healing</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:20;">{{"{:,}".format(info[9])}} Kills</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:20;">{{"{:,}".format(info[11])}} Deaths</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-left:10px;font-size:20;">{{"{:,}".format(info[13])}} Assists</h3>
 
-            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:30;">{{"{:,}".format(info[15])}} Dmg/Kill</h3>
+            <h3 style="color:{{user_settings[6]}}; text-align:center; padding-right:10px; font-size:20;">{{"{:,}".format(info[15])}} Dmg/Kill</h3>
 
           </div>
 
-        <div class="flex-child defender-logo" style="text-align:center; padding-top: 1%; padding-bottom: 1%;">
+        <div class="flex-child defender-logo" style="text-align:center; padding-top: 3%; padding-bottom: 3%;">
             <img style="text-align:left" src="/static/images/tank_icon.png" width = 200 height = 200></img>
             {% if war_title[3] == "N/A" %}
             <h2 style="color: {{user_settings[6]}}; font-size: 28px;">Defenders</h2>
@@ -257,7 +256,8 @@
         <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/team">Team</a></th>
         {% endif %}
         </table>
-    <table id="table-1" style="padding-top:15px">
+    <!--sse-->
+    <table id="table-1" style="padding-top:15px; style="overflow-x: hidden; overflow-y: auto; width: 80%; height: 70%;">
 
         {% if sorted_by == "none" %}
         <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}">Rank*</a></th>
@@ -373,16 +373,10 @@
         {% endif %}
     {% endfor %}
     </table>
+    <!--/sse-->
     <H3 style="color: white;">* = Player reportedly had connection issues during war, and stats for these players are not calculated into overall performance values.</H3>
     <H3 style="color: white;">** = War was very short duration or very one sided. These Stats are not included in stat calculation.</H3>
 
-
-<div class="chartcontainer" style="width: 90%;">
-<div class="grid" style="width: 100%; background-color: white; display: inline-block; margin-left: 5%; text-align: center;">
-<div style= "max-width: 50%; display: inline-block; text-align: center;"><embed>{{info[1]|safe}}</embed></div>
-<div style="max-width: 50%; display: inline-block; text-align: center;"><embed>{{info[2]|safe}}</embed></div>
-</div>
-</div>
 <script>
 //Get the button:
 mybutton = document.getElementById("myBtn");

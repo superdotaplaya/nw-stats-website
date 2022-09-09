@@ -55,11 +55,6 @@ border-radius: 10px 10px 0px 0px;
 
         {% block content %}
 
-<form style="text-align:center;" action="/search" method = "POST" >
-    <h2 style="color: white;">Search Black Tuna Stats</h2>
-    <input type = "text" name = "searched_term" value= "{{searched_term}}"/ style="font-size: 25px;">
-    <p style="color: white;""><button class="myButton" input type = "submit"/ style="background-color: {{user_settings[2]}};">Take A Swim</button></p>
-</form>
     <div style="text-align: center; font-size: 30px;">
     {% if player_results %}
     <h2 style="color: white;">Player Search Results</h2>

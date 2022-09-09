@@ -44,9 +44,10 @@ def get_user_wars(usr,role,server):
                 defenses.append(row)
             elif row[2].lower() == requested_player.lower() and row[13] == "N/A" and role.lower() == row[15].lower():
                 misc.append(row)
-    attacks.reverse()
-    defenses.reverse()
-    misc.reverse()
+    attacks.sort(key = lambda x: int(x[9].replace("*","").replace("^","")), reverse = True)
+    defenses.sort(key = lambda x: int(x[9].replace("*","").replace("^","")), reverse = True)
+    misc.sort(key = lambda x: int(x[9].replace("*","").replace("^","")), reverse = True)
+
     return(attacks[:],defenses[:],misc[:])
 
 def get_user_wars_role(usr,role,server):
@@ -349,26 +350,43 @@ def create_table():
         password=config.db_pass,
         database="superdotaplaya$war_stats"
         )
+
     mycursor = mydb.cursor()
-    add_table = """CREATE TABLE player_records (
-                war_name VARCHAR(255),
-                war_rank VARCHAR(255),
-                name VARCHAR(255),
-                score VARCHAR(255),
-                kills VARCHAR(255),
-                deaths VARCHAR(255),
-                assists VARCHAR(255),
-                healing VARCHAR(255),
-                damage VARCHAR(255),
-                war_id VARCHAR(255),
-                war_link VARCHAR(255),
-                k_par VARCHAR(255),
-                dmg_kpar VARCHAR(255),
-                team VARCHAR(255),
-                war_winner VARCHAR(255),
+    sql = "DROP TABLE player_info"
+
+    mycursor.execute(sql)
+    add_table = """CREATE TABLE player_info (
+                player_name VARCHAR(255),
+                faction VARCHAR(255),
                 player_role VARCHAR(255),
-                server VARCHAR(255)
+                player_company VARCHAR(255),
+                player_logo VARCHAR(255)
                        )"""
 
     mycursor.execute(add_table)
+    mydb.commit()
+
+
+def setup_user_accounts():
+    gc = pygsheets.authorize(service_file='credentials.json')
+
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    sh = gc.open('blacktunastats.com player responses')
+    wks = sh.worksheet_by_title("Form Responses 1")
+    returned_values = wks.get_values_batch( ['A2:E500'] )
+    for player_entry in returned_values[0]:
+        data = (player_entry[1],player_entry[2],player_entry[3],player_entry[4])
+        insert_stmt = (
+        "INSERT INTO player_info(player_name,faction,player_role,player_company)"
+        "VALUES (%s, %s, %s, %s)"
+        )
+        print(data)
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
 

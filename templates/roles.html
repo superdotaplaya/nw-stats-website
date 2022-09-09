@@ -2,7 +2,7 @@
 
 {% block content %}
 <head>
-    {% block title %}Role Selection (role stats){% endblock %}
+    {% block title %}{% endblock %}
         <meta name="title" content="Role Selection">
         <meta name="description" content="Select a role to view stats!">
         <meta property="og:type" content="website">
@@ -11,35 +11,35 @@
         <meta property="og:url" content="www.nw-stats.com/roles" />
         <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
 </head>
-<h1 style="text-align: center;"></h1>
-<H1 style="color: white;  font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%;">Below you will find the stats for the role you requested. These stats are gathered from players who have submitted their information to the website to get more accurate results. If you would like to help make these more accurate, consider adding your stats!</H1>
+<h1 style="text-align: center; color: white; font-family: Helvetica;">Role Selection</h1>
+<H1 style="color: white;  font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; font-family: Helvetica;">Below you will find the stats for the role you requested. These stats are gathered from players who have submitted their information to the website to get more accurate results. If you would like to help make these more accurate, consider adding your stats!</H1>
 
 
 <div class="AverageStatsContainer" style="text-align: center; width: 90%; margin-left: 5%; border-top: 4px solid white; border-radius: 6px; background-color: #2b2b29; margin-bottom: 5%; padding-bottom: 2%;">
-    <h2 style="color:white; margin-bottom: 3%; font-size: 40px; text-align: center">Select Role to View Stats</h2>
+    <h2 style="color:white; margin-bottom: 3%; font-size: 40px; text-align: center; font-family: helvetica;">Select Role to View Stats</h2>
  <div style="width: 100%; text-align: center;">
 <a style="text-align: center"href="https://www.nw-stats.com/player_info" target="_blank"><button class="myButton" style="margin-top: 40px; margin-bottom: 20px; background-color: {{user_settings[2]}}; text-align: center; font-size: 20px; width: 25%; margin-bottom: 2%;">Submit My Character Information</button></a>
 </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/melee%20dps"><img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; text-align: center"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Melee DPS</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/melee%20dps"><img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white; text-align: center"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Melee DPS</h3></a>
         </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/ranged%20dps"><img src="/static/images/ranged_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Ranged DPS</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/ranged%20dps"><img src="/static/images/ranged_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Ranged DPS</h3></a>
         </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/utility"><img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Utility</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/utility"><img src="/static/images/assist_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Utility</h3></a>
         </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/healer"><img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Healer</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/healer"><img src="/static/images/healing_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Healer</h3></a>
         </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/tank"><img src="/static/images/tank_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Tank</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/tank"><img src="/static/images/tank_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Tank</h3></a>
         </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/siege"><img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Siege</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/siege"><img src="/static/images/kill_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Siege</h3></a>
         </div>
         <div id="Total1" style="display: inline-block; padding: 15px;">
-        <a href="https://www.nw-stats.com/{{server}}/role/assassin"><img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px;">Assassin</h3></a>
+        <a href="https://www.nw-stats.com/{{server}}/role/assassin"><img src="/static/images/damage_icon.png" style="height: 70px; margin-top: 30px; color: white;"><h3 style="color: white; border-bottom: 5px solid #FFFFFF; border-radius: 6px; padding: 5px; font-family: Helvetica;">Assassin</h3></a>
         </div>
 
 </div>

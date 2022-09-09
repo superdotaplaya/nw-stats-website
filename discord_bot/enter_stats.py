@@ -47,6 +47,8 @@ def update_stats(player_info):
         sh = gc.open('Valhalla war records')
     elif server.lower() == "oro":
         sh = gc.open('Orofena war records')
+    elif server.lower() == "mar":
+        sh = gc.open('Maramma war records')
     info = sh.worksheets()
     sheet_id = 1
     war_name = ""
@@ -164,6 +166,8 @@ def add_war(server,war_num):
             sh = gc.open('Valhalla war records')
         elif server.lower() == "oro":
             sh = gc.open('Orofena war records')
+        elif server.lower() == "mar":
+            sh = gc.open('Maramma war records')
 
         wks = sh.worksheet_by_title(str(war_num))
         returned_values = wks.get_values_batch( ['A1:J500'] )
@@ -255,23 +259,9 @@ def add_war(server,war_num):
         response = beams_client.publish_to_interests(
           interests=['hello'],
           publish_body={
-            'apns': {
-              'aps': {
-                'alert': {
-                  'title': 'Hello',
-                  'body': 'Hello, world!',
-                },
-              },
-            },
-            'fcm': {
-              'notification': {
-                'title': 'Hello',
-                'body': 'Hello, world!',
-              },
-            },
             'web': {
               'notification': {
-                'title': 'New War Entered on Black Tuna Stats!',
+                'title': 'New War Entered on NW- Stats!',
                 'body': f"{war_name}",
                 'deep_link': f"https://www.nw-stats.com/{server.lower()}/war/{war_id}",
               },
@@ -307,6 +297,8 @@ def fix_stats(server,updating_war):
             sh = gc.open('Valhalla war records')
         elif server.lower() == "oro":
             sh = gc.open('Orofena war records')
+        elif server.lower() == "mar":
+            sh = gc.open('Maramma war records')
         wks = sh.worksheet_by_title(str(updating_war))
         returned_values = wks.get_values_batch( ['A1:J500'] )
         war_name_sheet = sh.worksheet_by_title("War List")

@@ -12,8 +12,8 @@ import mpld3
 from mpld3 import plugins
 
 
-discord_id = "175174882194096129"
-verified_name = "Jimjamalam"
+discord_id = "84172608601325568"
+verified_name = "Deephaus"
 
 
 def verify_account(discord_id,verified_name):
