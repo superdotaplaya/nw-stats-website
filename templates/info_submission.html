@@ -19,6 +19,7 @@
 
 <h1 style="text-align: center; color: white;">Character Info</h1>
     <h3 style="color: white; text-align: center">Company Name: &nbsp <input type="text" id="head" name="company_name" value="{{player_info[3]}}" action="/settings" method = "POST"> </h3>
+    <h3 style="color: white; text-align: center">Discord Name (EX. Name#0000): &nbsp <input type="text" id="head" name="discord_name" value="{{player_info[5]}}" action="/settings" method = "POST"> </h3>
     <h3 style="color: white; text-align: center">Role: &nbsp <select name = "role">
             {% if player_info[2] == "Assassin" %}
             <option value = "Assassin" selected>Assassin</option>

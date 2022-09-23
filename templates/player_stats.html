@@ -1,5 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="/static/styles/style.css">
+
+<style>
+    .myButton3 {
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+    background-color:#ffffff;
+    border-radius:6px;
+    border:1px solid #dcdcdc;
+    display:inline-block;
+    cursor:pointer;
+    color:#666666;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+}
+.myButton3:hover {
+    background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+    background-color:#f6f6f6;
+}
+.myButton3:active {
+    position:relative;
+    top:1px;
+}
+</style>
+
 <div class="BioPage">
      <h1 style="text-align: center; width: 100%;">{{player.upper()}}'s Profile</h1>
      <br>
@@ -35,6 +65,7 @@
   <div class="dropdown-content">
   <a href="https://www.nw-stats.com/cos/player/{{player}}">Castle of Steel</a>
   <a href="https://www.nw-stats.com/del/player/{{player}}">Delos</a>
+  <a href="https://www.nw-stats.com/eri/player/{{player}}">Eridu</a>
   <a href="https://www.nw-stats.com/mar/player/{{player}}">Maramma</a>
   <a href="https://www.nw-stats.com/oro/player/{{player}}">Orofena</a>
   <a href="https://www.nw-stats.com/val/player/{{player}}">Valhalla</a>
@@ -59,16 +90,22 @@
           <li>Faction: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[1]}}</p></li><br>
           <li>Company: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[3]}}</p></li><br>
           <li>Role: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[2]}}</p></li><br>
-          <li>Wins: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[26]}} </p> | Losses:<p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[27]}} </p> | Winrate: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{(info[26]/(info[26]+info[27]))*100}}%</p></li>
+          <li>Discord Name: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[5]}}</p></li> <br>
+          {% if info[30] == 0 %}
+          <li>Wins: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[26]}} </p> | Losses:<p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[27]}} </p> | Winrate: <p style="font-size: 20px; display:  inline-block;" class="statistic">0%</p></li>
+          {% else %}
+          <li>Wins: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[26]}} </p> | Losses:<p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[27]}} </p> | Winrate: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{'%0.2f' % (info[26]/(info[30])*100)|float}}%</p></li>
+          {% endif %}
           {% if session['discord_id'] == user_settings[0] and user_settings[8].lower() == player.lower() %}
-          <a href="https://www.nw-stats.com/submit_info"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Edit Info</button></a>
-          <a href="https://www.nw-stats.com/{{server}}/player/{{player}}/submit_clip"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Add VOD</button></a>
+          <a href="https://www.nw-stats.com/submit_info"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Edit Info</button></a>
+          <a href="https://www.nw-stats.com/{{server}}/player/{{player}}/submit_clip"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Add VOD</button></a>
           {% endif %}
      </ul>
+
 </div>
 
 
-<div class="RolesPlayed" style="margin-bottom: 2%; clear: both; text-align: center;">
+<div class="RolesPlayed" style="margin-bottom: 2%; clear: both; text-align: center; border-bottom: 1px solid #787878;">
 <h2 style="text-align: center; clear: both;">Roles Played</h2>
 
 {% if "melee dps" in info[29] %}
@@ -108,6 +145,150 @@
 {% endif %}
 
 </div>
+
+<h1>Character Loadout</h1>
+{% if session['discord_id'] == user_settings[0] and user_settings[8].lower() == player.lower() %}
+<a href="https://www.nw-stats.com/{{player}}/editgear"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Edit Gear</button></a>
+
+{% endif %}
+<h2>Hover over an item slot below to check out this players gear.</h2>
+<h3 style="font-style: italic; font-size: 15px; margin-bottom: 2%;">**We have no way to verify a players gear, we recommend having players link  their gear in game to verify!**</h3>
+
+
+    <div class="Loadout1" style="display: inline-block; margin-right: 5%;">
+      <button
+        class="myButton3"
+        width="25px"
+        height="75px"
+        id="imageHat"
+        onmouseover="showImage('imageHat','{{player_gear[0][2]}}')"
+        onmouseout="hideImage('imageHat')"
+
+      >
+      Hat
+
+ </button>
+
+
+      <button
+      class="myButton3"
+        id="imageChest"
+        onmouseover="showImage('imageChest','{{player_gear[0][3]}}')"
+        onmouseout="hideImage('imageChest')"
+
+      >
+        Chest
+      </button>
+      <button
+      class="myButton3"
+        id="imageGloves"
+        onmouseover="showImage('imageGloves','{{player_gear[0][4]}}')"
+        onmouseout="hideImage('imageGloves')"
+
+      >
+        Gloves
+      </button>
+
+       <button
+       class="myButton3"
+        id="imagePants"
+        onmouseover="showImage('imagePants','{{player_gear[0][5]}}')"
+        onmouseout="hideImage('imagePants')"
+
+      >
+        Pants
+      </button>
+
+       <button
+       class="myButton3"
+        id="imageBoots"
+        onmouseover="showImage('imageBoots','{{player_gear[0][6]}}')"
+        onmouseout="hideImage('imageBoots')"
+
+      >
+        Boots
+      </button>
+
+
+
+    </div>
+
+
+    <div class="Loadout2" style="display: inline-block; margin-bottom: 2%; margin-right: 5%;">
+      <button
+      class="myButton3"
+        id="imageAmulet"
+        onmouseover="showImage('imageAmulet','{{player_gear[0][7]}}')"
+        onmouseout="hideImage('imageAmulet')"
+
+      >
+        Amulet
+      </button>
+
+        <button
+        class="myButton3"
+        id="imageRing"
+        onmouseover="showImage('imageRing','{{player_gear[0][8]}}')"
+        onmouseout="hideImage('imageRing')"
+
+      >
+        Ring
+      </button>
+
+        <button
+        class="myButton3"
+        id="imageEarring"
+        onmouseover="showImage('imageEarring','{{player_gear[0][9]}}')"
+        onmouseout="hideImage('imageEarring')"
+
+      >
+        Earring
+      </button>
+
+    </div>
+
+    <div class="Loadout3" style="display: inline-block; margin-bottom: 2%;">
+      <button
+      class="myButton3"
+        id="imageWeapon1"
+        onmouseover="showImage('imageWeapon1','{{player_gear[0][10]}}')"
+        onmouseout="hideImage('imageWeapon1')"
+
+      >
+        Weapon 1
+      </button>
+
+        <button
+        class="myButton3"
+        id="imageWeapon2"
+        onmouseover="showImage('imageWeapon2','{{player_gear[0][11]}}')"
+        onmouseout="hideImage('imageWeapon2')"
+
+      >
+        Weapon 2
+      </button>
+
+        <button
+        class="myButton3"
+        id="imageWeapon2"
+        onmouseover="showImage('imageWeapon2','{{player_gear[0][13]}}')"
+        onmouseout="hideImage('imageWeapon2')"
+
+      >
+        Shield
+      </button>
+
+      <button
+      class="myButton3"
+        id="imageHeartgem"
+        onmouseover="showImage('imageHeartgem','styles/images/heartgem.png')"
+        onmouseout="hideImage('imageHeartgem')"
+
+      >
+        Heart Gem (Coming Soon)
+      </button>
+
+    </div>
 
      <div class="ProfilePic" style="width: 100%;">
 
@@ -156,48 +337,53 @@
 </div>
 
      <br>
+     </div>
+     </div>
+     </div>
+     </div>
 
-<h2 style="color: white; display: block; clear: both; width: 100%;">Player Submitted VODs<h2>
-    <div class="PlayerVods" style="width: 1200px;">
+<h2 style="color: white; display: block; clear: both; width: 100%; text-align: center">Player Submitted VODs<h2>
+    <div class="PlayerVods" style="width: 100%; display: inline-block; float: left;">
      {% for vod in vods[0] %}
-     <form style="text-align: center" action="/remove_vod" method = "POST">
-    <iframe style="text-align: center; display: inline-block;"
+     <form style="display: inline-block; display: inline-block;" action="/remove_vod" method = "POST">
+    <iframe style="display: inline-block; "
         src="https://clips.twitch.tv/embed?clip={{vod[1]}}&parent=www.nw-stats.com"
-        height="400"
-        width="500"
+        height="200"
+        width="250"
         allowfullscreen>
     </iframe>
     {% if session['discord_id'] == user_settings[0] and user_settings[8].lower() == player.lower() %}
     <input type = "hidden" name = "vod" value = "{{vod[1]}}" />
     <input type = "hidden" name = "player" value = "{{player}}" />
     <input type = "hidden" name = "server" value = "{{server}}" />
-    {% endif %}
     <input style="text-align: right" type="image" src="/static/images/x-button.png" name="submit" width="40" height="40" alt="submit"/>
+    {% endif %}
+
     </form>
     {% endfor %}
     {% for vod in vods[1] %}
-    <form style="text-align: center" action="/remove_vod" method = "POST">
-    <iframe style="text-align: center"
+    <form style="text-align: center; display: inline-block;" action="/remove_vod" method = "POST">
+    <iframe style="text-align: center; display: inline-block;"
         src="https://player.twitch.tv/?video=v{{vod[1]}}&parent=www.nw-stats.com&autoplay=false"
-        height="400"
-        width="500"
+        height="200"
+        width="250"
         allowfullscreen>
     </iframe>
     {% if session['discord_id'] == user_settings[0] and user_settings[8].lower() == player.lower() %}
     <input type = "hidden" name = "vod" value = "{{vod[1]}}" />
     <input type = "hidden" name = "player" value = "{{player}}" />
     <input type = "hidden" name = "server" value = "{{server}}" />
-    {% endif %}
     <input style="text-align: right" type="image" src="/static/images/x-button.png" name="submit" width="40" height="40" alt="submit"/>
+    {% endif %}
     {% endfor %}
      {% for vod in vods[2] %}
-    <form style="text-align: center" action="/remove_vod" method = "POST">
+    <form style="text-align: center; display: inline-block;" action="/remove_vod" method = "POST">
 
 
-    <iframe style="text-align: center"
+    <iframe style="text-align: center; display: inline-block;"
         src="https://www.youtube.com/embed/{{vod[1]}}"
-        height="360"
-        width="640"
+        height="200"
+        width="250"
         allowfullscreen>
 
     </iframe>
@@ -211,10 +397,6 @@
      {% endfor %}
 </div>
 
-</div>
-</div>
-</div>
-</div>
  <style>
 		table {
 			border:2px white;
@@ -255,8 +437,46 @@
 }
 
 	</style>
+	    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7210973826242979"
+         crossorigin="anonymous"></script>
+    <!-- war pages new -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-7210973826242979"
+         data-ad-slot="1994080972"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <script>
+        function showImage(elemId, imgSrc) {
+  console.log("Mouse is over text");
+  console.log("\tElemId:" + elemId + " Image Source:" + imgSrc);
+  const elem = document.getElementById(elemId);
+  const popImage = new Image();
+  popImage.src = imgSrc;
+  popImage.style.position = "absolute";
+  popImage.style.zIndex = "1";
+  elem.appendChild(popImage);
+}
+function hideImage(elemId) {
+  console.log("Mouse is off text");
+  console.log("\tElemId:" + elemId);
+  const elem = document.getElementById(elemId);
+  while (elem.childElementCount > 0) {
+    elem.removeChild(elem.lastChild);
+  }
+}
+
+function tellToHover() {
+  alert("Hover over the button for the image to appear, no need to press it!");
+}
+
+    </script>
 <table class=t1 style="margin-bottom: 25px;">
-    <tr><th colspan="11">{{player}}'s Past Attacks</th><h2 style="color: white;">~ Click a war name to view the entire war scoreboard. ~</h2></tr>
+    <tr><th colspan="11">{{player}}'s Past Attacks</th><h2 style="color: white; clear: left; text-align: center;">~ Click a war name to view the entire war scoreboard. ~</h2></tr>
         <th>War Number</th>
         <th>War Name</th>
         <th>Score</th></th>
@@ -273,7 +493,7 @@
     <tr>
         <td>{{war_logs[0][::-1].index(item) + 1}}</td>
         {% if user_settings[8].__contains__(item[2]) and session['discord_id'] == user_settings[0] %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
         <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
         {% endif %}
@@ -308,7 +528,7 @@
     <tr>
         <td>{{war_logs[1][::-1].index(item) + 1}}</td>
         {% if user_settings[8].__contains__(item[2]) and session['discord_id'] == user_settings[0] %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
         <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
         {% endif %}
@@ -344,7 +564,7 @@
     <tr>
         <td>{{war_logs[2][::-1].index(item) + 1}}</td>
         {% if user_settings[8].__contains__(item[2]) and session['discord_id'] == user_settings[0] %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
         <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
         {% endif %}
@@ -361,7 +581,7 @@
 {% endfor %}
 
 </table>
-<H3 style="color: white;">* = Player reportedly had connection issues during war, and stats for these players are not calculated into overall performance values.</H3>
+<H3 style="color: white; text-align: center;">* = Player reportedly had connection issues during war, and stats for these players are not calculated into overall performance values.</H3>
 <div style="width: 100%; text-align: center;">
 <a style="text-align: center"href="https://www.nw-stats.com/{{server}}/player/{{player}}/wars"><button class="myButton" style="margin-top: 40px; margin-bottom: 20px; background-color: {{user_settings[2]}}; text-align: center; font-size: 20px; width: 35%; margin-bottom: 2%;">View All Players Wars</button></a>
 </div>

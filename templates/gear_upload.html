@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+   <head>
+      <title>Upload gear Screenshots</title>
+   </head>
+{% block content %}
+   <body>
+      <form class="form" action="/{{player}}/editgear" method = "POST" enctype = "multipart/form-data" style="text-align: center; color: white;">
+          <h2 style = "color: white; text-align: center;">Armor</h2>
+         <h3 style="color: white;">Head: <input type="file" name="Head" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Head: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][2]}}"></img>
+         <h3 style="color: white;">Chest: <input type="file" name="Chest" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Chest: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][3]}}"></img>
+         <h3 style="color: white;">Gloves: <input type="file" name="Gloves" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Gloves: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][4]}}"></img>
+         <h3 style="color: white;">Pants: <input type="file" name="Pants" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Pants: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][5]}}"></img>
+         <h3 style="color: white;">Boots: <input type="file" name="Boots" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Boots: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][6]}}"></img>
+         <h2 style = "color: white; text-align: center;">Jewelry</h2>
+         <h3 style="color: white;">Amulet: <input type="file" name="Amulet" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Amulet: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][7]}}"></img>
+         <h3 style="color: white;">Ring: <input type="file" name="Ring" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Ring: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][8]}}"></img>
+         <h3 style="color: white;">Earring: <input type="file" name="Earring" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Earring: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][9]}}"></img>
+         <h2 style = "color: white; text-align: center;">Weapons</h2>
+         <h3 style="color: white;">Weapon 1: <input type="file" name="Weapon_1" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Weapon 1: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][10]}}"></img>
+         <h3 style="color: white;">Weapon 2: <input type="file" name="Weapon_2" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Weapon 2: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][11]}}"></img>
+         <h3 style="color: white;">Shield: <input type="file" name="Shield" accept="image/gif, image/jpeg, image/jpg, image/png"><br><br></h3>
+         <h3 style="color: white;">Current Shield: <br><br></h3><img height="400px" width="auto" src="{{player_gear[0][13]}}"></img>
+         <br>
+         <br>
+         <button class="myButton" input type = "submit"/ style="color: white; margin-bottom: 3%; margin-top: 2%;">Submit Gear</button>
+
+      </form>
+   </body>
+   {% endblock %}

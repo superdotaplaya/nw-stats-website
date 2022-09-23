@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+<style>
+
+
+
+{% block content %}
+<table id="leaderboard" style="text-align: center;">
+{% for entry in leaderboard %}
+<tr>
+{% if category == "score" %}
+
+<td>{{entry[0]}} {{entry[2]}} Score || Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "kills" %}
+<td>{{entry[0]}} {{entry[3]}} Kills || Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "assists" %}
+<td>{{entry[0]}} {{entry[4]}} Assists || Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "healing" %}
+<td>{{entry[0]}} {{entry[5]}} Healing || Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "damage" %}
+<td>{{entry[0]}} {{entry[6]}} Damage || Wars Played: {{entry[7]}}</td>
+{% endif %}
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

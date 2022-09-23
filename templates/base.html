@@ -2,8 +2,11 @@
 
 <head>
 
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=1200">
+<meta name="description" content="nw-stats is the leading Player Stats, VODS, War logs and gear tracking site in New World the game! Get ready for Brimstone Sands by learning your competition today!">
+<meta name="keywords" content="New World Stats, New World, Amazon Games Studio, MMO, Stat tracking, guides, War vods, Valhalla, Maramma, YGG, COS, nw-wars, nw-stats, Statistics, tracking, tips and tricks, databse, NW, Brimstone sands, Trainer, nw player stats, new world stats, war stats, nw stats, war statistics, nw-stats, new world war statistics, new world game, new world video game,">
 
      <link rel="icon" type="image/x-icon" href="/static/images/nw-stats logo.png">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -34,13 +37,21 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 </script>
-<script type="text/javascript">
-        window.onload= function(){
-            document.body.style.display = "block";
-        }
+    <script type="text/javascript">
+            window.onload= function(){
+                document.body.style.display = "block";
+            }
+    </script>
+    <body style="display:none">
+        <script src="https://cdn.jsdelivr.net/gh/nicolauns/devtools.detect@1.2.0/devtools-detect.min.js"></script>
+        <script>
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+    // Take the user to a different screen here.
+} else{
+    devtools.detect(function(status){
+         window.location.href = "https://www.nw-stats.com";
+    });}
 </script>
-<body style="display:none">
-
 
        <script>
        document.onkeydown = function(e) {
@@ -117,6 +128,9 @@
 </div>
 
 </div>
+{% if user_settings[8] == "False" and logged_in == True %}
+<a href="https://discord.gg/UeSpRpf6Z6" style="text-decoration: none;"><h2 style="color: black; background-color: yellow; text-align: center; text-decoration: none;">You are currently not verified! Get verified today and get access to all features like, uploading vods, adding your gear, changing role played in wars, easy access to your profile, and more! Click here to get verified!</h2></a>
+{% endif %}
 <div >
 {% block content %}
 

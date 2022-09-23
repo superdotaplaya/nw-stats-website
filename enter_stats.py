@@ -22,7 +22,6 @@ def get_player_info():
     returned_values = wks.get_values_batch( ['A2:E1000'] )
     return(returned_values[0])
 
-player_info = get_player_info()
 
 def update_stats(player_info):
     gc = pygsheets.authorize(service_file='credentials.json')

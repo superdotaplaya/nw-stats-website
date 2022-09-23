@@ -17,16 +17,21 @@ server = "YGG"
 
 gc = pygsheets.authorize(service_file='credentials.json')
 def get_player_info():
-    sh = gc.open('blacktunastats.com player responses')
-    wks = sh.worksheet_by_title("Form Responses 1")
-    returned_values = wks.get_values_batch( ['A2:E1000'] )
-    return(returned_values[0])
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM player_info")
+    returned_values = mycursor.fetchall()
+    return(returned_values)
 
-player_info = get_player_info()
+
 
 def update_stats(player_info):
     gc = pygsheets.authorize(service_file='credentials.json')
-
     mydb = mysql.connector.connect(
     host=config.db_host,
     user=config.db_user,
@@ -49,6 +54,8 @@ def update_stats(player_info):
         sh = gc.open('Orofena war records')
     elif server.lower() == "mar":
         sh = gc.open('Maramma war records')
+    elif server.lower() == "eri":
+        sh = gc.open('Eridu war records')
     info = sh.worksheets()
     sheet_id = 1
     war_name = ""
@@ -144,10 +151,98 @@ def update_stats(player_info):
                 mydb.commit()
         sheet_id += 1
 
-def add_war(server,war_num):
-    try:
-        gc = pygsheets.authorize(service_file='credentials.json')
+def add_player_averages(player,server, war_stats):
 
+    mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+        )
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM player_averages WHERE player_name = %s AND server = %s"
+    val = (player, server)
+    mycursor.execute(sql,val)
+    myresult_current_averages = mycursor.fetchall()
+    if len(myresult_current_averages) != 0 and '*' not in war_stats[0]:
+        player_avg_score = int(float(myresult_current_averages[0][2]))
+        player_avg_kills = int(float(myresult_current_averages[0][3]))
+        player_avg_assists = int(float(myresult_current_averages[0][4]))
+        player_avg_healing = int(float(myresult_current_averages[0][5]))
+        player_avg_damage = int(float(myresult_current_averages[0][6]))
+        total_wars = int(myresult_current_averages[0][7])+1
+        new_avg_score = (player_avg_score + int(float(war_stats[0])))/total_wars
+        new_avg_kills = (player_avg_kills + float(war_stats[1]))/total_wars
+        new_avg_assists = (player_avg_assists + float(war_stats[2]))/total_wars
+        new_avg_healing = (player_avg_healing + float(war_stats[3]))/total_wars
+        new_avg_damage = (player_avg_damage + float(war_stats[4]))/total_wars
+        sql = "UPDATE player_averages SET avg_score = %s, avg_kills = %s, avg_assists = %s, avg_healing = %s, avg_damage = %s, total_wars = %s"
+        val = (new_avg_score,new_avg_kills,new_avg_assists,new_avg_healing,new_avg_damage, total_wars)
+        print(val)
+        mycursor.execute(sql,val)
+        mydb.commit()
+    elif len(myresult_current_averages) == 0 and '*' not in war_stats[0]:
+        total_wars = 1
+        player_avg_score = war_stats[0]
+        player_avg_kills = war_stats[1]
+        player_avg_assists = war_stats[2]
+        player_avg_healing = war_stats[3]
+        player_avg_damage = war_stats[4]
+        data = (player, server, player_avg_score, player_avg_kills, player_avg_assists, player_avg_healing, player_avg_damage, total_wars)
+        insert_stmt = (
+        "INSERT INTO player_averages(player_name, server, avg_score, avg_kills, avg_assists, avg_healing, avg_damage, total_wars)"
+        "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        )
+        print(f"Adding: {data}")
+        mycursor = mydb.cursor()
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+
+def update_player_averages(player,server):
+    mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+        )
+    mycursor = mydb.cursor()
+    total_wars = 0
+    player_scores = []
+    player_kills = []
+    player_assists = []
+    player_healing = []
+    player_damage = []
+    sql = "SELECT * FROM player_records WHERE name = %s AND server = %s"
+    val = (player, server)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+    for row in myresult:
+        if "*" not in row[3]:
+            total_wars = total_wars + 1
+            player_scores.append(int(row[3]))
+            player_kills.append(int(row[4]))
+            player_assists.append(int(row[6]))
+            player_healing.append(int(row[7]))
+            player_damage.append(int(row[8]))
+
+    if len(player_scores) != 0:
+        player_avg_score = sum(player_scores)/len(player_scores)
+        player_avg_kills = sum(player_kills)/len(player_kills)
+        player_avg_assists = sum(player_assists)/len(player_assists)
+        player_avg_healing = sum(player_healing)/len(player_healing)
+        player_avg_damage = sum(player_damage)/len(player_damage)
+
+        sql = "UPDATE player_averages SET avg_score = %s, avg_kills = %s, avg_assists = %s, avg_healing = %s, avg_damage = %s, total_wars = %s WHERE player_name = %s AND server = %s"
+        val = (player_avg_score,player_avg_kills,player_avg_assists,player_avg_healing,player_avg_damage, total_wars, player, server)
+        print(f"Updating: {val}")
+        mycursor = mydb.cursor()
+        mycursor.execute(sql, val)
+        mydb.commit()
+
+def add_war(server,war_num):
+
+        gc = pygsheets.authorize(service_file='credentials.json')
+        player_info = get_player_info()
         mydb = mysql.connector.connect(
         host=config.db_host,
         user=config.db_user,
@@ -168,6 +263,8 @@ def add_war(server,war_num):
             sh = gc.open('Orofena war records')
         elif server.lower() == "mar":
             sh = gc.open('Maramma war records')
+        elif server.lower() == "eri":
+            sh = gc.open('Eridu war records')
 
         wks = sh.worksheet_by_title(str(war_num))
         returned_values = wks.get_values_batch( ['A1:J500'] )
@@ -221,8 +318,8 @@ def add_war(server,war_num):
             player_healing_board = player[6]
             player_damage_board = player[7]
             for item in player_info:
-                if player_name.lower() == item[1].lower():
-                    player_role = item[3]
+                if player_name.lower() == item[0].lower():
+                    player_role = item[2]
                     found = True
                 if found == False:
                     player_role = "N/A"
@@ -247,6 +344,7 @@ def add_war(server,war_num):
                 print(data)
                 mycursor.execute(insert_stmt, data)
                 mydb.commit()
+
             else:
                 data = (war_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, war_id, war_link, k_par, round(dmg_kpar,2), player[9], war_winner, player_role, server)
                 insert_stmt = (
@@ -256,6 +354,17 @@ def add_war(server,war_num):
                 print(data)
                 mycursor.execute(insert_stmt, data)
                 mydb.commit()
+            mycursor = mydb.cursor()
+            sql = "SELECT * FROM player_records WHERE server = %s AND war_id = %s"
+            val=(server,war_num)
+            mycursor.execute(sql,val)
+            myresult = mycursor.fetchall()
+            player_list = []
+
+        for row in myresult:
+            if row[2] not in player_list:
+                player_list.append(row[2])
+                update_player_averages(row[2],row[16])
         response = beams_client.publish_to_interests(
           interests=['hello'],
           publish_body={
@@ -271,13 +380,13 @@ def add_war(server,war_num):
 
         print(response['publishId'])
         return(f"Stats for this war are now live at: https://www.nw-stats.com/{server.lower()}/war/{war_id}")
-    except:
+
         return("Could not add stats to the site, check the spreadsheet and the websites war page before trying again.")
 
 def fix_stats(server,updating_war):
     try:
         gc = pygsheets.authorize(service_file='credentials.json')
-
+        player_info = get_player_info()
         mydb = mysql.connector.connect(
         host=config.db_host,
         user=config.db_user,
@@ -299,6 +408,8 @@ def fix_stats(server,updating_war):
             sh = gc.open('Orofena war records')
         elif server.lower() == "mar":
             sh = gc.open('Maramma war records')
+        elif server.lower() == "eri":
+            sh = gc.open('Eridu war records')
         wks = sh.worksheet_by_title(str(updating_war))
         returned_values = wks.get_values_batch( ['A1:J500'] )
         war_name_sheet = sh.worksheet_by_title("War List")
@@ -369,6 +480,7 @@ def fix_stats(server,updating_war):
                 print(val)
                 mycursor.execute(sql,val)
                 mydb.commit()
+
             else:
                 sql = "UPDATE player_records SET war_name = %s, war_rank = %s, name = %s, score = %s, kills = %s, deaths = %s, assists = %s, healing = %s, damage = %s, dmg_kpar = %s, team = %s, war_winner = %s WHERE war_id = %s AND war_rank = %s AND server = %s"
                 val = (war_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, "N/A", round(dmg_kpar,2), player[9], war_winner, updating_war,player_rank, server)
@@ -376,6 +488,7 @@ def fix_stats(server,updating_war):
                 print(val)
 
                 mydb.commit()
+        update_player_averages(player_name,server)
         return(f"Stats have been updated for this war, ensure the changes are on the website here: https://www.nw-stats.com/{server}/war/{updating_war}")
     except:
         return(f"There was an error when trying to fix the stats for war {updating_war}, Please use the /deletewar command to remove it from the site, correct any errors on the spreadsheet, then run the /enterstats command to add the war back to the website!")
@@ -416,9 +529,15 @@ def remove_war(server,war_num):
     database="superdotaplaya$war_stats"
     )
     mycursor = mydb.cursor()
+    sql = "SELECT * FROM player_records WHERE server = %s AND war_id = %s"
+    val=(server,war_num)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+
     sql = "DELETE FROM player_records WHERE war_id = %s"
     val = (war_num,)
     mycursor.execute(sql, val)
     mydb.commit()
+    for row in myresult:
+        update_player_averages(row[2],row[16])
     return(f"War {war_num} has been removed from the website! Please correct all issues leading to the removal, and run the /enterstats command to readd it to the site!")
-

@@ -101,7 +101,9 @@ def calc_stats(usr,server):
 
     mycursor = mydb.cursor()
     # loop through the rows
-    mycursor.execute("SELECT * FROM player_records")
+    sql = "SELECT * FROM player_records WHERE name = %s AND server = %s"
+    val =(usr, server.lower())
+    mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
     player_results = []
     player_score = []
@@ -114,20 +116,20 @@ def calc_stats(usr,server):
     player_kpars = []
     wins = []
     losses = []
+    scores = []
     roles_played = []
     wars_played_in = []
     for row in myresult:
         # Get the players won and lost wars for win/loss stats
 
-        if row[2].lower() == requested_player.lower() and row[16].lower() == server.lower():
-            roles_played.append(row[15].lower())
-            if "*" not in row[3]:
-                player_results.append(row)
-                wars_played_in.append(row[9])
-            if row[13] == row[14] and row[14] != "N/A":
-                wins.append(row)
-            elif row[13] != row[14] and row[14] != "N/A":
-                losses.append(row)
+        roles_played.append(row[15].lower())
+        if "*" not in row[3]:
+            player_results.append(row)
+            wars_played_in.append(row[9])
+        if row[13] == row[14] and row[14] != "N/A":
+            wins.append(row)
+        elif row[13] != row[14] and row[14] != "N/A":
+            losses.append(row)
     if len(player_results) != 0:
         player_results.sort(key = lambda x: int(x[4].replace("*","").replace("^","")), reverse = True)
         max_kill_war = player_results[0][9]
@@ -141,7 +143,9 @@ def calc_stats(usr,server):
 
             if "*" not in player_entry[3]:
                 print(player_entry)
-                score = player_entry[3]
+                if player_entry[3] != "N/A":
+                    score = player_entry[3]
+                    scores.append(player_entry[3])
                 kills = player_entry[4]
                 deaths = player_entry[5]
                 assists = player_entry[6]
@@ -156,7 +160,7 @@ def calc_stats(usr,server):
                 if player_entry[11] != "N/A":
                     player_kpars.append(float(player_entry[11]))
 
-        avg_score = sum(player_score)/len(player_score)
+        avg_score = sum(player_score)/len(scores)
         avg_kills = sum(player_kills)/len(player_kills)
         avg_deaths = sum(player_deaths)/len(player_deaths)
         avg_assists = sum(player_assists)/len(player_assists)
@@ -188,78 +192,11 @@ def calc_stats(usr,server):
         average_kpar = sum(player_kpars)/len(player_kpars)
 
 
-        def get_healing_graph(player_healing, wars_played_in):
-
-            x_axis = range(1,len(player_healing)+1)
-            x = wars_played_in[:]
-            y = player_healing[:]
-            fig, ax = plt.subplots()
-            ax.grid(True, alpha=0.3)
-
-            N = len(player_healing)
-            df = pd.DataFrame(index=range(N))
-            df['x'] = x
-            df['y'] = y
-
-            labels = []
-            for i in range(N):
-                label = df.iloc[[i], :].T
-                label.columns = ['Row {0}'.format(i)]
-                # .to_html() is unicode; so make leading 'u' go away with str()
-                labels.append(str(label.to_html()))
-
-            boxes = ax.bar(x,y)
-
-            ax.set_xlabel('War ID Number')
-            ax.set_ylabel('Healing Amount')
-            ax.set_title('Healing Performance', size=20)
-            plt.figure(figsize=(3,2))
-
-            for i, box in enumerate(boxes.get_children()):
-                tooltip = mpld3.plugins.LineLabelTooltip(box, label=f"{y[i]} Healing")
-                mpld3.plugins.connect(fig, tooltip)
-            plugins.connect(fig, tooltip)
-
-            return(mpld3.fig_to_html(fig))
-
-
-        def get_damage_graph(player_damage, wars_played_in):
-
-            x_axis = range(1,len(player_damage)+1)
-            x = wars_played_in[:]
-            y = player_damage[:]
-            fig, ax = plt.subplots()
-            ax.grid(True, alpha=0.3)
-
-            N = len(player_damage)
-            df = pd.DataFrame(index=range(N))
-            df['x'] = x
-            df['y'] = y
-
-            labels = []
-            for i in range(N):
-                label = df.iloc[[i], :].T
-                label.columns = ['Row {0}'.format(i)]
-                labels.append(str(label.to_html()))
-
-            boxes = ax.bar(x,y)
-
-            ax.set_xlabel('War ID Number')
-            ax.set_ylabel('Damage Amount')
-            ax.set_title('Damage Performance', size=20)
-
-            for i, box in enumerate(boxes.get_children()):
-                tooltip = mpld3.plugins.LineLabelTooltip(box, label=f"{y[i]} Damage")
-                mpld3.plugins.connect(fig, tooltip)
-            plugins.connect(fig, tooltip)
-
-            return(mpld3.fig_to_html(fig))
-
-        player_stats = ["{:.2f}".format(avg_score),"{:.2f}".format(avg_kills),"{:.2f}".format(avg_deaths),"{:.2f}".format(avg_assists),"{:.2f}".format(avg_healing),"{:.2f}".format(avg_damage), "{:.2f}".format(healing_per_death), "{:.2f}".format(damage_per_death), max_kills, max_healing, max_damage, "{:.2f}".format(assists_per_death), total_kills, total_deaths, total_assists, total_damage, total_healing, "{:.2f}".format(kills_plus_assists_per_death),"{:.2f}".format(kills_per_death),get_healing_graph(player_healing, wars_played_in),get_damage_graph(player_damage, wars_played_in),max_healing_war,max_kill_war,max_assists_war,max_damage_war, max_assists, total_wins, total_losses, "{:.2f}".format(average_kpar), roles_played]
+        player_stats = ["{:.2f}".format(avg_score),"{:.2f}".format(avg_kills),"{:.2f}".format(avg_deaths),"{:.2f}".format(avg_assists),"{:.2f}".format(avg_healing),"{:.2f}".format(avg_damage), "{:.2f}".format(healing_per_death), "{:.2f}".format(damage_per_death), max_kills, max_healing, max_damage, "{:.2f}".format(assists_per_death), total_kills, total_deaths, total_assists, total_damage, total_healing, "{:.2f}".format(kills_plus_assists_per_death),"{:.2f}".format(kills_per_death),0,0,max_healing_war,max_kill_war,max_assists_war,max_damage_war, max_assists, total_wins, total_losses, "{:.2f}".format(average_kpar), roles_played, total_wins + total_losses]
 
         return(player_stats)
     else:
-        return([0,0,0,0,0,0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0, 0, 0, 0, 0, []])
+        return([0,0,0,0,0,0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0, 0, 0, 0, 0, [],0])
 
 
 
@@ -274,6 +211,7 @@ def get_role_stats(role, server):
     player_assists = []
     player_healing = []
     player_damage = []
+    scores = []
     gc = pygsheets.authorize(service_file='credentials.json')
     sh = gc.open('blacktunastats.com player responses')
     wks = sh.worksheet_by_title("Form Responses 1")
@@ -303,7 +241,9 @@ def get_role_stats(role, server):
             for player_entry in player_results:
 
                 if "*" not in player_entry[3]:
-                    score = player_entry[3]
+                    if player_entry[3] != "N/A":
+                        score = player_entry[3]
+                        scores.append(score)
                     kills = player_entry[4]
                     deaths = player_entry[5]
                     assists = player_entry[6]
@@ -316,7 +256,7 @@ def get_role_stats(role, server):
                     player_healing.append(int(healing))
                     player_damage.append(int(damage))
 
-            avg_score = sum(player_score)/len(player_score)
+            avg_score = sum(player_score)/len(scores)
             avg_kills = sum(player_kills)/len(player_kills)
             avg_deaths = sum(player_deaths)/len(player_deaths)
             avg_assists = sum(player_assists)/len(player_assists)
@@ -352,15 +292,18 @@ def create_table():
         )
 
     mycursor = mydb.cursor()
-    sql = "DROP TABLE player_info"
+    mycursor.execute("DROP TABLE player_averages")
 
-    mycursor.execute(sql)
-    add_table = """CREATE TABLE player_info (
+
+    add_table = """CREATE TABLE player_averages (
                 player_name VARCHAR(255),
-                faction VARCHAR(255),
-                player_role VARCHAR(255),
-                player_company VARCHAR(255),
-                player_logo VARCHAR(255)
+                server VARCHAR(255),
+                avg_score VARCHAR(255),
+                avg_kills VARCHAR(255),
+                avg_assists VARCHAR(255),
+                avg_healing VARCHAR(255),
+                avg_damage VARCHAR(255),
+                total_wars VARCHAR(255)
                        )"""
 
     mycursor.execute(add_table)
