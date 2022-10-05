@@ -1,28 +1,104 @@
 {% extends "base.html" %}
 
 <style>
+td {
+    font-family: Helvetica;
+    color: white;
+}
 
+
+</style>
 
 
 {% block content %}
+<h1 style="color: white; text-align: center; font-family: Helvetica; ">Leaderboards</h1><br>
 <table id="leaderboard" style="text-align: center;">
-{% for entry in leaderboard %}
 <tr>
 {% if category == "score" %}
 
-<td>{{entry[0]}} {{entry[2]}} Score || Wars Played: {{entry[7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{leaderboard[0][0]}} {{leaderboard[0][2]}} Score | | Wars Played: {{leaderboard[0][7]}}</td></h2>
 {% endif %}
 {% if category == "kills" %}
-<td>{{entry[0]}} {{entry[3]}} Kills || Wars Played: {{entry[7]}}</td>
+<td>{{leaderboard[0][0]}} {{leaderboard[0][3]}} Kills | | Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 {% if category == "assists" %}
-<td>{{entry[0]}} {{entry[4]}} Assists || Wars Played: {{entry[7]}}</td>
+<td>{{leaderboard[0][0]}} {{leaderboard[0][4]}} Assists | | Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 {% if category == "healing" %}
-<td>{{entry[0]}} {{entry[5]}} Healing || Wars Played: {{entry[7]}}</td>
+<td>{{leaderboard[0][0]}} {{leaderboard[0][5]}} Healing | | Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 {% if category == "damage" %}
-<td>{{entry[0]}} {{entry[6]}} Damage || Wars Played: {{entry[7]}}</td>
+<td>{{leaderboard[0][0]}} {{leaderboard[0][6]}} Damage | | Wars Played: {{leaderboard[0][7]}}</td>
+{% endif %}
+</tr>
+
+
+
+<tr>
+{% if category == "score" %}
+
+<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{leaderboard[1][0]}} {{leaderboard[1][2]}} Score | | Wars Played: {{leaderboard[1][7]}}</td></h2>
+{% endif %}
+{% if category == "kills" %}
+<td>{{leaderboard[1][0]}} {{leaderboard[1][3]}} Kills | | Wars Played: {{leaderboard[1][7]}}</td>
+{% endif %}
+{% if category == "assists" %}
+<td>{{leaderboard[1][0]}} {{leaderboard[1][4]}} Assists | | Wars Played: {{leaderboard[1][7]}}</td>
+{% endif %}
+{% if category == "healing" %}
+<td>{{leaderboard[1][0]}} {{leaderboard[1][5]}} Healing | | Wars Played: {{leaderboard[1][7]}}</td>
+{% endif %}
+{% if category == "damage" %}
+<td>{{leaderboard[1][0]}} {{leaderboard[1][6]}} Damage | | Wars Played: {{leaderboard[1][7]}}</td>
+{% endif %}
+</tr>
+
+
+
+
+<tr>
+{% if category == "score" %}
+
+<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{leaderboard[2][0]}} {{leaderboard[2][2]}} Score | | Wars Played: {{leaderboard[2][7]}}</td></h2>
+{% endif %}
+{% if category == "kills" %}
+<td>{{leaderboard[2][0]}} {{leaderboard[2][3]}} Kills | | Wars Played: {{leaderboard[2][7]}}</td>
+{% endif %}
+{% if category == "assists" %}
+<td>{{leaderboard[2][0]}} {{leaderboard[2][4]}} Assists | | Wars Played: {{leaderboard[2][7]}}</td>
+{% endif %}
+{% if category == "healing" %}
+<td>{{leaderboard[2][0]}} {{leaerboard[2][5]}} Healing | | Wars Played: {{leaderboard[2][7]}}</td>
+{% endif %}
+{% if category == "damage" %}
+<td>{{leaderboard[2][0]}} {{leaderboard[2][6]}} Damage | | Wars Played: {{leaderboard[2][7]}}</td>
+{% endif %}
+</tr>
+
+
+
+
+
+
+
+
+{% for entry in leaderboard[3:] %}
+<tr>
+{% if category == "score" %}
+
+<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{entry[0]}} {{entry[2]}} Score | | Wars Played: {{entry[7]}}</td></h2>
+{% endif %}
+{% if category == "kills" %}
+<td>{{entry[0]}} {{entry[3]}} Kills | | Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "assists" %}
+<td>{{entry[0]}} {{entry[4]}} Assists | | Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "healing" %}
+<td>{{entry[0]}} {{entry[5]}} Healing | | Wars Played: {{entry[7]}}</td>
+{% endif %}
+{% if category == "damage" %}
+<td>{{entry[0]}} {{entry[6]}} Damage | | Wars Played: {{entry[7]}}</td>
 {% endif %}
 </tr>
 {% endfor %}

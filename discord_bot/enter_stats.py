@@ -235,12 +235,12 @@ def update_player_averages(player,server):
         sql = "UPDATE player_averages SET avg_score = %s, avg_kills = %s, avg_assists = %s, avg_healing = %s, avg_damage = %s, total_wars = %s WHERE player_name = %s AND server = %s"
         val = (player_avg_score,player_avg_kills,player_avg_assists,player_avg_healing,player_avg_damage, total_wars, player, server)
         print(f"Updating: {val}")
-        mycursor = mydb.cursor()
+
         mycursor.execute(sql, val)
         mydb.commit()
 
 def add_war(server,war_num):
-
+    try:
         gc = pygsheets.authorize(service_file='credentials.json')
         player_info = get_player_info()
         mydb = mysql.connector.connect(
@@ -249,22 +249,22 @@ def add_war(server,war_num):
         password=config.db_pass,
         database="superdotaplaya$war_stats"
         )
-
-        mycursor = mydb.cursor()
-        if server.lower() == "cos":
-            sh = gc.open('Testing war dumps')
+        if server.lower() == "val":
+            server = "Valhalla"
+        elif server.lower() == "cos":
+            server = "Castle of Steel"
         elif server.lower() == "ygg":
-            sh = gc.open('YGG war records')
+            server = "Yggdrasil"
         elif server.lower() == "del":
-            sh = gc.open('Delos war records')
-        elif server.lower() == "val":
-            sh = gc.open('Valhalla war records')
-        elif server.lower() == "oro":
-            sh = gc.open('Orofena war records')
-        elif server.lower() == "mar":
-            sh = gc.open('Maramma war records')
-        elif server.lower() == "eri":
-            sh = gc.open('Eridu war records')
+            server = "Delos"
+        elif server == "oro":
+            server = "Orofena"
+        elif server == "eri":
+            server = "Eridu"
+        elif server == "del":
+            server = "Delos"
+        mycursor = mydb.cursor()
+        sh = gc.open(f'{server} war records')
 
         wks = sh.worksheet_by_title(str(war_num))
         returned_values = wks.get_values_batch( ['A1:J500'] )
@@ -344,7 +344,7 @@ def add_war(server,war_num):
                 print(data)
                 mycursor.execute(insert_stmt, data)
                 mydb.commit()
-
+                update_player_averages(player_name,server)
             else:
                 data = (war_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, war_id, war_link, k_par, round(dmg_kpar,2), player[9], war_winner, player_role, server)
                 insert_stmt = (
@@ -354,17 +354,8 @@ def add_war(server,war_num):
                 print(data)
                 mycursor.execute(insert_stmt, data)
                 mydb.commit()
-            mycursor = mydb.cursor()
-            sql = "SELECT * FROM player_records WHERE server = %s AND war_id = %s"
-            val=(server,war_num)
-            mycursor.execute(sql,val)
-            myresult = mycursor.fetchall()
-            player_list = []
+                update_player_averages(player_name,server)
 
-        for row in myresult:
-            if row[2] not in player_list:
-                player_list.append(row[2])
-                update_player_averages(row[2],row[16])
         response = beams_client.publish_to_interests(
           interests=['hello'],
           publish_body={
@@ -372,16 +363,133 @@ def add_war(server,war_num):
               'notification': {
                 'title': 'New War Entered on NW- Stats!',
                 'body': f"{war_name}",
-                'deep_link': f"https://www.nw-stats.com/{server.lower()}/war/{war_id}",
+                'deep_link': f"https://www.nw-stats.com/{server}/war/{war_id}",
               },
             },
           },
         )
 
         print(response['publishId'])
-        return(f"Stats for this war are now live at: https://www.nw-stats.com/{server.lower()}/war/{war_id}")
-
+        return(f"Stats for this war are now live at: https://www.nw-stats.com/{server}/war/{war_id}")
+    except:
         return("Could not add stats to the site, check the spreadsheet and the websites war page before trying again.")
+
+def add_invasion(server,invasion_num):
+    try:
+        gc = pygsheets.authorize(service_file='credentials.json')
+        player_info = get_player_info()
+        mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+        )
+        if server.lower() == "val":
+            server = "Valhalla"
+        elif server.lower() == "cos":
+            server = "Castle of Steel"
+        elif server.lower() == "ygg":
+            server = "Yggdrasil"
+        elif server.lower() == "del":
+            server = "Delos"
+        elif server == "oro":
+            server = "Orofena"
+        elif server == "eri":
+            server = "Eridu"
+        elif server == "del":
+            server = "Delos"
+        mycursor = mydb.cursor()
+        sh = gc.open(f'{server} invasion records')
+
+        wks = sh.worksheet_by_title(str(invasion_num))
+        returned_values = wks.get_values_batch( ['A1:J500'] )
+        war_name_sheet = sh.worksheet_by_title("Invasion List")
+        returned_values_war_names = war_name_sheet.get_values_batch( ['A1:D500'] )
+        invasion_name = ""
+        attackers_kills = []
+        defenders_kills = []
+        k_par = 0
+        dmg_kpar = 0
+        invasion_winner = ""
+        invasion_id = ""
+        kills_list = []
+        for invasion_item in returned_values_war_names[0]:
+            if int(invasion_item[0]) == int(invasion_num):
+                invasion_name = str(invasion_item[1])
+                invasion_id = invasion_item[0]
+                try:
+                    if invasion_item[3] == "Attack":
+                        invasion_winner = "Attack"
+                    elif invasion_item[3] == "Defense":
+                        invasion_winner = "Defense"
+                    else:
+                        invasion_winner = "N/A"
+                except:
+                    invasion_winner = "N/A"
+        for player in returned_values[0]:
+            if player[8] == "Attack":
+                attackers_kills.append(int(player[3].replace("*","")))
+            if player[8] == "Defense":
+                defenders_kills.append(int(player[3].replace("*","")))
+            kills_list.append(int(player[3].replace("*","").replace("*","")))
+        attacker_kills_total = sum(attackers_kills)
+        defender_kills_total = sum(defenders_kills)
+        for player in returned_values[0]:
+            found = False
+            player_rank = player[0]
+            player_name = player[1]
+            player_score = int(player[2].replace("*",""))
+            player_kills = int(player[3].replace("*",""))
+            player_deaths = int(player[4].replace("*",""))
+            player_assists = int(player[5].replace("*",""))
+            player_healing = int(player[6].replace("*",""))
+            player_damage = int(player[7].replace("*",""))
+            player_score_board = player[2]
+            player_kills_board = player[3]
+            player_deaths_board = player[4]
+            player_assists_board = player[5]
+            player_healing_board = player[6]
+            player_damage_board = player[7]
+            for item in player_info:
+                if player_name.lower() == item[0].lower():
+                    player_role = item[2]
+                    found = True
+                if found == False:
+                    player_role = "N/A"
+            try:
+                dmg_kpar = player_damage/(player_kills + player_assists)
+            except:
+                dmg_kpar = 0
+            if player[8] == "Attack":
+                k_par = (player_kills + player_assists) / attacker_kills_total
+            if player[8] == "Defense":
+                k_par = (player_kills + player_assists) / defender_kills_total
+            if player[8] == "N/A" and len(returned_values[0]) < 100:
+                k_par = (player_kills + player_assists) / sum(kills_list)
+            elif player[8] == "N/A":
+                k_par = "N/A"
+            if k_par != "N/A":
+                data = (invasion_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, invasion_id, invasion_winner, server)
+                insert_stmt = (
+                "INSERT INTO invasion_records(invasion_name, rank, name, score, kills, deaths, assists, healing, damage, invasion_id, invasion_winner, server)"
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                )
+                print(data)
+                mycursor.execute(insert_stmt, data)
+                mydb.commit()
+            else:
+                data = (invasion_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, invasion_id, invasion_winner, server)
+                insert_stmt = (
+            "INSERT INTO invasion_records(invasion_name, rank, name, score, kills, deaths, assists, healing, damage, invasion_id, invasion_winner, server)"
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            )
+                print(data)
+                mycursor.execute(insert_stmt, data)
+                mydb.commit()
+
+        return(f"Stats for this invasion are now live at: https://www.nw-stats.com/{server}/invasion/{invasion_id}")
+    except:
+        return("Could not add stats to the site, check the spreadsheet and the websites invasion page before trying again.")
 
 def fix_stats(server,updating_war):
     try:
@@ -396,20 +504,21 @@ def fix_stats(server,updating_war):
 
         mycursor = mydb.cursor()
 
-        if server.lower() == "cos":
-            sh = gc.open('Testing war dumps')
+        if server.lower() == "val":
+            server = "Valhalla"
+        elif server.lower() == "cos":
+            server = "Castle of Steel"
         elif server.lower() == "ygg":
-            sh = gc.open('YGG war records')
+            server = "Yggdrasil"
         elif server.lower() == "del":
-            sh = gc.open('Delos war records')
-        elif server.lower() == "val":
-            sh = gc.open('Valhalla war records')
-        elif server.lower() == "oro":
-            sh = gc.open('Orofena war records')
-        elif server.lower() == "mar":
-            sh = gc.open('Maramma war records')
-        elif server.lower() == "eri":
-            sh = gc.open('Eridu war records')
+            server = "Delos"
+        elif server == "oro":
+            server = "Orofena"
+        elif server == "eri":
+            server = "Eridu"
+        elif server == "del":
+            server = "Delos"
+        sh = gc.open(f'{server} invasion records')
         wks = sh.worksheet_by_title(str(updating_war))
         returned_values = wks.get_values_batch( ['A1:J500'] )
         war_name_sheet = sh.worksheet_by_title("War List")
@@ -480,18 +589,127 @@ def fix_stats(server,updating_war):
                 print(val)
                 mycursor.execute(sql,val)
                 mydb.commit()
-
+                update_player_averages(player_name,server)
             else:
                 sql = "UPDATE player_records SET war_name = %s, war_rank = %s, name = %s, score = %s, kills = %s, deaths = %s, assists = %s, healing = %s, damage = %s, dmg_kpar = %s, team = %s, war_winner = %s WHERE war_id = %s AND war_rank = %s AND server = %s"
                 val = (war_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, "N/A", round(dmg_kpar,2), player[9], war_winner, updating_war,player_rank, server)
                 mycursor.execute(sql,val)
                 print(val)
-
+                update_player_averages(player_name,server)
                 mydb.commit()
-        update_player_averages(player_name,server)
+
         return(f"Stats have been updated for this war, ensure the changes are on the website here: https://www.nw-stats.com/{server}/war/{updating_war}")
     except:
         return(f"There was an error when trying to fix the stats for war {updating_war}, Please use the /deletewar command to remove it from the site, correct any errors on the spreadsheet, then run the /enterstats command to add the war back to the website!")
+
+def fix_invasion_stats(server,updating_invasion):
+    try:
+        gc = pygsheets.authorize(service_file='credentials.json')
+        player_info = get_player_info()
+        mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+        )
+
+        mycursor = mydb.cursor()
+
+        if server.lower() == "val":
+            server = "Valhalla"
+        elif server.lower() == "cos":
+            server = "Castle of Steel"
+        elif server.lower() == "ygg":
+            server = "Yggdrasil"
+        elif server.lower() == "del":
+            server = "Delos"
+        elif server == "oro":
+            server = "Orofena"
+        elif server == "eri":
+            server = "Eridu"
+        elif server == "del":
+            server = "Delos"
+        sh = gc.open(f'{server} invasion records')
+        wks = sh.worksheet_by_title(str(updating_invasion))
+        returned_values = wks.get_values_batch( ['A1:J500'] )
+        war_name_sheet = sh.worksheet_by_title("Invasion List")
+        returned_values_invasion_names = war_name_sheet.get_values_batch( ['A1:D500'] )
+        invasion_name = ""
+        attackers_kills = []
+        defenders_kills = []
+        k_par = 0
+        dmg_kpar = 0
+        invasion_winner = ""
+        invasion_name = ""
+        for invasion_number in returned_values_invasion_names[0]:
+            if int(invasion_number[0]) == int(updating_invasion):
+                invasion_name = invasion_number[1]
+
+
+        kills_list = []
+        for invasion_item in returned_values_invasion_names[0]:
+            if invasion_item[0] == updating_invasion:
+                invasion_winner = invasion_item[3]
+        for player in returned_values[0]:
+            if player[8] == "Attack":
+                attackers_kills.append(int(player[3].replace("*","")))
+            if player[8] == "Defense":
+                defenders_kills.append(int(player[3].replace("*","")))
+            kills_list.append(int(player[3].replace("*","").replace("*","")))
+        attacker_kills_total = sum(attackers_kills)
+        defender_kills_total = sum(defenders_kills)
+        for player in returned_values[0]:
+            found = False
+            player_rank = player[0]
+            player_name = player[1]
+            player_score = int(player[2].replace("*",""))
+            player_kills = int(player[3].replace("*",""))
+            player_deaths = int(player[4].replace("*",""))
+            player_assists = int(player[5].replace("*",""))
+            player_healing = int(player[6].replace("*",""))
+            player_damage = int(player[7].replace("*",""))
+            player_score_board = player[2]
+            player_kills_board = player[3]
+            player_deaths_board = player[4]
+            player_assists_board = player[5]
+            player_healing_board = player[6]
+            player_damage_board = player[7]
+            for item in player_info:
+                if player_name.lower() == item[1].lower():
+                    player_role = item[3]
+                    found = True
+                if found == False:
+                    player_role = "N/A"
+            try:
+                dmg_kpar = player_damage/(player_kills + player_assists)
+            except:
+                dmg_kpar = 0
+            if player[8] == "Attack":
+                k_par = (player_kills + player_assists) / attacker_kills_total
+            if player[8] == "Defense":
+                k_par = (player_kills + player_assists) / defender_kills_total
+            if player[8] == "N/A" and len(returned_values[0]) < 100:
+                k_par = (player_kills + player_assists) / sum(kills_list)
+            elif player[8] == "N/A":
+                k_par = "N/A"
+            if k_par != "N/A":
+
+                sql = "UPDATE invasion_records SET invasion_name = %s, rank = %s, name = %s, score = %s, kills = %s, deaths = %s, assists = %s, healing = %s, damage = %s, invasion_winner = %s WHERE invasion_id = %s AND rank = %s AND server = %s"
+                val = (invasion_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, invasion_winner, updating_invasion,player_rank, server)
+                print(val)
+                mycursor.execute(sql,val)
+                mydb.commit()
+            else:
+                sql = "UPDATE invasion_records SET invasion_name = %s, rank = %s, name = %s, score = %s, kills = %s, deaths = %s, assists = %s, healing = %s, damage = %s, invasion_winner = %s WHERE invasion_id = %s AND rank = %s AND server = %s"
+                val = (invasion_name,player_rank,player_name,player_score_board,player_kills_board,player_deaths_board,player_assists_board,player_healing_board,player_damage_board, invasion_winner, updating_invasion,player_rank, server)
+                mycursor.execute(sql,val)
+                print(val)
+                mydb.commit()
+
+        return(f"Stats have been updated for this invasion, ensure the changes are on the website here: https://www.nw-stats.com/{server}/invasion/{updating_invasion}")
+    except:
+        return(f"There was an error when trying to fix the stats for invasion {updating_invasion}, Please use the /deleteinvasion command to remove it from the site, correct any errors on the spreadsheet, then run the /enterinvasion command to add the invasion back to the website!")
+
 
 def remove_duped_wars():
     mydb = mysql.connector.connect(
@@ -528,16 +746,60 @@ def remove_war(server,war_num):
     password=config.db_pass,
     database="superdotaplaya$war_stats"
     )
+    if server.lower() == "val":
+        server = "Valhalla"
+    elif server.lower() == "cos":
+        server = "Castle of Steel"
+    elif server.lower() == "ygg":
+        server = "Yggdrasil"
+    elif server.lower() == "del":
+        server = "Delos"
+    elif server == "oro":
+        server = "Orofena"
+    elif server == "eri":
+        server = "Eridu"
+    elif server == "del":
+        server = "Delos"
     mycursor = mydb.cursor()
     sql = "SELECT * FROM player_records WHERE server = %s AND war_id = %s"
     val=(server,war_num)
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
-
-    sql = "DELETE FROM player_records WHERE war_id = %s"
-    val = (war_num,)
+    for item in myresult:
+        update_player_averages(item[2],server)
+    sql = "DELETE FROM player_records WHERE server = %s AND war_id = %s"
+    val = (server, war_num)
     mycursor.execute(sql, val)
     mydb.commit()
-    for row in myresult:
-        update_player_averages(row[2],row[16])
+
     return(f"War {war_num} has been removed from the website! Please correct all issues leading to the removal, and run the /enterstats command to readd it to the site!")
+
+def remove_invasion(server,invasion_num):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    if server.lower() == "val":
+        server = "Valhalla"
+    elif server.lower() == "cos":
+        server = "Castle of Steel"
+    elif server.lower() == "ygg":
+        server = "Yggdrasil"
+    elif server.lower() == "del":
+        server = "Delos"
+    elif server == "oro":
+        server = "Orofena"
+    elif server == "eri":
+        server = "Eridu"
+    elif server == "del":
+        server = "Delos"
+    mycursor = mydb.cursor()
+
+    sql = "DELETE FROM invasion_records WHERE server = %s AND invasion_id = %s"
+    val = (server, invasion_num)
+    mycursor.execute(sql, val)
+    mydb.commit()
+
+    return(f"Invasion {invasion_num} has been removed from the website! Please correct all issues leading to the removal, and run the /enterinvasionstats command to readd it to the site!")

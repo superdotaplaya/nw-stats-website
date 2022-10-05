@@ -32,28 +32,37 @@ authorize_url = config.authorize_url
 
 admin_list = config.admin_list
 
-server_list = ['cos','del','val','mar','oro','ygg','eri']
+server_list = ['Castle of Steel','Delos','Valhalla','Maramma','Orofena','Yggdrasil','Eridu']
 player_list = []
 
-mydb = mysql.connector.connect(
+
+
+
+def generate_leaderboard():
+    mydb = mysql.connector.connect(
         host=config.db_host,
         user=config.db_user,
         password=config.db_pass,
         database="superdotaplaya$war_stats"
         )
 
-
-def generate_leaderboard():
     mycursor = mydb.cursor()
     sql = "SELECT * FROM player_records"
     mycursor.execute(sql)
     myresult =  mycursor.fetchall()
+    mycursor.close()
     for row in myresult:
         if row[2] not in player_list:
             player_list.append(row[2])
     leaderboards(player_list)
 
 def leaderboards(player_list):
+    mydb = mysql.connector.connect(
+        host=config.db_host,
+        user=config.db_user,
+        password=config.db_pass,
+        database="superdotaplaya$war_stats"
+        )
     mycursor = mydb.cursor()
     for server in server_list:
 
@@ -68,6 +77,8 @@ def leaderboards(player_list):
             val = (player, server)
             mycursor.execute(sql,val)
             myresult = mycursor.fetchall()
+
+
             for row in myresult:
                 if "*" not in row[3]:
                     total_wars = total_wars + 1
@@ -89,7 +100,7 @@ def leaderboards(player_list):
                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
                 )
                 print(data)
-                mycursor = mydb.cursor()
+
                 mycursor.execute(insert_stmt, data)
                 mydb.commit()
             else:

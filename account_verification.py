@@ -12,8 +12,8 @@ import mpld3
 from mpld3 import plugins
 
 
-discord_id = "353667388904046595"
-verified_name = "Valcua"
+discord_id = "178726178625028096"
+verified_name = "xallae"
 
 def verify_account(discord_id,verified_name):
     # Check to see if user account is already registered

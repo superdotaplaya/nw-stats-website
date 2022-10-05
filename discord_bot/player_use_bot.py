@@ -18,6 +18,7 @@ import mysql.connector
 import enter_stats
 
 
+
 #from PIL import Image
 bot = discord.Bot()
 
@@ -27,9 +28,6 @@ if not os.path.isfile("config.py"):
     sys.exit("'config.py' not found! Please add it and try again.")
 else:
     import config
-
-
-
 
 
 def get_current_requests(sheet_id):
@@ -321,171 +319,152 @@ async def on_ready():
     #first_run = False
     #await asyncio.create_task(check_forums(10, stuff))
 
+@bot.slash_command(description = "Displays the number of Umbral Shards required to upgrade gear.")
+async def shardcost(ctx, starting_gear_score: Option(str, "Enter The Gear score the item is starting at.", required = True), desired_gear_score: Option(str, "Enter the desired Gear score you would like to upgrade the item to.", required = True)):
+    channel = str(ctx.channel)
+    print(channel)
+    if channel == "bot-commands":
+        current_item_lvl = starting_gear_score
+        desired_item_lvl = desired_gear_score
+        get_shard_cost(current_item_lvl,desired_item_lvl)
+        await ctx.respond(f"To upgrade your item from level {current_item_lvl} to {desired_item_lvl} you will need {get_shard_cost(current_item_lvl,desired_item_lvl)} umbral shard(s).")
 
 
-@bot.slash_command(description = "Submits Screenshots for data processing.")
-async def submitwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_name: Option(str, "Name of the war.")):
-    for role in ctx.author.roles:
-        if str(role.id) == "1001600386450333747":
-            channel_to_read = bot.get_channel(ctx.channel.id)
-            messages = await ctx.channel.history(limit=200).flatten()
-            images = []
-            for message in messages:
-                print(message.content)
-                for link in reversed(message.attachments):
-                    images.append(link.url)
-            print(images)
-            await ctx.respond("Stats are being submitted, this may take a few minutes!")
-            await ctx.send(analyze_screenshots.extract_text(images, war_name, server))
+@bot.slash_command(description = "Displays a table breaking down the Umbral shards earned from mutated dungeons.")
+async def shardbreakdown(ctx):
+        channel = str(ctx.channel)
+        print(channel)
+        if channel == "bot-commands":
+            embed = discord.Embed(title="Umbral Shard Reward Breakdown", description="This is the breakdown of how many Umbral Shards can be earned per dungeon and completion rating.", color=0x0e01f9)
+            embed.add_field(name="----------------------------------", value="Difficulty 1", inline=False)
+            embed.add_field(name="Bronze", value="27 shards", inline=True)
+            embed.add_field(name="Silver", value="33 shards", inline=True)
+            embed.add_field(name="Gold", value="40 shards", inline=True)
+            embed.add_field(name="----------------------------------", value="Difficulty 2", inline=False)
+            embed.add_field(name="Bronze", value="40 shards", inline=True)
+            embed.add_field(name="Silver", value="50 shards", inline=True)
+            embed.add_field(name="Gold", value="60 shards", inline=True)
+            embed.add_field(name="----------------------------------", value="Difficulty 3", inline=False)
+            embed.add_field(name="Bronze", value="53 shards", inline=True)
+            embed.add_field(name="Silver", value="67 shards", inline=True)
+            embed.add_field(name="Gold", value="80 shards", inline=True)
+            embed.add_field(name="----------------------------------", value="Difficulty 4", inline=False)
+            embed.add_field(name="Bronze", value="80 shards", inline=True)
+            embed.add_field(name="Silver", value="100 shards", inline=True)
+            embed.add_field(name="Gold", value="120 shards", inline=True)
+            embed.add_field(name="----------------------------------", value="Difficulty 5", inline=False)
+            embed.add_field(name="Bronze", value="133 shards", inline=True)
+            embed.add_field(name="Silver", value="167 shards", inline=True)
+            embed.add_field(name="Gold", value="200 shards", inline=True)
+            embed1 = discord.Embed(title="Umbral Shard Reward Breakdown", description="This is the breakdown of how many Umbral Shards can be earned per dungeon and completion rating.", color=0x0e01f9)
+            embed1.add_field(name="----------------------------------", value="Difficulty 6", inline=False)
+            embed1.add_field(name="Bronze", value="533 shards", inline=True)
+            embed1.add_field(name="Silver", value="667 shards", inline=True)
+            embed1.add_field(name="Gold", value="800 shards", inline=True)
 
-@bot.slash_command(description = "Submits Screenshots for data processing.")
-async def submitinvasionstats(ctx, server: Option(str, "What server did the invasion occur on?"), invasion_name: Option(str, "Name of the invasion.")):
-    for role in ctx.author.roles:
-        if str(role.id) == "1001600386450333747":
-            channel_to_read = bot.get_channel(ctx.channel.id)
-            messages = await ctx.channel.history(limit=200).flatten()
-            images = []
-            for message in messages:
-                print(message.content)
-                for link in reversed(message.attachments):
-                    images.append(link.url)
-            print(images)
-            await ctx.respond("Stats are being submitted, this may take a few minutes!")
-            await ctx.send(analyze_screenshots.extract_text_invasion(images, invasion_name, server))
+            embed1.add_field(name="----------------------------------", value="Difficulty 7", inline=False)
+            embed1.add_field(name="Bronze", value="1000 shards", inline=True)
+            embed1.add_field(name="Silver", value="1250 shards", inline=True)
+            embed1.add_field(name="Gold", value="1500 shards", inline=True)
 
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Returns a given players monthly stat card")
-async def submit_stats(ctx):
-    mydb = mysql.connector.connect(
-    host="superdotaplaya.mysql.pythonanywhere-services.com",
-    user=config.db_user,
-    password=config.db_pass,
-    database="superdotaplaya$war_stats"
-    )
+            embed1.add_field(name="----------------------------------", value="Difficulty 8", inline=False)
+            embed1.add_field(name="Bronze", value="1333 shards", inline=True)
+            embed1.add_field(name="Silver", value="1667 shards", inline=True)
+            embed1.add_field(name="Gold", value="2000 shards", inline=True)
+            embed1.add_field(name="----------------------------------", value="Difficulty 9", inline=False)
+            embed1.add_field(name="Bronze", value="2667 shards", inline=True)
+            embed1.add_field(name="Silver", value="3333 shards", inline=True)
+            embed1.add_field(name="Gold", value="4000 shards", inline=True)
+            embed1.add_field(name="----------------------------------", value="Difficulty 10", inline=False)
+            embed1.add_field(name="Bronze", value="4000 shards", inline=True)
+            embed1.add_field(name="Silver", value="5000 shards", inline=True)
+            embed1.add_field(name="Gold", value="6000 shards", inline=True)
+            await ctx.respond(embed=embed)
+            await ctx.respond(embed=embed1)
 
-    mycursor = mydb.cursor()
-    sh = gc.open('Testing war dumps')
-    info = sh.worksheets()
-    last_sheet = info[-1].title
-    wks = sh.worksheet_by_title(str(last_sheet)+1)
-    returned_values = wks.get_values_batch( ['A1:H500'] )
-    for player in returned_values[0]:
-        player_name = player[1]
-        player_score = player[2]
-        player_kills = player[3]
-        player_deaths = player[4]
-        player_assists = player[5]
-        player_healing = player[6]
-        player_damage = player[7]
-        data = (player_name,player_score,player_kills,player_deaths,player_assists,player_healing,player_damage)
-        insert_stmt = (
-    "INSERT INTO player_records(name, score, kills, deaths, assists, healing, damage)"
-    "VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    )
-        print(data)
-        mycursor.execute(insert_stmt, data)
-        mydb.commit()
-
-
-
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
-async def enterwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(int,"What war Id are you adding to the database?")):
-    for role in ctx.author.roles:
-        if server.lower() == "val":
-            server = "Valhalla"
-        elif server.lower() == "cos":
-            server = "Castle of Steel"
-        elif server.lower() == "ygg":
-            server = "Yggdrasil"
-        elif server.lower() == "del":
-            server = "Delos"
-        elif server == "oro":
-            server = "Orofena"
-        elif server == "eri":
-            server = "Eridu"
-        elif server == "del":
-            server = "Delos"
-        if str(role.id) == "1001600386450333747":
-            await ctx.respond("Attempting to add stats to the website, please wait a moment!")
-            upload_stats = enter_stats.add_war(server,war_id)
-            if upload_stats == f"Stats for this war are now live at: https://www.nw-stats.com/{server}/war/{war_id}":
-                await ctx.send(upload_stats)
-                await bot.get_channel(int(1017194084647047288)).send(f"Stats for this war are now live at: https://www.nw-stats.com/{server}/war/{war_id}")
-            else:
-                await ctx.send(upload_stats)
-
-
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
-async def fixwarstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you fixing the stats for?")):
-    for role in ctx.author.roles:
-        if str(role.id) == "1001600386450333747":
-            await ctx.respond("Attempting to fix stats on the website, please wait a moment!")
-            war_id = war_id
-            server = server
-            print(war_id)
-            print(server)
-            await ctx.send(enter_stats.fix_stats(server,war_id))
+@bot.slash_command(description = "Displays Umbral Shard rewards based on expertise when opening Gypsum casts")
+async def gypsumshards(ctx):
+        channel = str(ctx.channel)
+        print(channel)
+        if channel == "bot-commands":
+            await ctx.respond("""```                    Expertise Level | Shards Reward
+                            600             | 100
+                            601             | 112
+                            602             | 124
+                            603             | 136
+                            604             | 148
+                            605             | 160
+                            606             | 172
+                            607             | 184
+                            608             | 196
+                            609             | 208
+                            610             | 220
+                            611             | 232
+                            612             | 244
+                            613             | 256
+                            614             | 268
+                            615             | 280
+                            616             | 292
+                            617             | 304
+                            618             | 316
+                            619             | 328
+                            620             | 340
+                            621             | 352
+                            622             | 364
+                            623             | 376
+                            624             | 388
+                            625             | 400```""")
 
 
 
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
-async def deleteinvasion(ctx, server: Option(str, "What server did the invasion occur on?"), invasion_id: Option(str, "What war are you deleting from the website?")):
-    for role in ctx.author.roles:
-        if str(role.id) == "1027072479925129246":
-            await ctx.respond("Attempting to remove invasion from the site!")
-            invasion_id = invasion_id
-            server = server
-            print(invasion_id)
-            print(server)
-            await ctx.send(enter_stats.remove_invasion(server,invasion_id))
 
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
-async def enterinvasionstats(ctx, server: Option(str, "What server did the invasion occur on?"), invasion_id: Option(int,"What invasion Id are you adding to the database?")):
-    for role in ctx.author.roles:
-        if server.lower() == "val":
-            server = "Valhalla"
-        elif server.lower() == "cos":
-            server = "Castle of Steel"
-        elif server.lower() == "ygg":
-            server = "Yggdrasil"
-        elif server.lower() == "del":
-            server = "Delos"
-        elif server == "oro":
-            server = "Orofena"
-        elif server == "eri":
-            server = "Eridu"
-        elif server == "del":
-            server = "Delos"
-        if str(role.id) == "1027072479925129246":
-            await ctx.respond("Attempting to add stats to the website, please wait a moment!")
-            upload_stats = enter_stats.add_invasion(server,invasion_id)
-            if upload_stats == f"Stats for this invasion are now live at: https://www.nw-stats.com/{server}/invasion/{invasion_id}":
-                await ctx.send(upload_stats)
-                await bot.get_channel(int(1027321184339107841)).send(f"Stats for this invasion are now live at: https://www.nw-stats.com/{server}/invasion/{invasion_id}")
-            else:
-                await ctx.send(upload_stats)
+@bot.slash_command(description = "Displays stats about the given player on the given server!")
+async def playerstats(ctx, server: Option(str, "What server is the player on? COS, YGG, VAL, DEL, ORO"), player_name: Option(str, "What is the players name?")):
+    await ctx.respond("Attempting to find Stats, please wait a moment!")
+    if server.lower() == 'val':
+        server = 'Valhalla'
+    elif server.lower() == 'oroa':
+        server = 'Orofena'
+    elif server.lower() == 'ygg':
+        server = 'Yggdrasil'
+    elif server.lower() == 'mar':
+        server = 'Maramma'
+    elif server.lower() == 'del':
+        server = 'Delos'
+    elif server.lower() == 'eri':
+        server = 'Eridu'
+    elif server.lower() == 'cos':
+        server = 'Castle of Steel'
+    data = calc_stats(player_name,server)
+    embed = discord.Embed(
+    title=f"{player_name}'s NW-Stats Profile ({server})", description="A breakdown of player stats gathered from war screenshots!", color=0x336EFF)
+    embed.add_field(name="Average Kills", value=f"{data[1]}", inline=False)
+    embed.add_field(name="Record Kills", value=f"{'{:,}'.format(int(data[8]))}", inline=False)
+    embed.add_field(name="Average Damage", value=f"{'{:,}'.format(float(data[5]))}", inline=False)
+    embed.add_field(name="Record Damage", value=f"{'{:,}'.format(int(data[10]))}", inline=False)
+    embed.add_field(name="Average Healing", value=f"{'{:,}'.format(float(data[4]))}", inline=False)
+    embed.add_field(name="Record Healing", value=f"{'{:,}'.format(float(data[9]))}", inline=False)
+    embed.add_field(name="Average Assists", value=f"{'{:,}'.format(float(data[3]))}", inline=False)
+    embed.add_field(name="Record Assists", value=f"{'{:,}'.format(float(data[25]))}", inline=False)
+    embed.add_field(name="Profile Link", value=f"https://www.nw-stats.com/{server}/player/{player_name}", inline=False)
+    embed.set_image(url="https://www.nw-stats.com/static/images/nw-stats%20logo.png")
+    await ctx.send(embed=embed)
 
 
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to add stats to the database")
-async def fixinvasionstats(ctx, server: Option(str, "What server did the invasion occur on?"), invasion_id: Option(str, "What invasion are you fixing the stats for?")):
-    for role in ctx.author.roles:
-        if str(role.id) == "1001600386450333747":
-            await ctx.respond("Attempting to fix invasion stats on the website, please wait a moment!")
-            invasion_id = invasion_id
-            server = server
-            print(invasion_id)
-            print(server)
-            await ctx.send(enter_stats.fix_invasion_stats(server,invasion_id))
-
-@bot.slash_command(guild_ids=[1001596849192444044], description = "Once Screenshots are analyzed and stats are correct,this is used to delete a war from the site")
-async def deletewar(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you deleting from the website?")):
-    for role in ctx.author.roles:
-        if str(role.id) == "1001600386450333747":
-            await ctx.respond("Attempting to remove invasion from the site!")
-            war_id = war_id
-            server = server
-            print(war_id)
-            print(server)
-            await ctx.send(enter_stats.remove_war(server,war_id))
+@bot.slash_command(description = "Displays the users last 5 wars on the given server.")
+async def last5(ctx, server: Option(str, "What server is the player on?"), player_name: Option(str, "What is the players name?")):
+    await ctx.respond("Attempting to find Stats, please wait a moment!")
+    war_ids = []
+    data = get_user_wars(player_name,"All", server)
+    embed = discord.Embed(
+    title=f"{player_name}'s Last 5 Wars", description="A quick look at the users 5 most recent wars on the requested server!", color=0x336EFF)
+    embed.add_field(name="War Stats", value = "Breakdowns Below!", inline = False)
+    bot.message_war_list = []
+    for item in data:
+        bot.message_war_list.append(str(item[9]))
+        embed.add_field(name=f"War ID {item[9]}" , value = f"Score: {item[3]} | Kills: {item[4]} | Deaths: {item[5]} | Assists: {item[6]} | Healing: {item[7]} | damage: {item[8]}")
+    embed.set_image(url="https://www.nw-stats.com/static/images/nw-stats%20logo.png")
+    await ctx.send(embed=embed)
 
 
 def calc_stats(usr,server):
@@ -602,7 +581,27 @@ def calc_stats(usr,server):
         return(player_stats)
     else:
         return([0,0,0,0,0,0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0, 0, 0, 0, 0, []])
-bot.run(config.discord_token)
+
+def get_user_wars(usr,role,server):
+    requested_player = usr
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_records WHERE name = %s AND server = %s"
+    val =(requested_player,server.lower())
+    mycursor.execute(sql,val)
+    player_results = mycursor.fetchall()
+    attacks = []
+    defenses = []
+    misc = []
+    player_results.sort(key = lambda x: int(x[9].replace("*","").replace("^","")), reverse = True)
+    return(player_results[:5])
+bot.run(config.discord_token_users)
 
 
 #run the bot

@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-<title>{% block title %}NW-Stats ({{server}}){% endblock %}</title>
+<title>{% block title %}NW-Stats ({{server}}) Invasions{% endblock %}</title>
 {% block content %}
 <html>
 <head>
 
 
-        <meta name="title" content="{{server}} War List">
-        <meta name="description" content="View a list of all wars submitted for {{server}}">
+        <meta name="title" content="{{server}} Invasion List">
+        <meta name="description" content="View a list of all invasions submitted for {{server}}">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="{{server}} War List" />
-        <meta property="og:description" content="View a list of all wars submitted for {{server}}" />
-        <meta property="og:url" content="www.nw-stats.com/{{server}}" />
+        <meta property="og:title" content="{{server}} Invasion List" />
+        <meta property="og:description" content="View a list of all invasions submitted for {{server}}" />
+        <meta property="og:url" content="www.nw-stats.com/{{server}}/invasions" />
         <meta property="og:image" content="/static/images/nw-stats logo.png" />
 </head>
     <style>
@@ -40,11 +40,11 @@
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script></div>
- <h1 style="text-align: center; color: white;">NW-Stats War List ({{server}})</h1>
+ <h1 style="text-align: center; color: white;">NW-Stats Invasion List ({{server}})</h1>
  {% if war_list|length != 0 %}
 
 <p style=" font-size: 20px; width: 80%; margin-left: 10%; color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; font-family: Helvetica;">
-    Here is a list of all war scoreboards that have been submitted to us!
+    Here is a list of all invasion scoreboards that have been submitted to us!
 </p>
 <br>
 </div>
@@ -57,12 +57,12 @@
   </div>
     </div>
     {% for war in war_list %}
-        <li style="list-style-type: none; text-align: left; padding: 20px; font-size: 24px; font-family: Helvetica; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; width: 80%; color: white;"><a href="https://www.nw-stats.com/{{server}}/war/{{war[0]}}" style="color: white;"><b>{{war[0]}}&nbsp;|&nbsp;{{war[1]}}&nbsp;</a><br></li></b>
+        <li style="list-style-type: none; text-align: left; padding: 20px; font-size: 24px; font-family: Helvetica; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; width: 80%; color: white;"><a href="https://www.nw-stats.com/{{server}}/invasion/{{war[0]}}" style="color: white;"><b>{{war[0]}}&nbsp;|&nbsp;{{war[1]}}&nbsp;</a><br></li></b>
     {% endfor %}
     </div>
 
 <div id="MoreWars" style="background-color: {{user_settings[2]}}; width: 100%;">
-        <b><p  style="width: 8%; display: inline-block; list-style-type: none;  padding: 10px; font-size: 26px; font-family: Helvetica; margin-left: 40%;">More wars:</p></b>
+        <b><p  style="width: 8%; display: inline-block; list-style-type: none;  padding: 10px; font-size: 26px; font-family: Helvetica; margin-left: 40%;">More invasions:</p></b>
         <b><li style="display: inline-block; list-style-type: none; padding: 10px; font-size: 16px; font-family: Helvetica;"><a href="https://www.nw-stats.com/{{server}}/first">First</a></li></b>
     {% for page in pages %}
 
@@ -72,7 +72,7 @@
     </div>
 
 {% else %}
- <a href="https://www.nw-stats.com/submit_war"><h3 style="text-align: center; color: white; font-family: Helvetica;">No wars recorded for this server :( Be the first! (CLICK HERE TO SUBMIT A WAR!)</h3></a>
+ <a href="https://www.nw-stats.com/submit_war"><h3 style="text-align: center; color: white; font-family: Helvetica;">No invasions recorded for this server :( Be the first! (CLICK HERE TO SUBMIT AN INVASION!)</h3></a>
 {% endif %}
 
 {% if has_ads == True %}

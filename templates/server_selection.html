@@ -40,6 +40,9 @@
      <div class="topnav" id="myTopnav">
   <a href="https://www.nw-stats.com"><img src="/static/images/nw-stats logo.png" alt="Logo" style="max-width: 150px;"> </a>
   <a href="https://discord.gg/u8uswKq9Ex" style="margin-top: 60px;">Discord</a>
+  <a href="https://discord.com/oauth2/authorize?client_id=978555686868897794&permissions=380104731712&scope=bot%20applications.commands" style="margin-top: 60px;">Get Discord Bot</a>
+    <a href="/submit_war" style="margin-top: 60px;">Submit Wars</a>
+
   <a href="/news" style="margin-top: 60px;">News</a>
 
      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -80,21 +83,30 @@
          <div>
 
          </div>
+
+    {% if servers == [] %}
     <h1>Welcome to New World Stats!</h1>
     <p> THE place to find stats and scout your opponents in New World!.</p><br>
-    <h2>Select a Server to Explore player stats and war stats in New World!</h2>
+    <h2>Select a region to Explore player stats and war stats in New World!</h2>
     <div class="dropdown">
-  <button class="dropbtn">Server Selection <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+  <button class="dropbtn">Region Selection <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
   <div class="dropdown-content">
-  <a href="/cos">Castle of Steel</a>
-  <a href="/del">Delos</a>
-  <a href="/eri">Eridu</a>
-  <a href="/mar">Maramma</a>
-  <a href="/oro">Orofena</a>
-  <a href="/val">Valhalla</a>
-  <a href="/ygg">Yggdrasil</a>
+        {% for region in regions %}
+  <a href="/{{region}}/server">{{region.replace("_"," ")}}</a>
+    {% endfor %}
   </div>
 </div>
+    {% else %}
+    <h2>Select a server to explore player stats and war stats in New World!</h2>
+    <div class="dropdown">
+    <button class="dropbtn">Server Selection <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+    <div class="dropdown-content">
+    {% for server in servers %}
+    <a href="/{{server.replace("_"," ")}}">{{server.replace("_", " ")}}</a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 <br><br>
 
     <h2>Don't See your New World server?</h2>

@@ -17,10 +17,13 @@
 <form style="text-align: center" action="/settings" method = "POST">
     <h3 style="color: white;">Character Name: <input type="text" name="player_name" value="{{user_settings[1]}}" required></h3>
      <h3 style="color: white;"> Server: </h3><select name="server" required>
-        <option value="cos">Castle of Steel</option>
-        <option value="ygg">Yggdrasil</option>
-        <option value="del">Delos</option>
-        <option value="val">Valhalla</option>
+        {% for server in all_servers %}
+        {% if user_settings[9] == server %}
+        <option value="{{server}}" selected>{{server}}</option>
+        {% else %}
+        <option value="{{server}}">{{server}}</option>
+        {% endif %}
+        {% endfor %}
     </select>
 
 

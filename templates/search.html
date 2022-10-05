@@ -73,7 +73,7 @@ border-radius: 10px 10px 0px 0px;
     {% if war_results %}
     <h2 style="color: white;">War Search Results</h2>
     {% for war in war_results %}
-        <p style="color: white;"><a href="https://www.blacktunastats.com/{{war[2].lower()}}/war/{{war[1]}}" class="myButton" style="background-color: {{user_settings[2]}};">{{war[0]}}</a></p><br>
+        <p style="color: white;"><a href="https://www.blacktunastats.com/{{war[2]}}/war/{{war[1]}}" class="myButton" style="background-color: {{user_settings[2]}};">{{war[0]}}</a></p><br>
     {% endfor %}
     {% endif %}
 

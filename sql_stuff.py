@@ -292,23 +292,38 @@ def create_table():
         )
 
     mycursor = mydb.cursor()
-    mycursor.execute("DROP TABLE player_averages")
+    mycursor.execute("DROP TABLE invasion_records")
 
 
-    add_table = """CREATE TABLE player_averages (
-                player_name VARCHAR(255),
-                server VARCHAR(255),
-                avg_score VARCHAR(255),
-                avg_kills VARCHAR(255),
-                avg_assists VARCHAR(255),
-                avg_healing VARCHAR(255),
-                avg_damage VARCHAR(255),
-                total_wars VARCHAR(255)
-                       )"""
+    add_table = """CREATE TABLE invasion_records (
+                invasion_id VARCHAR(255),
+                invasion_name VARCHAR(255),
+                name VARCHAR(255),
+                rank VARCHAR(255),
+                score VARCHAR(255),
+                kills VARCHAR(255),
+                deaths VARCHAR(255),
+                assists VARCHAR(255),
+                healing VARCHAR(255),
+                damage VARCHAR(255),
+                invasion_winner VARCHAR(255),
+                server VARCHAR(255))"""
 
     mycursor.execute(add_table)
     mydb.commit()
 
+def update_war_servers(server):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    sql = "UPDATE player_records SET server = %s WHERE server = %s"
+    val = ("Maramma", server)
+    mycursor.execute(sql, val)
+    mydb.commit()
 
 def setup_user_accounts():
     gc = pygsheets.authorize(service_file='credentials.json')

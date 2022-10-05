@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 style= "color: white; text-align: center"> War Submission</h1>
+<p style= "color: white; text-align: center">Fill out the following information below and someone will review and get stats for the war on the site ASAP!</p>
+
+<form class="form" action="/submit_war" method = "POST" enctype = "multipart/form-data" style="text-align: center; color: white;">
+          <h2 style = "color: white; text-align: center;">War Details</h2>
+        <h3 style="color: white;"> Server: </h3><select name="server" required>
+        {% for server in all_servers %}
+        {% if user_settings[9] == server %}
+        <option value="{{server}}" selected>{{server}}</option>
+        {% else %}
+        <option value="{{server}}">{{server}}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+        <h3>Territory: <select name="territory" required>
+        {% for territory in territories %}
+         <option value="{{territory}}">{{territory}}</option>
+        {% endfor %}
+         </select></h3>
+         <h3 style="color: white;">War Scoreboard/Spreadsheet: <input type="file" name="scoreboard" accept="image/gif, image/jpeg, image/jpg, image/png, .xlsx, xls"><br><br></h3>
+         <h3 style="color: white;">War Winner:<select name="war_winner" id ="war_winner">
+          <option value="attackers">Attackers</option>
+          <option value="defenders">Defenders</option>
+        </select></h3>
+         <h3 style="color: white;">Attacking Team Name: <input type="date" name="war_date"><br><br></h3>
+         <h3 style="color: white;">Attacking Team Name: <input type="text" name="attacker_name"><br><br></h3>
+        <h3 style="color: white;">Attacker Faction: <select name="attacker_faction" id ="attacker_faction">
+          <option value="covenant">Covenant</option>
+          <option value="marauder">Marauders</option>
+          <option value="syndicate">Syndicate</option>
+        </select></h3>
+         <h3 style="color: white;">Defending Team Name: <input type="text" name="defender_name"><br><br></h3>
+        <h3 style="color: white;">Defender Faction: <select name="defender_faction" id ="defender_faction">
+          <option value="covenant">Covenant</option>
+          <option value="marauder">Marauders</option>
+          <option value="syndicate">Syndicate</option>
+        </select></h3>
+
+         <button class="myButton" input type = "submit"/ style="color: white; margin-bottom: 3%; margin-top: 2%;">Submit War For Review</button>
+
+      </form>
+{% endblock %}

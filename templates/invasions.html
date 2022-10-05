@@ -138,9 +138,8 @@
 
     <h1 style="color: white; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; text-align: center; padding-bottom: .5%; margin-top: 2%; width: 80%; margin-left: 10%; font-size: 38px;">{{war_title[0]}} ({{war_title[1]}})</h1>
 	<div style="width: 50%; margin-left: 25%; text-align: center; padding-bottom: 20px;">
-	<a href="https://www.nw-stats.com/{{server}}"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Return To War List</h3></button></a>
+	<a href="https://www.nw-stats.com/{{server}}/invasions"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Return To Invasion List</h3></button></a>
 	<a href="https://discord.gg/tySzf8mN9W" target="_blank"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Report an Error</h3></button></a>
-	<a href="https://www.nw-stats.com/{{server}}/war/{{war_id}}/submit_clip" target="_blank"><button class="myButton" style="color: white; padding: 5px; display: inline-block;"><h3 style="color: white;">Submit A Recording, Clip, or Vod</h3></button></a>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7210973826242979"
          crossorigin="anonymous"></script>
@@ -154,17 +153,11 @@
     <script>
          (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
-        {% if info[3] == "Attack" and war_title[2] == "N/A"%}
-            <h2 style="color:{{user_settings[6]}}; text-align: center; background-image: linear-gradient(to right, {{user_settings[5]}} , {{user_settings[4]}}); padding-top: 1%; padding-bottom: 1%; font-size: 36px;">Attackers Win!</h2>
-        {% elif info[3] == "Attack" and war_title[2] != "N/A" %}
-            <h2 style="color:{{user_settings[6]}}; text-align: center; background-image: linear-gradient(to right, {{user_settings[5]}} , {{user_settings[4]}}); padding-top: 1%; padding-bottom: 1%; font-size: 36px;">{{war_title[2]}} Victory!</h2>
+        {% if war_title[4] == "Defense" %}
+            <h2 style="color:{{user_settings[6]}}; text-align: center; background-image: linear-gradient(to right, {{user_settings[5]}} , {{user_settings[4]}}); padding-top: 1%; padding-bottom: 1%; font-size: 36px;">Victory!</h2>
+        {% else %}
+            <h2 style="color:{{user_settings[6]}}; text-align: center; background-image: linear-gradient(to right, {{user_settings[5]}} , {{user_settings[4]}}); padding-top: 1%; padding-bottom: 1%; font-size: 36px;">Defeat!</h2>
         {% endif %}
-        {% if info[3] == "Defense" and war_title[3] == "N/A" %}
-            <h2 style="color:{{user_settings[6]}}; text-align: center; background-image: linear-gradient(to right, {{user_settings[5]}} , {{user_settings[4]}}); padding-top: 1%; padding-bottom: 1%; font-size: 36px;">Defenders Win!</h2>
-        {% elif info[3] == "Defense" and war_title[3] != "N/A" %}
-            <h2 style="color:{{user_settings[6]}}; text-align: center; background-image: linear-gradient(to right, {{user_settings[5]}} , {{user_settings[4]}}); padding-top: 1%; padding-bottom: 1%; font-size: 36px;">{{war_title[3]}} Victory!</h2>
-        {% endif %}
-
         <div class="flex-container">
 
         <div class="flex-child attacker-logo" style="text-align:center; padding-top: 3%; padding-bottom: 3%;">
@@ -215,171 +208,92 @@
         </div>
     <table id="header-fixed">
     {% if sorted_by == "none" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}">Rank*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}">Rank*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}">Rank</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}">Rank</a></th>
         {% endif %}
         <th>Player Name</th>
         <th>Score</th>
         {% if sorted_by == "kills" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kills">Kills*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/kills">Kills*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kills">Kills</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/kills">Kills</a></th>
         {% endif %}
         {% if sorted_by == "deaths" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/deaths">Deaths*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/deaths">Deaths*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/deaths">Deaths</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/deaths">Deaths</a></th>
         {% endif %}
         {% if sorted_by == "assists" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/assists">Assists*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/assists">Assists*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/assists">Assists</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/assists">Assists</a></th>
         {% endif %}
         {% if sorted_by == "healing" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/healing">Healing*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/healing">Healing*</a></th>
         {% else %}
         <th><a href="https://www.nw-stats.com/{{server}}war/{{war_link}}/healing">Healing</a></th>
         {% endif %}
         {% if sorted_by == "damage" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/damage">Damage*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/damage">Damage*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/damage">Damage</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/damage">Damage</a></th>
         {% endif %}
-        {% if sorted_by == "kpar" %}
-        <th title="Kill participation (kills + assists)/ total enemy deaths"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kpar">Kpar %*</a></th>
-        {% else %}
-        <th title="Kill participation (kills + assists)/ total enemy deaths"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kpar">Kpar %</a></th>
-        {% endif %}
-        {% if sorted_by == "dmgkpar" %}
-        <th title="Damage per kill (Total player damage)/(kills + assists)"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/dmgkpar">Damage Kpar*</a></th>
-        {% else %}
-        <th title="Damage per kill (Total player damage)/(kills + assists)"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/dmgkpar">Damage Kpar</a></th>
-        {% endif %}
-        {% if sorted_by == "role" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/role">Role*</a></th>
-        {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/role">Role</a></th>
-        {% endif %}
-        {% if sorted_by == "team" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/team">Team*</a></th>
-        {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/team">Team</a></th>
-        {% endif %}
+
         </table>
     <!--sse-->
     <table id="table-1" style="padding-top:15px; style="overflow-x: hidden; overflow-y: auto; width: 80%; height: 70%;">
 
         {% if sorted_by == "none" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}">Rank*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}">Rank*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}">Rank</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}">Rank</a></th>
         {% endif %}
         <th>Player Name</th>
         <th>Score</th>
         {% if sorted_by == "kills" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kills">Kills*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/kills">Kills*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kills">Kills</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/kills">Kills</a></th>
         {% endif %}
         {% if sorted_by == "deaths" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/deaths">Deaths*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/deaths">Deaths*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/deaths">Deaths</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/deaths">Deaths</a></th>
         {% endif %}
         {% if sorted_by == "assists" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/assists">Assists*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/assists">Assists*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/assists">Assists</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/assists">Assists</a></th>
         {% endif %}
         {% if sorted_by == "healing" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/healing">Healing*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/healing">Healing*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/healing">Healing</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/healing">Healing</a></th>
         {% endif %}
         {% if sorted_by == "damage" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/damage">Damage*</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/damage">Damage*</a></th>
         {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/damage">Damage</a></th>
+        <th><a href="https://www.nw-stats.com/{{server}}/invasion/{{war_id}}/damage">Damage</a></th>
         {% endif %}
-        {% if sorted_by == "kpar" %}
-        <th title="Kill participation (kills + assists)/ total enemy deaths"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kpar">Kpar %*</a></th>
-        {% else %}
-        <th title="Kill participation (kills + assists)/ total enemy deaths"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/kpar">Kpar %</a></th>
-        {% endif %}
-        {% if sorted_by == "dmgkpar" %}
-        <th title="Damage per kill (Total player damage)/(kills + assists)"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/dmgkpar">Damage Kpar*</a></th>
-        {% else %}
-        <th title="Damage per kill (Total player damage)/(kills + assists)"><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/dmgkpar">Damage Kpar</a></th>
-        {% endif %}
-        {% if sorted_by == "role" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/role">Role*</a></th>
-        {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/role">Role</a></th>
-        {% endif %}
-        {% if sorted_by == "team" %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/team">Team*</a></th>
-        {% else %}
-        <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/team">Team</a></th>
-        {% endif %}
+
     {% for item in info[0][0] %}
-        {% if item[13] == "Defense" %}
+        {% if item[10] == "Defense" %}
     <tr style="background-color: {{user_settings[4]}}">
 
-        <td><b>{{item[1]}}</b></td>
+        <td><b>{{item[3]}}</b></td>
         {% if user_settings[8].__contains__(item[2]) and session['discord_id'] == user_settings[0] %}
         <td><b><a href="https://www.nw-stats.com/{{server}}/player/{{item[2]}}">{{item[2]}}  </b></a><img style="text-align:right" src="/static/images/tank_icon.png" width = 32 height = 32></img><a href="https://www.nw-stats.com/{{server}}/update_role/{{user_settings[8]}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
         <td><b><a href="https://www.nw-stats.com/{{server}}/player/{{item[2]}}">{{item[2]}}  </b></a><img style="text-align:right" src="/static/images/tank_icon.png" width = 32 height = 32></img></a></td>
         {% endif %}
-        <td>{{"{:,}".format(item[3].replace("*","")|int)}}</td>
         <td>{{"{:,}".format(item[4].replace("*","")|int)}}</td>
         <td>{{"{:,}".format(item[5].replace("*","")|int)}}</td>
         <td>{{"{:,}".format(item[6].replace("*","")|int)}}</td>
         <td>{{"{:,}".format(item[7].replace("*","")|int)}}</td>
         <td>{{"{:,}".format(item[8].replace("*","")|int)}}</td>
-        <td>{{item[11]}}%</td>
-        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
-        <td>{{item[15]}}</td>
-        <td>{{item[13]}}</td>
-    </tr>
-        {% endif %}
+        <td>{{"{:,}".format(item[9].replace("*","")|int)}}</td>
 
-        {% if item[13] == "Attack" %}
-        <tr style="background-color:{{user_settings[5]}}">
-        <td><b>{{item[1]}}</b></td>
-        {% if user_settings[8].__contains__(item[2]) and session['discord_id'] == user_settings[0] %}
-        <td><b><a href="https://www.nw-stats.com/{{server}}/player/{{item[2]}}">{{item[2]}}  </b></a><img style="text-align:right" src="/static/images/damage_icon.png" width = 32 height = 32></img><a href="https://www.nw-stats.com/{{server}}/update_role/{{user_settings[8]}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
-        {% else %}
-        <td><b><a href="https://www.nw-stats.com/{{server}}/player/{{item[2]}}">{{item[2]}}  </b></a><img style="text-align:right" src="/static/images/damage_icon.png" width = 32 height = 32></img></a></td>
-</td>
-        {% endif %}
-        <td>{{"{:,}".format(item[3].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[4].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[5].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[6].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[7].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[8].replace("*","")|int)}}</td>
-        <td>{{item[11]}}%</td>
-        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
-        <td>{{item[15]}}</td>
-        <td>{{item[13]}}</td>
-    </tr>
-        {% endif %}
-            {% if item[13] == "N/A" %}
-            <tr>
-        <td><b>{{item[1]}}</b></td>
-        <td><b><a href="https://www.nw-stats.com/player/{{item[2]}}">{{item[2]}}  </b></a></td>
-        <td>{{"{:,}".format(item[3].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[4].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[5].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[6].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[7].replace("*","")|int)}}</td>
-        <td>{{"{:,}".format(item[8].replace("*","")|int)}}</td>
-        <td>{{item[11]}}%</td>
-        <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
-        <td>{{item[15]}}</td>
-        <td>{{item[13]}}</td>
     </tr>
         {% endif %}
     {% endfor %}
@@ -466,17 +380,3 @@ function topFunction() {
 </div>
 
 {% endblock %}
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About

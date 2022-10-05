@@ -420,4 +420,3 @@ def remove_war(war_id):
     mycursor.execute(sql, val)
     mydb.commit()
 
-add_war()
