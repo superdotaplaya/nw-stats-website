@@ -1870,7 +1870,7 @@ def submit_war_page():
     if request.method == 'POST':
        form_data_images = request.files
        form_data_text = request.form
-       url = "https://discord.com/api/webhooks/1026588572188414023/jKf5Fn42XVvZxXVh7WA_o5LCuKdWeowjDAWCFQfLku9MkI2BxL-e26OOZ5_pJDo8FQoe"
+       url = config.disc_hook
        f = form_data_images['scoreboard']
        filename = secure_filename(f.filename)
        f.save(os.path.join("mysite/assets/images/", filename))
