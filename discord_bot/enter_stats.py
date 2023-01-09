@@ -4,6 +4,7 @@ import pygsheets
 import config
 import math
 from pusher_push_notifications import PushNotifications
+import testing_groups
 
 beams_client = PushNotifications(
     instance_id=config.beam_instance,
@@ -216,6 +217,7 @@ def update_player_averages(player,server):
     val = (player, server)
     mycursor.execute(sql,val)
     myresult = mycursor.fetchall()
+
     for row in myresult:
         if "*" not in row[3]:
             total_wars = total_wars + 1
@@ -235,9 +237,15 @@ def update_player_averages(player,server):
         sql = "UPDATE player_averages SET avg_score = %s, avg_kills = %s, avg_assists = %s, avg_healing = %s, avg_damage = %s, total_wars = %s WHERE player_name = %s AND server = %s"
         val = (player_avg_score,player_avg_kills,player_avg_assists,player_avg_healing,player_avg_damage, total_wars, player, server)
         print(f"Updating: {val}")
+        try:
+            mycursor.execute(sql, val)
+            mydb.commit()
+        except:
+            print("oops")
 
-        mycursor.execute(sql, val)
-        mydb.commit()
+
+
+
 
 def add_war(server,war_num):
     try:
@@ -375,7 +383,7 @@ def add_war(server,war_num):
         return("Could not add stats to the site, check the spreadsheet and the websites war page before trying again.")
 
 def add_invasion(server,invasion_num):
-    try:
+
         gc = pygsheets.authorize(service_file='credentials.json')
         player_info = get_player_info()
         mydb = mysql.connector.connect(
@@ -487,8 +495,8 @@ def add_invasion(server,invasion_num):
                 mycursor.execute(insert_stmt, data)
                 mydb.commit()
 
-        return(f"Stats for this invasion are now live at: https://www.nw-stats.com/{server}/invasion/{invasion_id}")
-    except:
+        return(f"Stats for this invasion are now live at: https://www.nw-stats.com/{server.replace(' ','%20')}/invasion/{invasion_id}")
+
         return("Could not add stats to the site, check the spreadsheet and the websites invasion page before trying again.")
 
 def fix_stats(server,updating_war):
@@ -518,7 +526,7 @@ def fix_stats(server,updating_war):
             server = "Eridu"
         elif server == "del":
             server = "Delos"
-        sh = gc.open(f'{server} invasion records')
+        sh = gc.open(f'{server} war records')
         wks = sh.worksheet_by_title(str(updating_war))
         returned_values = wks.get_values_batch( ['A1:J500'] )
         war_name_sheet = sh.worksheet_by_title("War List")
@@ -598,7 +606,7 @@ def fix_stats(server,updating_war):
                 update_player_averages(player_name,server)
                 mydb.commit()
 
-        return(f"Stats have been updated for this war, ensure the changes are on the website here: https://www.nw-stats.com/{server}/war/{updating_war}")
+        return(f"Stats have been updated for this war, ensure the changes are on the website here: https://www.nw-stats.com/{server.replace(' ','%20')}/war/{updating_war}")
     except:
         return(f"There was an error when trying to fix the stats for war {updating_war}, Please use the /deletewar command to remove it from the site, correct any errors on the spreadsheet, then run the /enterstats command to add the war back to the website!")
 
@@ -706,7 +714,7 @@ def fix_invasion_stats(server,updating_invasion):
                 print(val)
                 mydb.commit()
 
-        return(f"Stats have been updated for this invasion, ensure the changes are on the website here: https://www.nw-stats.com/{server}/invasion/{updating_invasion}")
+        return(f"Stats have been updated for this invasion, ensure the changes are on the website here: https://www.nw-stats.com/{server.replace(' ','%20')}/invasion/{updating_invasion}")
     except:
         return(f"There was an error when trying to fix the stats for invasion {updating_invasion}, Please use the /deleteinvasion command to remove it from the site, correct any errors on the spreadsheet, then run the /enterinvasion command to add the invasion back to the website!")
 
@@ -802,4 +810,115 @@ def remove_invasion(server,invasion_num):
     mycursor.execute(sql, val)
     mydb.commit()
 
-    return(f"Invasion {invasion_num} has been removed from the website! Please correct all issues leading to the removal, and run the /enterinvasionstats command to readd it to the site!")
+    return(f"Invasion {invasion_num} has been removed from the website! Please correct all issues leading to the removal, and run the /enterinvasionstats command to read it to the site!")
+
+def group_stats(server,war_id, attack_or_defense):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    sh = gc.open(f'{server} Rosters')
+    wks = sh.worksheet_by_title(war_id)
+    if attack_or_defense == "Attack":
+        returned_values = wks.get_values_batch( ['A1:E10'] )
+    elif attack_or_defense == "Defense":
+        returned_values = wks.get_values_batch( ['A12:E21'] )
+    groups = returned_values[0]
+
+    mycursor = mydb.cursor()
+
+
+    group1 = groups[0]
+    group2 = groups[1]
+    group3 = groups[2]
+    group4 = groups[3]
+    group5 = groups[4]
+    group6 = groups[5]
+    group7 = groups[6]
+    group8 = groups[7]
+    group9 = groups[8]
+    group10 = groups[9]
+
+    for player in groups[0]:
+        data = (player,"1",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id, server, group_team)"
+        " VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[1]:
+        data = (player,"2",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id, server, group_team)"
+        " VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[2]:
+        data = (player,"3",war_id,server,attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id, server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[3]:
+        data = (player,"4",war_id,server,attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id, server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[4]:
+        data = (player,"5",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name,player_group,war_id,server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[5]:
+        data = (player,"6",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id, server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[6]:
+        data = (player,"7",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group ,war_id ,server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[7]:
+        data = (player,"8",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id, server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[8]:
+        data = (player,"9",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group,war_id, server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+    for player in groups[9]:
+        data = (player,"10",war_id,server, attack_or_defense.title())
+        insert_stmt = (
+        "INSERT INTO group_records(name, player_group, war_id ,server, group_team)"
+        "VALUES (%s, %s, %s, %s, %s)"
+        )
+        mycursor.execute(insert_stmt, data)
+        mydb.commit()
+

@@ -1,106 +1,170 @@
 {% extends "base.html" %}
 
-<style>
-td {
-    font-family: Helvetica;
-    color: white;
-}
 
-
-</style>
 
 
 {% block content %}
-<h1 style="color: white; text-align: center; font-family: Helvetica; ">Leaderboards</h1><br>
-<table id="leaderboard" style="text-align: center;">
-<tr>
-{% if category == "score" %}
 
-<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{leaderboard[0][0]}} {{leaderboard[0][2]}} Score | | Wars Played: {{leaderboard[0][7]}}</td></h2>
+<div>
+<div style="text-align: center;">
+    {% if leaderboard|length <= 9 %}
+    <h1 style="color: white; font-family: Helvetica">We do not have enough wars recorded to generate a leaderboard, download the companion app and record your wars today!</h1>
+    {% else %}
+<div class="dropdown" style="display: inline-block; max-width: 25%; margin-right: 2%">
+  <button class="dropbtn" style="margin-bottom: 5%;">View Other Leaderboards <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+  <div class="dropdown-content">
+  <a href="https://www.nw-stats.com/{{server}}/leaderboards/assists">Assists</a>
+  <a href="https://www.nw-stats.com/{{server}}/leaderboards/damage">Damage</a>
+  <a href="https://www.nw-stats.com/{{server}}/leaderboards/healing">Healing</a>
+  <a href="https://www.nw-stats.com/{{server}}/leaderboards/kills">Kills</a>
+  <a href="https://www.nw-stats.com/{{server}}/leaderboards/score">Score</a>
+  </div>
+</div>
+<table style="width: 95%; margin-left: 2.5%; text-align: center;">
+<tr style="display: inline-block; padding-right: 7.5%; margin-left: 10%; text-align: center;">
+{% if category == "score" %}
+<h1 style="color: white; width: 80%; margin-left: 10%; text-align: center; font-size: 50px; font-family: Helvetica;"> Average Score Leaderboards</h1><br>
+
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%; margin-left: 10%;"><img src="/static/images/gold.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[0][0]}}">{{leaderboard[0][0]}}</a><br> Score: {{"{:,}".format(leaderboard[0][2]|float|round(2))}} <br> Wars Played: {{leaderboard[0][7]}}</td></h2>
 {% endif %}
 {% if category == "kills" %}
-<td>{{leaderboard[0][0]}} {{leaderboard[0][3]}} Kills | | Wars Played: {{leaderboard[0][7]}}</td>
+<h1 style="color: white; width: 80%; margin-left: 10%; text-align: center; font-size: 50px; font-family: Helvetica;"> Average Kills Leaderboard</h1><br>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%; margin-left: 10%;"><img src="/static/images/gold.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[0][0]}}">{{leaderboard[0][0]}}</a><br> Kills: {{"{:,}".format(leaderboard[0][3]|float|round(2))}}<br> Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 {% if category == "assists" %}
-<td>{{leaderboard[0][0]}} {{leaderboard[0][4]}} Assists | | Wars Played: {{leaderboard[0][7]}}</td>
+<h1 style="color: white; width: 80%; margin-left: 10%; text-align: center; font-size: 50px; font-family: Helvetica;"> Average Assists Leaderboards</h1><br>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%; margin-left: 10%;"><img src="/static/images/gold.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[0][0]}}">{{leaderboard[0][0]}}</a><br> Assists: {{"{:,}".format(leaderboard[0][4]|float|round(2))}}<br> Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 {% if category == "healing" %}
-<td>{{leaderboard[0][0]}} {{leaderboard[0][5]}} Healing | | Wars Played: {{leaderboard[0][7]}}</td>
+<h1 style="color: white; width: 80%; margin-left: 10%; text-align: center; font-size: 50px; font-family: Helvetica;"> Average Healing Leaderboard</h1><br>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%; margin-left: 10%;"><img src="/static/images/gold.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[0][0]}}">{{leaderboard[0][0]}}</a><br> Healing: {{"{:,}".format(leaderboard[0][5]|float|round(2))}} <br> Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 {% if category == "damage" %}
-<td>{{leaderboard[0][0]}} {{leaderboard[0][6]}} Damage | | Wars Played: {{leaderboard[0][7]}}</td>
+<h1 style="color: white; width: 80%; margin-left: 10%; text-align: center; font-size: 50px; font-family: Helvetica;"> Average Damage Leaderboard</h1><br>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%; margin-left: 10%;"><img src="/static/images/gold.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[0][0]}}">{{leaderboard[0][0]}}</a><br> Damage: {{"{:,}".format(leaderboard[0][6]|float|round(0))}} <br> Wars Played: {{leaderboard[0][7]}}</td>
 {% endif %}
 </tr>
 
 
 
-<tr>
+<tr style="display: inline-block; margin-right: 7.5%;">
 {% if category == "score" %}
 
-<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{leaderboard[1][0]}} {{leaderboard[1][2]}} Score | | Wars Played: {{leaderboard[1][7]}}</td></h2>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%;"><img src="/static/images/silver.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[1][0]}}">{{leaderboard[1][0]}}</a> <br>Score: {{"{:,}".format(leaderboard[1][2]|float|round(2))}} <br> Wars Played: {{leaderboard[1][7]}}</td></h2>
 {% endif %}
 {% if category == "kills" %}
-<td>{{leaderboard[1][0]}} {{leaderboard[1][3]}} Kills | | Wars Played: {{leaderboard[1][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%;"><img src="/static/images/silver.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[1][0]}}">{{leaderboard[1][0]}}</a><br> Kills: {{"{:,}".format(leaderboard[1][3]|float|round(2))}}<br> Wars Played: {{leaderboard[1][7]}}</td>
 {% endif %}
 {% if category == "assists" %}
-<td>{{leaderboard[1][0]}} {{leaderboard[1][4]}} Assists | | Wars Played: {{leaderboard[1][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%;"><img src="/static/images/silver.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[1][0]}}">{{leaderboard[1][0]}}</a><br> Assists: {{"{:,}".format(leaderboard[1][4]|float|round(2))}}<br> Wars Played: {{leaderboard[1][7]}}</td>
 {% endif %}
 {% if category == "healing" %}
-<td>{{leaderboard[1][0]}} {{leaderboard[1][5]}} Healing | | Wars Played: {{leaderboard[1][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%;"><img src="/static/images/silver.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[1][0]}}">{{leaderboard[1][0]}}</a><br> Healing: {{"{:,}".format(leaderboard[1][5]|float|round(2))}}<br> Wars Played: {{leaderboard[1][7]}}</td>
 {% endif %}
 {% if category == "damage" %}
-<td>{{leaderboard[1][0]}} {{leaderboard[1][6]}} Damage | | Wars Played: {{leaderboard[1][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;  width: 30%;"><img src="/static/images/silver.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[1][0]}}">{{leaderboard[1][0]}}</a><br> Damage: {{"{:,}".format(leaderboard[1][6]|float|round(0))}}<br> Wars Played: {{leaderboard[1][7]}}</td>
 {% endif %}
 </tr>
+</div>
+</div>
 
 
 
 
-<tr>
+<tr style="display: inline-block; margin-right: 7.5%;">
 {% if category == "score" %}
 
-<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{leaderboard[2][0]}} {{leaderboard[2][2]}} Score | | Wars Played: {{leaderboard[2][7]}}</td></h2>
+<td style="color: white; font-family: Helvetica; text-align: center;"><img src="/static/images/bronze.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[2][0]}}">{{leaderboard[2][0]}}</a><br> Score: {{"{:,}".format(leaderboard[2][2]|float|round(2))}}<br> Wars Played: {{leaderboard[2][7]}}</td></h2>
 {% endif %}
 {% if category == "kills" %}
-<td>{{leaderboard[2][0]}} {{leaderboard[2][3]}} Kills | | Wars Played: {{leaderboard[2][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;"><img src="/static/images/bronze.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[2][0]}}">{{leaderboard[2][0]}}</a><br> Kills: {{"{:,}".format(leaderboard[2][3]|float|round(2))}} <br> Wars Played: {{leaderboard[2][7]}}</td>
 {% endif %}
 {% if category == "assists" %}
-<td>{{leaderboard[2][0]}} {{leaderboard[2][4]}} Assists | | Wars Played: {{leaderboard[2][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;"><img src="/static/images/bronze.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[2][0]}}">{{leaderboard[2][0]}}</a><br> Assists: {{"{:,}".format(leaderboard[2][4]|float|round(2))}}<br> Wars Played: {{leaderboard[2][7]}}</td>
 {% endif %}
 {% if category == "healing" %}
-<td>{{leaderboard[2][0]}} {{leaerboard[2][5]}} Healing | | Wars Played: {{leaderboard[2][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;"><img src="/static/images/bronze.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[2][0]}}">{{leaderboard[2][0]}}</a><br> Healing: {{"{:,}".format(leaderboard[2][5]|float|round(2))}}<br> Wars Played: {{leaderboard[2][7]}}</td>
 {% endif %}
 {% if category == "damage" %}
-<td>{{leaderboard[2][0]}} {{leaderboard[2][6]}} Damage | | Wars Played: {{leaderboard[2][7]}}</td>
+<td style="color: white; font-family: Helvetica; text-align: center;"><img src="/static/images/bronze.png"><br><h2 style="color: white; font-family: Helvetica; text-align: center; font-size: 25px;"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{leaderboard[2][0]}}">{{leaderboard[2][0]}}</a><br> Damaga: {{"{:,}".format(leaderboard[2][6]|float|round(0))}}<br> Wars Played: {{leaderboard[2][7]}}</td>
 {% endif %}
 </tr>
+</table>
+</div>
 
+<style>
+    table {
+            border-spacing: 0px;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
 
+		}
+		table th {
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+			font-size: 24px;
+            position: sticky;
+            top: 0;
+		}
+		table td {
+			text-align:center;
+			padding: 8px;
+			color: {{user_settings[6]}};
+			font-size: 20px;
+		}
+</style>
+<table style="width: 95%; text-align: center;">
 
-
-
-
-
-
+<div>
+    <div style="text-align:center;">
+<th>Player Name</th>
+<th>{{category.title()}}</th>
+<th>Wars Played</th>
 {% for entry in leaderboard[3:] %}
 <tr>
 {% if category == "score" %}
 
-<td style="color: white; font-family: Helvetica; text-align: center;"><h2 style="color: white; font-family: Helvetica; text-align: center;"></h2>{{entry[0]}} {{entry[2]}} Score | | Wars Played: {{entry[7]}}</td></h2>
+<td style="font-family: helvetica"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{entry[0]}}">{{entry[0]}}</td></a>
+
+<td style="font-family: helvetica"> {{"{:,}".format(entry[2]|float|round(2))}}</td>
+<td style="font-family: helvetica">{{entry[7]}}</td>
 {% endif %}
 {% if category == "kills" %}
-<td>{{entry[0]}} {{entry[3]}} Kills | | Wars Played: {{entry[7]}}</td>
+<td style="font-family: helvetica"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{entry[0]}}">{{entry[0]}}</td></a>
+
+<td style="font-family: helvetica"> {{"{:,}".format(entry[3]|float|round(2))}}</td>
+<td style="font-family: helvetica">{{entry[7]}}</td>
 {% endif %}
 {% if category == "assists" %}
-<td>{{entry[0]}} {{entry[4]}} Assists | | Wars Played: {{entry[7]}}</td>
+<td style="font-family: helvetica"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{entry[0]}}">{{entry[0]}}</td></a>
+
+<td style="font-family: helvetica"> {{"{:,}".format(entry[4]|float|round(2))}}</td>
+<td style="font-family: helvetica">{{entry[7]}}</td>
 {% endif %}
 {% if category == "healing" %}
-<td>{{entry[0]}} {{entry[5]}} Healing | | Wars Played: {{entry[7]}}</td>
+<td style="font-family: helvetica"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{entry[0]}}">{{entry[0]}}</td></a>
+
+<td style="font-family: helvetica"> {{"{:,}".format(entry[5]|float|round(2))}}</td>
+<td style="font-family: helvetica">{{entry[7]}}</td>
 {% endif %}
 {% if category == "damage" %}
-<td>{{entry[0]}} {{entry[6]}} Damage | | Wars Played: {{entry[7]}}</td>
+<td style="font-family: helvetica"><a style="text-decoration: none; color: inherit;" href="https://www.nw-stats.com/{{server}}/player/{{entry[0]}}">{{entry[0]}}</td></a>
+
+<td style="font-family: helvetica"> {{"{:,}".format(entry[6]|float|round(2))}}</td>
+<td style="font-family: helvetica">{{entry[7]}}</td>
 {% endif %}
 </tr>
 {% endfor %}
 </table>
+{% endif %}
+
+<h2 style="color: white; font-family: helvetica; text-align: center">Data for leaderboards is updated each time a new war is submitted to the site for analysis. Download the companion app (upper right corner) to help get more stats without putting in extra effort!</h2>
+
+</div>
+</div>
+</div>
 {% endblock %}

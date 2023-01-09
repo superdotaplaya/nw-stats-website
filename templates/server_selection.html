@@ -1,7 +1,13 @@
      <html lang="eng">
 
 <head>
-
+        <meta name="title" content="NW-Stats">
+        <meta name="description" content="The original and community driven stat tracing site for player profiles, stats, wars, and invasions! More features being worked on constantly!">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NW-Stats" />
+        <meta property="og:description" content="The original and community driven stat tracing site for player profiles, stats, wars, and invasions! More features being worked on constantly!" />
+        <meta property="og:url" content="https://www.nw-stats.com" />
+        <meta property="og:image" content="/static/images/nw-stats logo.png" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=1200">
 
@@ -53,8 +59,10 @@
      <a href="/logout" style="float: right; font-size: 25px; display: inline-block;">Logout</a>
      <a href="/settings" style="float: right; font-size: 25px; display: inline-block;">Settings</a>
      <a href="/profile" style="float: right; font-size: 25px; display: inline-block;">Profile</a>
+     <a href="/companion" style="float: right; font-size: 25px; display: inline-block; color: green;">Get Companion App (Beta)</a>
      {% else %}
   <a href="/login" style="float: right; font-size: 25px; display: inline-block;">Login</a>
+  <a href="/companion" style="float: right; font-size: 25px; display: inline-block; color: green;">Get Companion App (Beta)</a>
   {% endif %}
 </div>
 <div class="search-container">
@@ -86,8 +94,11 @@
 
     {% if servers == [] %}
     <h1>Welcome to New World Stats!</h1>
-    <p> THE place to find stats and scout your opponents in New World!.</p><br>
+    <p> THE place to find stats and scout your opponents in New World!</p><br>
+    <h2> <b>{{total_wars}}</b></h2>
+    <h2>Wars Tracked</h2><br>
     <h2>Select a region to Explore player stats and war stats in New World!</h2>
+
     <div class="dropdown">
   <button class="dropbtn">Region Selection <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
   <div class="dropdown-content">
@@ -98,8 +109,10 @@
 </div>
     {% else %}
     <h2>Select a server to explore player stats and war stats in New World!</h2>
+    <h2>{{region}}</h2>
     <div class="dropdown">
     <button class="dropbtn">Server Selection <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+    <a href="https://www.nw-stats.com"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-right:15px;">Back To Region Selection</button></a>
     <div class="dropdown-content">
     {% for server in servers %}
     <a href="/{{server.replace("_"," ")}}">{{server.replace("_", " ")}}</a>
@@ -108,9 +121,6 @@
 </div>
 {% endif %}
 <br><br>
-
-    <h2>Don't See your New World server?</h2>
-    <a href="https://discord.gg/P5qJ2m6nzF"><button>Request A Server</button></a><br><br>
 
   </div>
 

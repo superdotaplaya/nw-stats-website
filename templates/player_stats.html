@@ -28,6 +28,7 @@
     position:relative;
     top:1px;
 }
+
 </style>
 
 <div class="BioPage">
@@ -70,7 +71,7 @@
 </div>
 
   <div class="dropdown" style="display: inline-block; max-width: 25%; margin-right: 2%">
-  <button class="dropbtn" style="margin-bottom: 5%;">Mode Selection <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+  <button class="dropbtn" style="margin-bottom: 5%;">Mode Selection (Coming Soon!) <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
   <div class="dropdown-content">
   <a href="#">War</a>
   <a href="#">Invasion</a>
@@ -507,8 +508,10 @@ function tellToHover() {
         <td>{{item[7]}}</td>
         <td>{{item[8]}}</td>
         <td>{{item[11]}}%</td>
+        {% if item[12] %}
         <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
         <td>{{item[15]}}</td>
+        {% endif %}
 </tr>
 {% endfor %}
 
@@ -542,8 +545,10 @@ function tellToHover() {
         <td>{{item[7]}}</td>
         <td>{{item[8]}}</td>
         <td>{{item[11]}}%</td>
+        {% if item[12] %}
         <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
         <td>{{item[15]}}</td>
+        {% endif %}
 </tr>
 {% endfor %}
 
@@ -578,8 +583,10 @@ function tellToHover() {
         <td>{{item[7]}}</td>
         <td>{{item[8]}}</td>
         <td>{{item[11]}}%</td>
+        {% if item[12] %}
         <td>{{"{:,}".format(item[12].replace("*","")|int)}}</td>
         <td>{{item[15]}}</td>
+        {% endif %}
 </tr>
 {% endfor %}
 

@@ -63,6 +63,8 @@ font-family: Helvetica;
 }
 
 .dropdown-content {
+     max-height:200px;
+   overflow:scroll;
   display: none;
   position: absolute;
   background-color: #f9f9f9;

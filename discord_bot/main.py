@@ -16,7 +16,7 @@ import analyze_screenshots
 import lxml
 import mysql.connector
 import enter_stats
-
+import testing_groups
 
 #from PIL import Image
 bot = discord.Bot()
@@ -341,7 +341,7 @@ async def submitwarstats(ctx, server: Option(str, "What server did the war occur
 @bot.slash_command(description = "Submits Screenshots for data processing.")
 async def submitinvasionstats(ctx, server: Option(str, "What server did the invasion occur on?"), invasion_name: Option(str, "Name of the invasion.")):
     for role in ctx.author.roles:
-        if str(role.id) == "1001600386450333747":
+        if str(role.id) == "1027072479925129246":
             channel_to_read = bot.get_channel(ctx.channel.id)
             messages = await ctx.channel.history(limit=200).flatten()
             images = []
@@ -409,7 +409,7 @@ async def enterwarstats(ctx, server: Option(str, "What server did the war occur 
             upload_stats = enter_stats.add_war(server,war_id)
             if upload_stats == f"Stats for this war are now live at: https://www.nw-stats.com/{server}/war/{war_id}":
                 await ctx.send(upload_stats)
-                await bot.get_channel(int(1017194084647047288)).send(f"Stats for this war are now live at: https://www.nw-stats.com/{server}/war/{war_id}")
+                await bot.get_channel(int(1017194084647047288)).send(f"Stats for this war are now live at: https://www.nw-stats.com/{server.replace(' ','%20')}/war/{war_id}")
             else:
                 await ctx.send(upload_stats)
 
@@ -458,9 +458,9 @@ async def enterinvasionstats(ctx, server: Option(str, "What server did the invas
         if str(role.id) == "1027072479925129246":
             await ctx.respond("Attempting to add stats to the website, please wait a moment!")
             upload_stats = enter_stats.add_invasion(server,invasion_id)
-            if upload_stats == f"Stats for this invasion are now live at: https://www.nw-stats.com/{server}/invasion/{invasion_id}":
+            if upload_stats == f"Stats for this invasion are now live at: https://www.nw-stats.com/{server.replace(' ','%20')}/invasion/{invasion_id}":
                 await ctx.send(upload_stats)
-                await bot.get_channel(int(1027321184339107841)).send(f"Stats for this invasion are now live at: https://www.nw-stats.com/{server}/invasion/{invasion_id}")
+                await bot.get_channel(int(1027321184339107841)).send(f"Stats for this invasion are now live at: https://www.nw-stats.com/{server.replace(' ','%20')}/invasion/{invasion_id}")
             else:
                 await ctx.send(upload_stats)
 
@@ -487,6 +487,47 @@ async def deletewar(ctx, server: Option(str, "What server did the war occur on?"
             print(server)
             await ctx.send(enter_stats.remove_war(server,war_id))
 
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Submit a war roster to be analyzed for the site.")
+async def submitgroupstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you submitting a roster for?"), attack_or_defense: Option(str, "Is this the attack or defense roster?")):
+    images = []
+    for role in ctx.author.roles:
+        if str(role.id) == "1001600386450333747":
+            channel_to_read = bot.get_channel(ctx.channel.id)
+            messages = await ctx.channel.history(limit=200).flatten()
+            for message in messages:
+                print(message.content)
+                for link in reversed(message.attachments):
+                    images.append(link.url)
+            image = images[0]
+            await ctx.respond("Attempting to analyze war roster!")
+            war_id = war_id
+            server = server
+            print(war_id)
+            print(server)
+            testing_groups.get_groups(image,war_id,server,attack_or_defense)
+            await ctx.send("Roster Submitted!")
+
+
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Submit a war roster to be displayed on the site.")
+async def entergroupstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you entering a roster for?"), attack_or_defense: Option(str, "Is this the attack or defense roster?")):
+    enter_stats.group_stats(server,war_id,attack_or_defense)
+    await ctx.respond("Attempting to enter roster into the database!")
+    await ctx.send("Roster submitted and should be viewable on the war scoreboard page!")
+
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Delete war roster for a war")
+async def deletegroupstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you deleting a roster for?"), attack_or_defense: Option(str, "Is this the attack or defense roster?")):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    sql = "DELETE FROM group_records WHERE server = %s AND war_id = %s AND group_team = %s"
+    val = (server, war_id, attack_or_defense.title())
+    mycursor.execute(sql, val)
+    mydb.commit()
+    await ctx.respond("Roster removed!")
 
 def calc_stats(usr,server):
 

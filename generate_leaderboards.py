@@ -32,13 +32,14 @@ authorize_url = config.authorize_url
 
 admin_list = config.admin_list
 
-server_list = ['Castle of Steel','Delos','Valhalla','Maramma','Orofena','Yggdrasil','Eridu']
-player_list = []
+server_list = ['Castle of Steel','Delos','Valhalla','Maramma','Orofena','Yggdrasil','Eridu', 'El Dorado', 'Eden', 'Olympus', 'Tartarus', 'Abaton' ]
 
 
 
 
-def generate_leaderboard():
+
+def generate_leaderboard(server):
+    player_list = []
     mydb = mysql.connector.connect(
         host=config.db_host,
         user=config.db_user,
@@ -47,16 +48,17 @@ def generate_leaderboard():
         )
 
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM player_records"
-    mycursor.execute(sql)
+    sql = "SELECT * FROM player_records WHERE server = %s"
+    val = (server,)
+    mycursor.execute(sql, val)
     myresult =  mycursor.fetchall()
     mycursor.close()
     for row in myresult:
         if row[2] not in player_list:
             player_list.append(row[2])
-    leaderboards(player_list)
+    leaderboards(player_list, server)
 
-def leaderboards(player_list):
+def leaderboards(player_list, server):
     mydb = mysql.connector.connect(
         host=config.db_host,
         user=config.db_user,
@@ -64,9 +66,8 @@ def leaderboards(player_list):
         database="superdotaplaya$war_stats"
         )
     mycursor = mydb.cursor()
-    for server in server_list:
-
-        for player in player_list:
+    for player in player_list:
+        try:
             total_wars = 0
             player_scores = []
             player_kills = []
@@ -89,21 +90,35 @@ def leaderboards(player_list):
                     player_damage.append(int(row[8]))
 
             if len(player_scores) != 0:
-                player_avg_score = sum(player_scores)/len(player_scores)
-                player_avg_kills = sum(player_kills)/len(player_kills)
-                player_avg_assists = sum(player_assists)/len(player_assists)
-                player_avg_healing = sum(player_healing)/len(player_healing)
-                player_avg_damage = sum(player_damage)/len(player_damage)
-                data = (player, server, player_avg_score, player_avg_kills, player_avg_assists, player_avg_healing, player_avg_damage, total_wars)
-                insert_stmt = (
-                "INSERT INTO player_averages(player_name, server, avg_score, avg_kills, avg_assists, avg_healing, avg_damage, total_wars)"
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                )
-                print(data)
+                    player_avg_score = sum(player_scores)/len(player_scores)
+                    player_avg_kills = sum(player_kills)/len(player_kills)
+                    player_avg_assists = sum(player_assists)/len(player_assists)
+                    player_avg_healing = sum(player_healing)/len(player_healing)
+                    player_avg_damage = sum(player_damage)/len(player_damage)
+                    data = (player, server, player_avg_score, player_avg_kills, player_avg_assists, player_avg_healing, player_avg_damage, total_wars)
+                    insert_stmt = (
+                    "INSERT INTO player_averages(player_name, server, avg_score, avg_kills, avg_assists, avg_healing, avg_damage, total_wars)"
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                    )
+                    print(data)
 
-                mycursor.execute(insert_stmt, data)
-                mydb.commit()
+                    mycursor.execute(insert_stmt, data)
+                    mydb.commit()
             else:
                 continue
+        except:
+            pass
 
-generate_leaderboard()
+
+mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+
+mycursor = mydb.cursor()
+sql = "TRUNCATE TABLE player_averages"
+mycursor.execute(sql)
+for server in server_list:
+    generate_leaderboard(server)

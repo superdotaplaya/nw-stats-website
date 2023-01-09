@@ -180,6 +180,7 @@ def get_all_servers_global():
 
 def get_leaderboards(category,server):
     mynewresult = []
+    players = []
     mydb = mysql.connector.connect(
     host=config.db_host,
     user=config.db_user,
@@ -203,7 +204,8 @@ def get_leaderboards(category,server):
     if category =='damage':
         myresult.sort(key = lambda x: float(x[6].replace("*","").replace("^","")), reverse = True)
     for item in myresult:
-        if int(item[7]) >= 10:
+        if int(item[7]) >= 10 and item[0].lstrip().rstrip().lower() not in players:
+           players.append(item[0].lower())
            mynewresult.append(item)
 
     return(mynewresult[:10])
@@ -359,7 +361,7 @@ def get_war_stats(war_id,sort_by,server):
 
             return([war_stats],get_damage_graph(total_attacker_damage, total_defender_damage), get_healing_graph(total_attacker_healing, total_defender_healing), war_winner, total_attacker_damage, total_defender_damage, total_attacker_healing, total_defender_healing, total_attacker_kills, total_defender_kills, total_attacker_deaths, total_defender_deaths, total_attacker_assists, total_defender_assists, attacker_dmg_per_kill, defender_dmg_per_kill)
         if sort_by == "none":
-            return([war_stats],get_damage_graph(total_attacker_damage, total_defender_damage), get_healing_graph(total_attacker_healing, total_defender_healing), war_winner, total_attacker_damage, total_defender_damage, total_attacker_healing, total_defender_healing, total_attacker_kills, total_defender_kills, total_attacker_deaths, total_defender_deaths, total_attacker_assists, total_defender_assists, attacker_dmg_per_kill, defender_dmg_per_kill)
+            return([war_stats],0,0, war_winner, total_attacker_damage, total_defender_damage, total_attacker_healing, total_defender_healing, total_attacker_kills, total_defender_kills, total_attacker_deaths, total_defender_deaths, total_attacker_assists, total_defender_assists, attacker_dmg_per_kill, defender_dmg_per_kill)
         if str(sort_by) == 'role':
             try:
                 war_stats.sort(key = lambda x: x[15], reverse = False)
@@ -437,7 +439,9 @@ def get_invasion_stats(invasion_id,sort_by,server):
     defender_assists = []
     war_winner = ""
     has_teams = False
+    invasion_winner = myresult[0][10]
     for row in myresult:
+
         war_stats.append(row)
         print(row)
 
@@ -460,7 +464,7 @@ def get_invasion_stats(invasion_id,sort_by,server):
     total_defender_assists = sum(defender_assists)
     attacker_dmg_per_kill = 0
     defender_dmg_per_kill = 0
-    invasion_winner = row[10]
+
     if str(sort_by) == 'kills':
         war_stats.sort(key = lambda x: int(x[5].replace("*","").replace("^","")), reverse = True)
 
@@ -670,6 +674,38 @@ def get_record_wars(server):
     record_wars = [record_kills,record_deaths,record_assists,record_healing,record_damage, record_score, record_kpar]
     return(record_wars)
 
+def get_record_invasions(server):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    mycursor.execute("SELECT * FROM invasion_records")
+    myresult = mycursor.fetchall()
+    all_wars = []
+    record_wars = []
+    for row in myresult:
+        if row[11] == server:
+            all_wars.append(row)
+    record_wars = []
+    all_wars.sort(key = lambda x: int(x[4].replace("*","")), reverse = True)
+    record_score = all_wars[0]
+    all_wars.sort(key = lambda x: int(x[5].replace("*","")), reverse = True)
+    record_kills = all_wars[0]
+    all_wars.sort(key = lambda x: int(x[6].replace("*","")), reverse = True)
+    record_deaths = all_wars[0]
+    all_wars.sort(key = lambda x: int(x[7].replace("*","")), reverse = True)
+    record_assists = all_wars[0]
+    all_wars.sort(key = lambda x: int(x[8].replace("*","")), reverse = True)
+    record_healing = all_wars[0]
+    all_wars.sort(key = lambda x: int(x[9].replace("*","")), reverse = True)
+    record_damage = all_wars[0]
+    record_wars = [record_kills,record_deaths,record_assists,record_healing,record_damage, record_score, record_kpar]
+    return(record_wars)
+
 def get_war_list(page, server):
     war_list = []
     server = server.replace("_"," ")
@@ -761,16 +797,17 @@ def get_total_wars_global():
     password=config.db_pass,
     database="superdotaplaya$war_stats"
     )
+    servers = get_all_servers_global()
     mycursor = mydb.cursor()
     # loop through the rows
+
     sql = "SELECT * FROM player_records"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     for row in myresult:
-        if [row[9],row[1]] not in war_list:
-            war_list.append([row[9],row[1]])
+        if [row[9],row[-1]] not in war_list:
+            war_list.append([row[9],row[-1]])
     return(len(war_list))
-
 
 def get_user_links(war_id):
     player_links = []
@@ -1234,13 +1271,13 @@ def get_player_role_stats(player,player_role, server):
     for player_entry in player_results:
 
         player_results.sort(key = lambda x: int(x[4].replace("*","").replace("^","")), reverse = True)
-    max_kill_war = player_results[0][9]
+    max_kill_war = player_results[0][0]
     player_results.sort(key = lambda x: int(x[7].replace("*","").replace("^","")), reverse = True)
-    max_healing_war = player_results[0][9]
+    max_healing_war = player_results[0][0]
     player_results.sort(key = lambda x: int(x[8].replace("*","").replace("^","")), reverse = True)
-    max_damage_war = player_results[0][9]
+    max_damage_war = player_results[0][0]
     player_results.sort(key = lambda x: int(x[6].replace("*","").replace("^","")), reverse = True)
-    max_assists_war = player_results[0][9]
+    max_assists_war = player_results[0][0]
     for player_entry in player_results:
 
         if "*" not in player_entry[3]:
@@ -1478,7 +1515,7 @@ def invasion(server, invasion_id):
 @app.route("/<server>/war/<war_id>", methods=["POST", "GET"])
 def war(server, war_id):
     return render_template("war.html", info= get_war_stats(war_id,'none', server), war_title = get_war_title(war_id, server), war_link = war_id, sorted_by = "none", logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
-, vods = get_submitted_vods(war_id, server), server = server)
+, vods = get_submitted_vods(war_id, server), server = server, group_stats = get_group_stats(war_id,server))
 
 @app.route("/<server>/war/<war_id>/<sort_by>", methods=["POST", "GET"])
 def war_sorted(server, war_id,sort_by):
@@ -1508,6 +1545,15 @@ def user(usr, server):
     servers_played = get_servers_played(usr)
     player_gear = get_player_gear(player)
     return render_template("player_stats.html", info= sql_stuff.calc_stats(usr,server), war_logs=sql_stuff.get_user_wars(usr, role, server), role = role, player = usr, player_info = get_player_entered_info(usr), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
+, vods = get_submitted_vods(player, server), server = server, servers_played = servers_played, player_logo = get_player_logo(usr), player_gear = player_gear, servers = get_servers_played(usr), all_servers = get_all_servers_global())
+
+@app.route("/<server>/player/<usr>/invasions")
+def user_invasions(usr, server):
+    player = usr
+    role = "All"
+    servers_played = get_servers_played(usr)
+    player_gear = get_player_gear(player)
+    return render_template("player_stats.html", info= sql_stuff.calc_stats_invasions(usr,server), war_logs=sql_stuff.get_user_invasions(usr, role, server), role = role, player = usr, player_info = get_player_entered_info(usr), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
 , vods = get_submitted_vods(player, server), server = server, servers_played = servers_played, player_logo = get_player_logo(usr), player_gear = player_gear, servers = get_servers_played(usr), all_servers = get_all_servers_global())
 
 @app.route("/<server>/player/<usr>/<player_role>")
@@ -1560,6 +1606,205 @@ def submit_vod_page_player(server, player):
         return render_template("player_enter_vod.html",logged_in = is_logged_in(),has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
     , player = player, message = "", server = server)
 
+def get_group_stats(war_id,server):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # Get all the players o9n the attacking side for the war.
+    sql ="SELECT * FROM group_records WHERE war_id = %s AND server = %s AND group_team = %s"
+    data = (war_id, server, "Attack")
+    mycursor.execute(sql,data)
+    myresult_attack = mycursor.fetchall()
+
+    ## Get all the players on the defending side for the war.
+    sql ="SELECT * FROM group_records WHERE war_id = %s AND server = %s AND group_team = %s"
+    data = (war_id, server, "Defense")
+    mycursor.execute(sql,data)
+    myresult_defense = mycursor.fetchall()
+
+    group1 = []
+    group2 = []
+    group3 = []
+    group4 = []
+    group5 = []
+    group6 = []
+    group7 = []
+    group8 = []
+    group9 = []
+    group10 = []
+    group11 = []
+    group12 = []
+    group13 = []
+    group14 = []
+    group15 = []
+    group16 = []
+    group17 = []
+    group18 = []
+    group19 = []
+    group20 = []
+    group1stats = []
+    group2stats = []
+    group3stats = []
+    group4stats = []
+    group5stats = []
+    group6stats = []
+    group7stats = []
+    group8stats = []
+    group9stats = []
+    group10stats = []
+    group11stats = []
+    group12stats = []
+    group13stats = []
+    group14stats = []
+    group15stats = []
+    group16stats = []
+    group17stats = []
+    group18stats = []
+    group19stats = []
+    group20stats = []
+## Checks what group each player is in, and puts them into the correct group for the tables on the war html page
+
+    ## Places the players in their proper attackers groups
+    for item in myresult_attack:
+        if item[1] == "1":
+            group1.append(item[0])
+        if item[1] == "2":
+            group2.append(item[0])
+        if item[1] == "3":
+            group3.append(item[0])
+        if item[1] == "4":
+            group4.append(item[0])
+        if item[1] == "5":
+            group5.append(item[0])
+        if item[1] == "6":
+            group6.append(item[0])
+        if item[1] == "7":
+            group7.append(item[0])
+        if item[1] == "8":
+            group8.append(item[0])
+        if item[1] == "9":
+            group9.append(item[0])
+        if item[1] == "10":
+            group10.append(item[0])
+
+    ## Places the players in their proper defenders groups
+    for item in myresult_defense:
+        if item[1] == "1":
+            group11.append(item[0])
+        if item[1] == "2":
+            group12.append(item[0])
+        if item[1] == "3":
+            group13.append(item[0])
+        if item[1] == "4":
+            group14.append(item[0])
+        if item[1] == "5":
+            group15.append(item[0])
+        if item[1] == "6":
+            group16.append(item[0])
+        if item[1] == "7":
+            group17.append(item[0])
+        if item[1] == "8":
+            group18.append(item[0])
+        if item[1] == "9":
+            group19.append(item[0])
+        if item[1] == "10":
+            group20.append(item[0])
+    war_stats = get_war_stats(war_id,'none', server)
+
+## Gets the players stats from the database from the war, and adds their stats for this war to a list to be used to display the players stats in the groups table on the war scoreboard page.
+    for item in war_stats[0][0]:
+        if item[2] in group1:
+            group1stats.append(item)
+        if item[2] in group2:
+            group2stats.append(item)
+        if item[2] in group3:
+            group3stats.append(item)
+        if item[2] in group4:
+            group4stats.append(item)
+        if item[2] in group5:
+            group5stats.append(item)
+        if item[2] in group6:
+            group6stats.append(item)
+        if item[2] in group7:
+            group7stats.append(item)
+        if item[2] in group8:
+            group8stats.append(item)
+        if item[2] in group9:
+            group9stats.append(item)
+        if item[2] in group10:
+            group10stats.append(item)
+        if item[2] in group11:
+            group11stats.append(item)
+        if item[2] in group12:
+            group12stats.append(item)
+        if item[2] in group13:
+            group13stats.append(item)
+        if item[2] in group14:
+            group14stats.append(item)
+        if item[2] in group15:
+            group15stats.append(item)
+        if item[2] in group16:
+            group16stats.append(item)
+        if item[2] in group17:
+            group17stats.append(item)
+        if item[2] in group18:
+            group18stats.append(item)
+        if item[2] in group19:
+            group19stats.append(item)
+        if item[2] in group20:
+            group20stats.append(item)
+    i = 1
+
+## Fills gaps in tables with empty rows to ensure tables are equal size, and its clear that players are missing from the group for some reason.
+    while i <= 5:
+        if len(group1stats) < 5:
+            group1stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0,0])
+        if len(group2stats) < 5:
+            group2stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0,0])
+        if len(group3stats) < 5:
+            group3stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group4stats) < 5:
+            group4stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group5stats) < 5:
+            group5stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0,0])
+        if len(group6stats) < 5:
+            group6stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group7stats) < 5:
+            group7stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group8stats) < 5:
+            group8stats.append([0,0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group9stats) < 5:
+            group9stats.append([0,0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group10stats) < 5:
+            group10stats.append([0,0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group11stats) < 5:
+            group11stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0,0])
+        if len(group12stats) < 5:
+            group12stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0,0])
+        if len(group13stats) < 5:
+            group13stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group14stats) < 5:
+            group14stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group15stats) < 5:
+            group15stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0,0])
+        if len(group16stats) < 5:
+            group16stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group17stats) < 5:
+            group17stats.append(["N/A",0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group18stats) < 5:
+            group18stats.append([0,0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group19stats) < 5:
+            group19stats.append([0,0,"N/A",0,0,0,0,0,0,0,0,0])
+        if len(group20stats) < 5:
+            group20stats.append([0,0,"N/A",0,0,0,0,0,0,0,0,0])
+        i += 1
+
+    ## Group 1-10 are attackers and groups 11-20 are defenders groups.
+    return(group1stats,group2stats,group3stats,group4stats,group5stats,group6stats,group7stats,group8stats,group9stats,group10stats,group11stats,group12stats,group13stats,group14stats,group15stats,group16stats,group17stats,group18stats,group19stats,group20stats)
 
 @app.route("/<server>/player/<usr>/wars")
 def user_wars(usr, server):
@@ -1705,7 +1950,7 @@ def profile():
             selected_player = str(row[1])
             player_gear = get_player_gear(selected_player.lower())
 
-    return render_template("player_stats.html", info= sql_stuff.calc_stats(selected_player.lower(), get_player_settings()[9]), war_logs=sql_stuff.get_user_wars(selected_player,role, get_player_settings()[9]), role = "N/A", player = selected_player, player_info = get_player_entered_info(selected_player.lower()), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
+    return render_template("player_stats.html", info = sql_stuff.calc_stats(selected_player.lower(), get_player_settings()[9]), war_logs=sql_stuff.get_user_wars(selected_player,role, get_player_settings()[9]), role = "N/A", player = selected_player, player_info = get_player_entered_info(selected_player.lower()), logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
 , vods = get_submitted_vods(selected_player, get_player_settings()[9]), server = get_player_settings()[9], servers_played = get_servers_played(selected_player.lower()), player_logo = get_player_logo(selected_player), player_gear = player_gear, servers = get_servers_played(selected_player), all_servers = get_all_servers_global())
 
 @app.route("/settings", methods = ['POST', 'GET'])
@@ -1839,12 +2084,12 @@ def notifications():
 
 @app.route("/")
 def region_selection():
-    return render_template('server_selection.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", regions = region_names, servers = get_all_servers("ALL"))
+    return render_template('server_selection.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", regions = region_names, servers = get_all_servers("ALL"), total_wars = get_total_wars_global())
 
 @app.route("/<region>/server")
 def server_selection(region):
     region = region.replace("%20"," ")
-    return render_template('server_selection.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", regions = region_names, servers = get_all_servers(f"'{region}'"))
+    return render_template('server_selection.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", regions = region_names, servers = get_all_servers(f"'{region}'"), region = region)
 
 
 @app.route("/remove_vod", methods = ['POST', 'GET'])
@@ -1935,6 +2180,11 @@ def submit_war_page():
        else:
            print(f"Not sent with {result.status_code}, response:\n{result.json()}")
        return render_template('war_submission.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", all_servers = get_all_servers_global(), territories = sorted(territory_list))
+
+@app.route("/companion")
+def companion_app():
+        return render_template('companion_download_page.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "")
+
 
 
 @app.route("/<server>/leaderboards/<category>")

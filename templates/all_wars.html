@@ -18,8 +18,8 @@ a {
         <meta property="og:type" content="website">
         <meta property="og:title" content="{{player}}'s Stats" />
         <meta property="og:description" content="A place to view {{player}}'s stats in New World wars!" />
-        <meta property="og:url" content="www.blacktunastats.com/player/{{player}}" />
-        <meta property="og:image" content="https://www.blacktunastats.com/static/images/tuna_logo.png" />
+        <meta property="og:url" content="www.bnw-stats.com/player/{{player}}" />
+        <meta property="og:image" content="https://www.nw-stats.com/static/images/tuna_logo.png" />
 
     </div>
 
@@ -89,9 +89,9 @@ a {
     <tr>
         <td>{{war_logs[0][::-1].index(item) + 1}}</td>
         {% if user_settings[8] == item[2] and session['discord_id'] == user_settings[0] %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.blacktunastats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/{{server}}/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
         {% endif %}
         <td>{{item[3]}}</td>
         <td>{{item[4]}}</td>
@@ -124,9 +124,9 @@ a {
     <tr>
         <td>{{war_logs[1][::-1].index(item) + 1}}</td>
         {% if user_settings[8] == item[2] and session['discord_id'] == user_settings[0] %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.blacktunastats.com/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
         {% endif %}
         <td>{{item[3]}}</td>
         <td>{{item[4]}}</td>
@@ -160,9 +160,9 @@ a {
     <tr>
         <td>{{war_logs[2][::-1].index(item) + 1}}</td>
         {% if user_settings[8] == item[2] and session['discord_id'] == user_settings[0] %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.blacktunastats.com/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a><a href="https://www.nw-stats.com/update_role/{{player}}/{{item[9]}}"><button class="myButton" style="color: {{user_settings[6]}}; text-align: center; width: auto; margin-left:15px;">Set Role</button></td>
         {% else %}
-        <td style="font-size: 30px; font-style: bold;"><a href="https://www.blacktunastats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
+        <td style="font-size: 30px; font-style: bold;"><a href="https://www.nw-stats.com/{{server}}/war/{{item[9]}}" style="color: {{user_settings[6]}};">{{item[0]}}</a></td>
         {% endif %}
         <td>{{item[3]}}</td>
         <td>{{item[4]}}</td>

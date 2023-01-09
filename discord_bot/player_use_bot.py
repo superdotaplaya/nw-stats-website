@@ -582,6 +582,11 @@ def calc_stats(usr,server):
     else:
         return([0,0,0,0,0,0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0, 0, 0, 0, 0, []])
 
+@bot.slash_command(description = "Gives a link to download the NW-Stats companion app.")
+async def companion(ctx):
+    await ctx.respond("Download and learn more about the NW-Stats companion app here: https://www.nw-stats.com/companion")
+
+
 def get_user_wars(usr,role,server):
     requested_player = usr
     mydb = mysql.connector.connect(
