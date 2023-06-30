@@ -10,7 +10,9 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
 import config
 import pygsheets
-
+import mysql.connector
+from mysql.connector import Error
+import enter_stats
 
 
 def get_groups(image, war_id, server, attack_or_defense):
@@ -37,7 +39,7 @@ def get_groups(image, war_id, server, attack_or_defense):
     formUrl = "https://cdn.discordapp.com/attachments/1050600656915927060/1055302919999729834/8f9di0ywxcTMAAAAAASUVORK5CYII.png"
 
     document_analysis_client = DocumentAnalysisClient(
-        endpoint=endpoint, credential=AzureKeyCredential("azure_key")
+        endpoint=endpoint, credential=AzureKeyCredential("cbc6168e9a224c348d1c149dbf484978")
     )
 
     # Make sure your document's type is included in the list of document types the custom model can analyze
@@ -91,6 +93,11 @@ def get_groups(image, war_id, server, attack_or_defense):
     all_groups = [group1,group2,group3,group4,group5,group6,group7,group8,group9,group10]
     try:
         sh.add_worksheet(title= war_id, rows=100, cols=26, src_tuple=None, src_worksheet=None, index=None)
+        if attack_or_defense == "Attack":
+            pygsheets.datarange.DataRange(start="A1", end="E10", worksheet=wks).update_values(values=all_groups)
+        elif attack_or_defense == "Defense":
+            pygsheets.datarange.DataRange(start="A12", end="E21", worksheet=wks).update_values(values=all_groups)
+        return(group1,group2,group3,group4,group5,group6,group7,group8,group9,group10)
     except:
         wks = sh.worksheet_by_title(war_id)
         if attack_or_defense == "Attack":
@@ -98,5 +105,7 @@ def get_groups(image, war_id, server, attack_or_defense):
         elif attack_or_defense == "Defense":
             pygsheets.datarange.DataRange(start="A12", end="E21", worksheet=wks).update_values(values=all_groups)
         return(group1,group2,group3,group4,group5,group6,group7,group8,group9,group10)
+
+
 
 

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+<link rel="stylesheet" href="/static/styles/style.css">
+
+   <head>
+      <title>New World League S1 - NW-Stats</title>
+   </head>
+{% block content %}
+<style>
+		table {
+			border:2px white;
+			border-collapse:separate;
+			padding: 2px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            font-size: 20px;
+		}
+		table th {
+			border:2px #a6c9d9;
+			padding: 5px;
+			background: #000000;
+			color: #fff;
+		}
+		table td {
+			border:2px #a6c9d9;
+			text-align:center;
+			padding: 5px;
+			color: {{user_settings[6]}};
+			background: {{user_settings[4]}};
+		}
+		body{
+		    font-family: Helvetica
+		}
+
+		a{
+		    text-decoration: none;
+		    font-style: bold;
+		}
+
+
+	</style>
+<div width=100% height = auto style="text-align: center">
+    <h1 style="color:white; text-align:center; text-align:center; font-size:35px;">New World League Season 1</h1>
+    <iframe width="840" height="472.5" src="https://www.youtube.com/embed/L720xoFdov4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <br><br>
+
+    <h2 style="color: white; text-align: center; font-size:30px;">What is New World League?</h2>
+        <a href="https://docs.google.com/spreadsheets/d/1fNzgGBXnh1VU2YapRQ0pYNkYOB9-RfweF3mbMZoBUhU/edit#gid=0"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; horizontal-align: center">View Draft Results</button></a>
+        <a href="https://docs.google.com/document/d/1wLjMT1xYVuRsp7UsbMoe_M91H61roApf-6hV2VcekSo/edit"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px; ">View Rules</button></a>
+        <a href="https://docs.google.com/spreadsheets/d/15j50Va_zE0tc0mrSw0uuuC2Efp31jKDcq5gCZYXGdW4/edit#gid=0"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px; ">View Schedule</button></a>
+        <a href="https://discord.gg/nwleague"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px; ">Join Official Discord</button></a>
+        <a href="https://www.twitch.tv/team/newworldleague"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px; ">Watch NWL Streamers</button></a>
+    <br>
+    <div style="width:75% text-align:center; margin-left:12.5%; margin-right: 12.5%;">
+        <h3 style="color: white; text-align: center;">New World League is a community run event. It features 9 Teams, Each team has a captain, and each team has participated in a draft to select their players (see above to see the draft results). Each week of the event will feature community events, and over the weekends there will be a war at 9, 10, and 11pm eastern. There are a list of strict rules teams and participants must follow (see above for those). This is season 1 of the league, if things go well, there is potential for another season. Sout out to those who got it running and to AGS for setting the community up with a PTR server to get the gear and events setup as needed!</h3>
+    </div>
+
+
+
+
+
+
+</div>
+<table>
+    <tr>
+        <th>Question</th>
+        <th>Answer</th>
+    </tr>
+    <tr>
+        <td>Is this a seasonal event? </td>
+        <td>We would like to have multiple seasons to the NWL but nothing is definite at this point. </td>
+    </tr>
+    <tr>
+        <td>Which server?</td>
+        <td>AGS has been kind enough to let us host this event on our own private server. Keys will be handed out in the future.</td>
+    </tr>
+    <tr>
+        <td>Who are the captains?</td>
+        <td>Apples - Green -x Mexico- Brimstone <br>
+            Venge - Green - Audacity  - Mourningdale<br>
+            Ashy - Purple -  Cookout -  Brightwood<br>
+            feeze - Purple - Criminals -  WindsWard<br>
+            Arch - Purple -Grav Auto Mael - Restless Shores<br>
+            Hori - Yellow - Cancun - Reekwater<br>
+            Woosie- Yellow -Gaungzhou Goats -  Monarch's Bluff<br>
+            Dreadal - Yellow  - Espada-  Everfall</td><br>
+    </tr>
+    </table>
+
+{% endblock %}

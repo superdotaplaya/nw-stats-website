@@ -423,19 +423,19 @@ def create_table():
         )
 
     mycursor = mydb.cursor()
-    mycursor.execute("DROP TABLE group_records")
+    sql = "DROP TABLE recruitment"
+    mycursor.execute(sql)
 
 
-    add_table = """CREATE TABLE group_records (
-                name VARCHAR(255),
-                player_group VARCHAR(255),
-                war_id VARCHAR(255),
-                server VARCHAR(255),
-                group_team VARCHAR(255))"""
+    add_table = """CREATE TABLE recruitment (
+                company_name VARCHAR(255),
+                message VARCHAR(10000),
+                server VARCHAR(255)
+                )"""
 
     mycursor.execute(add_table)
     mydb.commit()
-
+create_table()
 def update_war_servers(server):
     mydb = mysql.connector.connect(
     host=config.db_host,
@@ -471,7 +471,6 @@ def setup_user_accounts():
         print(data)
         mycursor.execute(insert_stmt, data)
         mydb.commit()
-
 
 
 

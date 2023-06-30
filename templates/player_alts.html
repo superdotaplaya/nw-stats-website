@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<form style="text-align: center" action="/add_alt" method = "POST">
+
+<h1 style="text-align: center; color: white;">Player Alts</h1>
+{% if logged_in == True %}
+    <h3 style="color: white; text-align: center">Alt 1 Name: &nbsp <input type="text" id="head" name="alt1_name" value="none" action="/settings" method = "POST"> Alt 1 Server:<input type="text" id="head" name="alt1_server" value="none" action="/settings" method = "POST"></h3>
+
+<h3 style="color: white; text-align: center">Alt 2 Name: &nbsp <input type="text" id="head" name="alt2_name" value="none" action="/settings" method = "POST"> Alt 2 Server:<input type="text" id="head" name="alt2_server" value="none" action="/settings" method = "POST"></h3>
+
+<h3 style="color: white; text-align: center">Alt 3 Name: &nbsp <input type="text" id="head" name="alt3_name" value="none" action="/settings" method = "POST"> Alt 3 Server:<input type="text" id="head" name="alt3_server" value="none" action="/settings" method = "POST"></h3>
+
+<h3 style="color: white; text-align: center">Alt 4 Name: &nbsp <input type="text" id="head" name="alt4_name" value="none" action="/settings" method = "POST"> Alt 4 Server:<input type="text" id="head" name="alt4_server" value="none" action="/settings" method = "POST"></h3>
+
+<h3 style="color: white; text-align: center">Alt 5 Name: &nbsp <input type="text" id="head" name="alt5_name" value="none" action="/settings" method = "POST"> Alt 5 Server:<input type="text" id="head" name="alt5_server" value="none" action="/settings" method = "POST"></h3>
+<button class="myButton" input type = "submit"/ style="color: white;">Save Info</button>
+
+</form>
+{% else %}
+    <h3 style="color: white; text-align: center">Please login or create an account to access this page!</h3>
+{% endif %}
+</div>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+{% endblock %}

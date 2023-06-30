@@ -17,6 +17,8 @@ import lxml
 import mysql.connector
 import enter_stats
 import testing_groups
+import verification
+import recruitment
 
 #from PIL import Image
 bot = discord.Bot()
@@ -529,6 +531,18 @@ async def deletegroupstats(ctx, server: Option(str, "What server did the war occ
     mydb.commit()
     await ctx.respond("Roster removed!")
 
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Delete war roster for a war")
+async def fixgroupstats(ctx, server: Option(str, "What server did the war occur on?"), war_id: Option(str, "What war are you deleting a roster for?"), attack_or_defense: Option(str, "Is this the attack or defense roster?")):
+    try:
+        enter_stats.fixgroupstats(server,war_id,attack_or_defense)
+        await ctx.respond("Roster removed!")
+    except:
+        await ctx.respond("An error occured")
+
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Delete war roster for a war")
+async def verifyuser(ctx, user_id: Option(str, "What users Discord ID?"), verified_name: Option(str, "What is their verified name (from their submitted screenshot)?")):
+    await ctx.respond(verification.verify_account(user_id,verified_name))
+
 def calc_stats(usr,server):
 
     requested_player = usr
@@ -643,9 +657,22 @@ def calc_stats(usr,server):
         return(player_stats)
     else:
         return([0,0,0,0,0,0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0, 0, 0, 0, 0, []])
+
+
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Submit a recruitment message to the website!")
+async def addrecruitment(ctx, server: Option(str, "What server are you recruiting on?"),company_name: Option(str, "What is the companies name?"), recruitment_message: Option(str, "What is the recruitment messsage?")):
+    for role in ctx.author.roles:
+        if str(role.id) == "1001600386450333747":
+            await ctx.respond("Adding recruitment post to database!")
+            recruitment.add_message(server,recruitment_message, company_name)
+            await ctx.send(f"Recruitment message has been added on {server} for {company_name}!")
+
+@bot.slash_command(guild_ids=[1001596849192444044], description = "Remove a recruitment message from the website!")
+async def removerecruitment(ctx, server: Option(str, "What server are you removing the message from?"), company_name: Option(str, "What is the companies name?")):
+    for role in ctx.author.roles:
+        if str(role.id) == "1001600386450333747":
+            await ctx.respond("Removing recruitment post from database!")
+            recruitment.delete_message(server,company_name)
+            await ctx.send("Recruitment message has been removed on {server}!")
+
 bot.run(config.discord_token)
-
-
-#run the bot
- #Get your bot token from https://discordapp.com/developers/applications/
-

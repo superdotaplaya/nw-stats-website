@@ -59,6 +59,7 @@
      <a href="/logout" style="float: right; font-size: 25px; display: inline-block;">Logout</a>
      <a href="/settings" style="float: right; font-size: 25px; display: inline-block;">Settings</a>
      <a href="/profile" style="float: right; font-size: 25px; display: inline-block;">Profile</a>
+     <a href="https://donorbox.org/nw-stats" style="float: right; font-size: 25px; display: inline-block;">Donate</a>
      <a href="/companion" style="float: right; font-size: 25px; display: inline-block; color: green;">Get Companion App (Beta)</a>
      {% else %}
   <a href="/login" style="float: right; font-size: 25px; display: inline-block;">Login</a>
@@ -95,8 +96,10 @@
     {% if servers == [] %}
     <h1>Welcome to New World Stats!</h1>
     <p> THE place to find stats and scout your opponents in New World!</p><br>
+    <!-- Hotjar Tracking Code for https://www.nw-stats.com
     <h2> <b>{{total_wars}}</b></h2>
     <h2>Wars Tracked</h2><br>
+    -->
     <h2>Select a region to Explore player stats and war stats in New World!</h2>
 
     <div class="dropdown">
@@ -106,7 +109,10 @@
   <a href="/{{region}}/server">{{region.replace("_"," ")}}</a>
     {% endfor %}
   </div>
+
+
 </div>
+<a href="https://www.nw-stats.com/nwl"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Looking for New World League?</button></a>
     {% else %}
     <h2>Select a server to explore player stats and war stats in New World!</h2>
     <h2>{{region}}</h2>
@@ -125,7 +131,19 @@
   </div>
 
 </div>
-
+<div class="recent-wars">
+    <div>
+        <div width="90%" style="height:100%; padding-top:50%">
+            <h2 style="border-bottom-width: 5px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}};">Recent Wars</h2>
+        <ul style="vertical-align: middle;">
+        {% for war in recent_wars %}
+        <li style="list-style-type: none; text-align: center; padding: 10px; font-size: 24px; font-family: Helvetica; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; width: 80%; color: white; text-decoration: none;"><a href="https://www.nw-stats.com/{{war[2]}}/war/{{war[1]}}" style="color: white;"><b>{{war[2]}}: {{war[0]}}</a><br></li></b>
+        {% endfor %}
+        </ul>
+        <h3>Dates are formatted for each servers region.</h3>
+    </div>
+</div>
+</div>
 
 </body>
 </html>

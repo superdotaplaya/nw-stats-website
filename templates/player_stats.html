@@ -95,14 +95,25 @@
           <li>Company: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[3]}}</p></li><br>
           <li>Role: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[2]}}</p></li><br>
           <li>Discord Name: <p style="font-size: 20px; display: inline-block;" class="statistic">{{player_info[5]}}</p></li> <br>
+          {% if player_info[6] %}
+          <li>Alts:</li>
+          {% for alt in player_info[6].replace("[","").replace("]","").split("|") %}
+          {% if alt.split(",")[0] != "none" %}
+          <li><a style="font-size: 20px" class ="statistic" href="https://www.nw-stats.com/{{alt.split(",")[1]}}/player/{{alt.split(",")[0]}}">{{alt.split(",")[0]}}</a></li>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          <br>
           {% if info[30] == 0 %}
           <li>Wins: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[26]}} </p> | Losses:<p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[27]}} </p> | Winrate: <p style="font-size: 20px; display:  inline-block;" class="statistic">0%</p></li>
           {% else %}
           <li>Wins: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[26]}} </p> | Losses:<p style="font-size: 20px; display:  inline-block;" class="statistic">{{info[27]}} </p> | Winrate: <p style="font-size: 20px; display:  inline-block;" class="statistic">{{'%0.2f' % (info[26]/(info[30])*100)|float}}%</p></li>
           {% endif %}
           {% if session['discord_id'] == user_settings[0] and user_settings[8].lower() == player.lower() %}
+          <br><br>
           <a href="https://www.nw-stats.com/submit_info"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Edit Info</button></a>
           <a href="https://www.nw-stats.com/{{server}}/player/{{player}}/submit_clip"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Add VOD</button></a>
+          <a href="https://www.nw-stats.com/add_alt"><button class="myButton" style="color: #ffffff; text-align: center; width: auto; margin-left:15px;">Add Alts (NEW!)</button></a>
           {% endif %}
      </ul>
 

@@ -106,7 +106,21 @@
   border-radius: 10px; /* Rounded corners */
   font-size: 24px; /* Increase font size */
 }
-
+#myBtn3 {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 80px; /* Place the button at the bottom of the page */
+  left: 60px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: {{user_settings[2]}}; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 24px; /* Increase font size */
+}
 #myBtn:hover {
   background-color: white; /* Add a dark-grey background on hover */
   color: black;
@@ -132,6 +146,7 @@
 
 	    <button onclick="topFunction()" id="myBtn" title="Go to top">Back To Top</button>
 	    <a href="#vods"><button id="myBtn2" title="Go to vods">Go To VODs</button></a>
+	    <a href="#groups"><button id="myBtn3" title="Go to vods">Go To Group Breakdowns</button></a>
 
     {% if has_ads == True %}
     {% endif %}
@@ -140,7 +155,7 @@
 	<div style="width: 50%; margin-left: 25%; text-align: center; padding-bottom: 20px;">
 	<a href="https://www.nw-stats.com/{{server}}"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Return To War List</h3></button></a>
 	<a href="https://discord.gg/tySzf8mN9W" target="_blank"><button class="myButton" style="color: white; padding: 5px; display: inline-block; margin-right: 20px;"><h3 style="color: white;">Report an Error</h3></button></a>
-	<a href="https://www.nw-stats.com/{{server}}/war/{{war_id}}/submit_clip" target="_blank"><button class="myButton" style="color: white; padding: 5px; display: inline-block;"><h3 style="color: white;">Submit A Recording, Clip, or Vod</h3></button></a>
+	<a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}/submit_clip" target="_blank"><button class="myButton" style="color: white; padding: 5px; display: inline-block;"><h3 style="color: white;">Submit A Recording, Clip, or Vod</h3></button></a>
     </div>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7210973826242979"
          crossorigin="anonymous"></script>
@@ -213,6 +228,18 @@
             {% endif %}
           </div>
         </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7210973826242979"
+             crossorigin="anonymous"></script>
+        <!-- War Scoreboard -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7210973826242979"
+             data-ad-slot="7994969110"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     <table id="header-fixed">
     {% if sorted_by == "none" %}
         <th><a href="https://www.nw-stats.com/{{server}}/war/{{war_link}}">Rank*</a></th>
@@ -408,7 +435,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[0] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -425,7 +452,7 @@
         <th><b>{{(group_stats[0][0][4]|int) + (group_stats[0][1][4]|int) + (group_stats[0][2][4]|int) + (group_stats[0][3][4]|int) + (group_stats[0][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[0][0][5]|int) + (group_stats[0][1][5]|int) + (group_stats[0][2][5]|int) + (group_stats[0][3][5]|int) + (group_stats[0][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[0][0][6]|int) + (group_stats[0][1][6]|int) + (group_stats[0][2][6]|int) + (group_stats[0][3][6]|int) + (group_stats[0][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[0][0][4]|int) + (group_stats[0][1][4]|int) + (group_stats[0][2][4]|int) + (group_stats[0][3][4]|int) + (group_stats[0][4][4]|int))+((group_stats[0][0][6]|int) + (group_stats[0][1][6]|int) + (group_stats[0][2][6]|int) + (group_stats[0][3][6]|int) + (group_stats[0][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[0][0][11]|int) + (group_stats[0][1][11]|int) + (group_stats[0][2][11]|int) + (group_stats[0][3][11]|int) + (group_stats[0][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[0][0][7]|int) + (group_stats[0][1][7]|int) + (group_stats[0][2][7]|int) + (group_stats[0][3][7]|int) + (group_stats[0][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[0][0][8]|int) + (group_stats[0][1][8]|int) + (group_stats[0][2][8]|int) + (group_stats[0][3][8]|int) + (group_stats[0][4][8]|int)}}</b></th>
         </tr>
@@ -447,7 +474,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[1] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -464,7 +491,7 @@
         <th><b>{{(group_stats[1][0][4]|int) + (group_stats[1][1][4]|int) + (group_stats[1][2][4]|int) + (group_stats[1][3][4]|int) + (group_stats[1][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[1][0][5]|int) + (group_stats[1][1][5]|int) + (group_stats[1][2][5]|int) + (group_stats[1][3][5]|int) + (group_stats[1][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[1][0][6]|int) + (group_stats[1][1][6]|int) + (group_stats[1][2][6]|int) + (group_stats[1][3][6]|int) + (group_stats[1][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[1][0][4]|int) + (group_stats[1][1][4]|int) + (group_stats[1][2][4]|int) + (group_stats[1][3][4]|int) + (group_stats[1][4][4]|int))+((group_stats[1][0][6]|int) + (group_stats[1][1][6]|int) + (group_stats[1][2][6]|int) + (group_stats[1][3][6]|int) + (group_stats[1][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[1][0][11]|int) + (group_stats[10][1][11]|int) + (group_stats[1][2][11]|int) + (group_stats[1][3][11]|int) + (group_stats[1][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[1][0][7]|int) + (group_stats[1][1][7]|int) + (group_stats[1][2][7]|int) + (group_stats[1][3][7]|int) + (group_stats[1][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[1][0][8]|int) + (group_stats[1][1][8]|int) + (group_stats[1][2][8]|int) + (group_stats[1][3][8]|int) + (group_stats[1][4][8]|int)}}</b></th>
         </tr>
@@ -486,7 +513,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[2] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -503,7 +530,7 @@
         <th><b>{{(group_stats[2][0][4]|int) + (group_stats[2][1][4]|int) + (group_stats[2][2][4]|int) + (group_stats[2][3][4]|int) + (group_stats[2][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[2][0][5]|int) + (group_stats[2][1][5]|int) + (group_stats[2][2][5]|int) + (group_stats[2][3][5]|int) + (group_stats[2][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[2][0][6]|int) + (group_stats[2][1][6]|int) + (group_stats[2][2][6]|int) + (group_stats[2][3][6]|int) + (group_stats[2][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[2][0][4]|int) + (group_stats[2][1][4]|int) + (group_stats[2][2][4]|int) + (group_stats[2][3][4]|int) + (group_stats[2][4][4]|int))+((group_stats[2][0][6]|int) + (group_stats[2][1][6]|int) + (group_stats[2][2][6]|int) + (group_stats[2][3][6]|int) + (group_stats[2][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[2][0][11]|int) + (group_stats[2][1][11]|int) + (group_stats[2][2][11]|int) + (group_stats[2][3][11]|int) + (group_stats[2][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[2][0][7]|int) + (group_stats[2][1][7]|int) + (group_stats[2][2][7]|int) + (group_stats[2][3][7]|int) + (group_stats[2][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[2][0][8]|int) + (group_stats[2][1][8]|int) + (group_stats[2][2][8]|int) + (group_stats[2][3][8]|int) + (group_stats[2][4][8]|int)}}</b></th>
         </tr>
@@ -523,7 +550,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[3] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -540,7 +567,7 @@
         <th><b>{{(group_stats[3][0][4]|int) + (group_stats[3][1][4]|int) + (group_stats[3][2][4]|int) + (group_stats[3][3][4]|int) + (group_stats[3][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[3][0][5]|int) + (group_stats[3][1][5]|int) + (group_stats[3][2][5]|int) + (group_stats[3][3][5]|int) + (group_stats[3][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[3][0][6]|int) + (group_stats[3][1][6]|int) + (group_stats[3][2][6]|int) + (group_stats[3][3][6]|int) + (group_stats[3][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[3][0][4]|int) + (group_stats[3][1][4]|int) + (group_stats[3][2][4]|int) + (group_stats[3][3][4]|int) + (group_stats[3][4][4]|int))+((group_stats[3][0][6]|int) + (group_stats[3][1][6]|int) + (group_stats[3][2][6]|int) + (group_stats[3][3][6]|int) + (group_stats[3][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[3][0][11]|int) + (group_stats[3][1][11]|int) + (group_stats[3][2][11]|int) + (group_stats[3][3][11]|int) + (group_stats[3][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[3][0][7]|int) + (group_stats[3][1][7]|int) + (group_stats[3][2][7]|int) + (group_stats[3][3][7]|int) + (group_stats[3][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[3][0][8]|int) + (group_stats[3][1][8]|int) + (group_stats[3][2][8]|int) + (group_stats[3][3][8]|int) + (group_stats[3][4][8]|int)}}</b></th>
         </tr>
@@ -562,7 +589,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[4] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -579,7 +606,7 @@
         <th><b>{{(group_stats[4][0][4]|int) + (group_stats[4][1][4]|int) + (group_stats[4][2][4]|int) + (group_stats[4][3][4]|int) + (group_stats[4][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[4][0][5]|int) + (group_stats[4][1][5]|int) + (group_stats[4][2][5]|int) + (group_stats[4][3][5]|int) + (group_stats[4][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[4][0][6]|int) + (group_stats[4][1][6]|int) + (group_stats[4][2][6]|int) + (group_stats[4][3][6]|int) + (group_stats[4][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[4][0][4]|int) + (group_stats[4][1][4]|int) + (group_stats[4][2][4]|int) + (group_stats[4][3][4]|int) + (group_stats[4][4][4]|int))+((group_stats[4][0][6]|int) + (group_stats[4][1][6]|int) + (group_stats[4][2][6]|int) + (group_stats[4][3][6]|int) + (group_stats[4][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[4][0][11]|int) + (group_stats[4][1][11]|int) + (group_stats[4][2][11]|int) + (group_stats[4][3][11]|int) + (group_stats[4][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[4][0][7]|int) + (group_stats[4][1][7]|int) + (group_stats[4][2][7]|int) + (group_stats[4][3][7]|int) + (group_stats[4][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[4][0][8]|int) + (group_stats[4][1][8]|int) + (group_stats[4][2][8]|int) + (group_stats[4][3][8]|int) + (group_stats[4][4][8]|int)}}</b></th>
         </tr>
@@ -601,7 +628,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[5] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -618,7 +645,7 @@
         <th><b>{{(group_stats[5][0][4]|int) + (group_stats[5][1][4]|int) + (group_stats[5][2][4]|int) + (group_stats[5][3][4]|int) + (group_stats[5][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[5][0][5]|int) + (group_stats[5][1][5]|int) + (group_stats[5][2][5]|int) + (group_stats[5][3][5]|int) + (group_stats[5][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[5][0][6]|int) + (group_stats[5][1][6]|int) + (group_stats[5][2][6]|int) + (group_stats[5][3][6]|int) + (group_stats[5][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[5][0][4]|int) + (group_stats[5][1][4]|int) + (group_stats[5][2][4]|int) + (group_stats[5][3][4]|int) + (group_stats[5][4][4]|int))+((group_stats[5][0][6]|int) + (group_stats[5][1][6]|int) + (group_stats[5][2][6]|int) + (group_stats[5][3][6]|int) + (group_stats[5][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[5][0][11]|int) + (group_stats[5][1][11]|int) + (group_stats[5][2][11]|int) + (group_stats[5][3][11]|int) + (group_stats[5][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[5][0][7]|int) + (group_stats[5][1][7]|int) + (group_stats[5][2][7]|int) + (group_stats[5][3][7]|int) + (group_stats[5][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[5][0][8]|int) + (group_stats[5][1][8]|int) + (group_stats[5][2][8]|int) + (group_stats[5][3][8]|int) + (group_stats[5][4][8]|int)}}</b></th>
         </tr>
@@ -641,7 +668,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[6] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -658,7 +685,7 @@
         <th><b>{{(group_stats[6][0][4]|int) + (group_stats[6][1][4]|int) + (group_stats[6][2][4]|int) + (group_stats[6][3][4]|int) + (group_stats[6][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[6][0][5]|int) + (group_stats[6][1][5]|int) + (group_stats[6][2][5]|int) + (group_stats[6][3][5]|int) + (group_stats[6][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[6][0][6]|int) + (group_stats[6][1][6]|int) + (group_stats[6][2][6]|int) + (group_stats[6][3][6]|int) + (group_stats[6][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[6][0][4]|int) + (group_stats[6][1][4]|int) + (group_stats[6][2][4]|int) + (group_stats[6][3][4]|int) + (group_stats[6][4][4]|int))+((group_stats[6][0][6]|int) + (group_stats[6][1][6]|int) + (group_stats[6][2][6]|int) + (group_stats[6][3][6]|int) + (group_stats[6][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[6][0][11]|int) + (group_stats[6][1][11]|int) + (group_stats[6][2][11]|int) + (group_stats[6][3][11]|int) + (group_stats[6][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[6][0][7]|int) + (group_stats[6][1][7]|int) + (group_stats[6][2][7]|int) + (group_stats[6][3][7]|int) + (group_stats[6][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[6][0][8]|int) + (group_stats[6][1][8]|int) + (group_stats[6][2][8]|int) + (group_stats[6][3][8]|int) + (group_stats[6][4][8]|int)}}</b></th>
         </tr>
@@ -682,7 +709,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[7] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -699,7 +726,7 @@
         <th><b>{{(group_stats[7][0][4]|int) + (group_stats[7][1][4]|int) + (group_stats[7][2][4]|int) + (group_stats[7][3][4]|int) + (group_stats[7][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[7][0][5]|int) + (group_stats[7][1][5]|int) + (group_stats[7][2][5]|int) + (group_stats[7][3][5]|int) + (group_stats[7][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[7][0][6]|int) + (group_stats[7][1][6]|int) + (group_stats[7][2][6]|int) + (group_stats[7][3][6]|int) + (group_stats[7][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[7][0][4]|int) + (group_stats[7][1][4]|int) + (group_stats[7][2][4]|int) + (group_stats[7][3][4]|int) + (group_stats[7][4][4]|int))+((group_stats[7][0][6]|int) + (group_stats[7][1][6]|int) + (group_stats[7][2][6]|int) + (group_stats[7][3][6]|int) + (group_stats[7][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[7][0][11]|int) + (group_stats[7][1][11]|int) + (group_stats[7][2][11]|int) + (group_stats[7][3][11]|int) + (group_stats[7][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[7][0][7]|int) + (group_stats[7][1][7]|int) + (group_stats[7][2][7]|int) + (group_stats[7][3][7]|int) + (group_stats[7][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[7][0][8]|int) + (group_stats[7][1][8]|int) + (group_stats[7][2][8]|int) + (group_stats[7][3][8]|int) + (group_stats[7][4][8]|int)}}</b></th>
         </tr>
@@ -722,7 +749,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[8] %}
-        <tr>
+        <tr  style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -739,7 +766,7 @@
         <th><b>{{(group_stats[8][0][4]|int) + (group_stats[8][1][4]|int) + (group_stats[8][2][4]|int) + (group_stats[8][3][4]|int) + (group_stats[8][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[8][0][5]|int) + (group_stats[8][1][5]|int) + (group_stats[8][2][5]|int) + (group_stats[8][3][5]|int) + (group_stats[8][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[8][0][6]|int) + (group_stats[8][1][6]|int) + (group_stats[8][2][6]|int) + (group_stats[8][3][6]|int) + (group_stats[8][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[8][0][4]|int) + (group_stats[8][1][4]|int) + (group_stats[8][2][4]|int) + (group_stats[8][3][4]|int) + (group_stats[8][4][4]|int))+((group_stats[8][0][6]|int) + (group_stats[8][1][6]|int) + (group_stats[8][2][6]|int) + (group_stats[8][3][6]|int) + (group_stats[8][4][6]|int))) / (info[8]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[8][0][11]|int) + (group_stats[8][1][11]|int) + (group_stats[8][2][11]|int) + (group_stats[8][3][11]|int) + (group_stats[8][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[8][0][7]|int) + (group_stats[8][1][7]|int) + (group_stats[8][2][7]|int) + (group_stats[8][3][7]|int) + (group_stats[8][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[8][0][8]|int) + (group_stats[8][1][8]|int) + (group_stats[8][2][8]|int) + (group_stats[8][3][8]|int) + (group_stats[8][4][8]|int)}}</b></th>
         </tr>
@@ -762,7 +789,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[9] %}
-        <tr>
+        <tr style="background-color:{{user_settings[5]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -779,7 +806,7 @@
         <th><b>{{(group_stats[9][0][4]|int) + (group_stats[9][1][4]|int) + (group_stats[9][2][4]|int) + (group_stats[9][3][4]|int) + (group_stats[9][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[9][0][5]|int) + (group_stats[9][1][5]|int) + (group_stats[9][2][5]|int) + (group_stats[9][3][5]|int) + (group_stats[9][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[9][0][6]|int) + (group_stats[9][1][6]|int) + (group_stats[9][2][6]|int) + (group_stats[9][3][6]|int) + (group_stats[9][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[9][0][4]|int) + (group_stats[9][1][4]|int) + (group_stats[9][2][4]|int) + (group_stats[9][3][4]|int) + (group_stats[9][4][4]|int))+((group_stats[9][0][6]|int) + (group_stats[9][1][6]|int) + (group_stats[9][2][6]|int) + (group_stats[9][3][6]|int) + (group_stats[9][4][6]|int))) / (info[9]+info[12]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[9][0][11]|int) + (group_stats[9][1][11]|int) + (group_stats[9][2][11]|int) + (group_stats[9][3][11]|int) + (group_stats[9][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[9][0][7]|int) + (group_stats[9][1][7]|int) + (group_stats[9][2][7]|int) + (group_stats[9][3][7]|int) + (group_stats[9][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[9][0][8]|int) + (group_stats[9][1][8]|int) + (group_stats[9][2][8]|int) + (group_stats[9][3][8]|int) + (group_stats[9][4][8]|int)}}</b></th>
         </tr>
@@ -789,9 +816,20 @@
 
 </div>
 
-
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7210973826242979"
+     crossorigin="anonymous"></script>
+<!-- War Scoreboard -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7210973826242979"
+     data-ad-slot="7994969110"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
     <!-- Defenders Group Stats tables -->
-    <h1  title="To get group stats, submit a screenshot of the roster for the team you want to be analyzed" style= "text-align: center; color: white;">Defender Group Breakdown</h1>
+    <h1  title="To get group stats, submit a screenshot of the roster for the team you want to be analyzed" style= "text-align: center; color: white;" id="groups">Defender Group Breakdown</h1>
 
 
     <div style="width: 80%; margin-left:10%; display: inline-grid; max-height: auto; overflow-x: auto; text-align: center">
@@ -811,7 +849,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[10] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -828,7 +866,7 @@
         <th><b>{{(group_stats[10][0][4]|int) + (group_stats[10][1][4]|int) + (group_stats[10][2][4]|int) + (group_stats[10][3][4]|int) + (group_stats[10][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[10][0][5]|int) + (group_stats[10][1][5]|int) + (group_stats[10][2][5]|int) + (group_stats[10][3][5]|int) + (group_stats[10][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[10][0][6]|int) + (group_stats[10][1][6]|int) + (group_stats[10][2][6]|int) + (group_stats[10][3][6]|int) + (group_stats[10][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[10][0][4]|int) + (group_stats[10][1][4]|int) + (group_stats[10][2][4]|int) + (group_stats[10][3][4]|int) + (group_stats[10][4][4]|int))+((group_stats[10][0][6]|int) + (group_stats[10][1][6]|int) + (group_stats[10][2][6]|int) + (group_stats[10][3][6]|int) + (group_stats[10][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[10][0][11]|int) + (group_stats[10][1][11]|int) + (group_stats[10][2][11]|int) + (group_stats[10][3][11]|int) + (group_stats[10][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[10][0][7]|int) + (group_stats[10][1][7]|int) + (group_stats[10][2][7]|int) + (group_stats[10][3][7]|int) + (group_stats[10][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[10][0][8]|int) + (group_stats[10][1][8]|int) + (group_stats[10][2][8]|int) + (group_stats[10][3][8]|int) + (group_stats[10][4][8]|int)}}</b></th>
         </tr>
@@ -850,7 +888,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[11] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -867,7 +905,7 @@
         <th><b>{{(group_stats[11][0][4]|int) + (group_stats[11][1][4]|int) + (group_stats[11][2][4]|int) + (group_stats[11][3][4]|int) + (group_stats[11][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[11][0][5]|int) + (group_stats[11][1][5]|int) + (group_stats[11][2][5]|int) + (group_stats[11][3][5]|int) + (group_stats[11][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[11][0][6]|int) + (group_stats[11][1][6]|int) + (group_stats[11][2][6]|int) + (group_stats[11][3][6]|int) + (group_stats[11][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[11][0][4]|int) + (group_stats[11][1][4]|int) + (group_stats[11][2][4]|int) + (group_stats[11][3][4]|int) + (group_stats[11][4][4]|int))+((group_stats[11][0][6]|int) + (group_stats[11][1][6]|int) + (group_stats[11][2][6]|int) + (group_stats[11][3][6]|int) + (group_stats[11][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[11][0][11]|int) + (group_stats[11][1][11]|int) + (group_stats[11][2][11]|int) + (group_stats[11][3][11]|int) + (group_stats[11][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[11][0][7]|int) + (group_stats[11][1][7]|int) + (group_stats[11][2][7]|int) + (group_stats[11][3][7]|int) + (group_stats[11][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[11][0][8]|int) + (group_stats[11][1][8]|int) + (group_stats[11][2][8]|int) + (group_stats[11][3][8]|int) + (group_stats[11][4][8]|int)}}</b></th>
         </tr>
@@ -889,7 +927,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[12] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -906,7 +944,7 @@
         <th><b>{{(group_stats[12][0][4]|int) + (group_stats[12][1][4]|int) + (group_stats[12][2][4]|int) + (group_stats[12][3][4]|int) + (group_stats[12][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[12][0][5]|int) + (group_stats[12][1][5]|int) + (group_stats[12][2][5]|int) + (group_stats[12][3][5]|int) + (group_stats[12][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[12][0][6]|int) + (group_stats[12][1][6]|int) + (group_stats[12][2][6]|int) + (group_stats[12][3][6]|int) + (group_stats[12][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[12][0][4]|int) + (group_stats[12][1][4]|int) + (group_stats[12][2][4]|int) + (group_stats[12][3][4]|int) + (group_stats[12][4][4]|int))+((group_stats[12][0][6]|int) + (group_stats[12][1][6]|int) + (group_stats[12][2][6]|int) + (group_stats[12][3][6]|int) + (group_stats[12][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[12][0][11]|int) + (group_stats[12][1][11]|int) + (group_stats[12][2][11]|int) + (group_stats[12][3][11]|int) + (group_stats[12][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[12][0][7]|int) + (group_stats[12][1][7]|int) + (group_stats[12][2][7]|int) + (group_stats[12][3][7]|int) + (group_stats[12][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[12][0][8]|int) + (group_stats[12][1][8]|int) + (group_stats[12][2][8]|int) + (group_stats[12][3][8]|int) + (group_stats[12][4][8]|int)}}</b></th>
         </tr>
@@ -926,7 +964,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[13] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -943,7 +981,7 @@
         <th><b>{{(group_stats[13][0][4]|int) + (group_stats[13][1][4]|int) + (group_stats[13][2][4]|int) + (group_stats[13][3][4]|int) + (group_stats[13][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[13][0][5]|int) + (group_stats[13][1][5]|int) + (group_stats[13][2][5]|int) + (group_stats[13][3][5]|int) + (group_stats[13][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[13][0][6]|int) + (group_stats[13][1][6]|int) + (group_stats[13][2][6]|int) + (group_stats[13][3][6]|int) + (group_stats[13][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[13][0][4]|int) + (group_stats[13][1][4]|int) + (group_stats[13][2][4]|int) + (group_stats[13][3][4]|int) + (group_stats[13][4][4]|int))+((group_stats[13][0][6]|int) + (group_stats[13][1][6]|int) + (group_stats[13][2][6]|int) + (group_stats[13][3][6]|int) + (group_stats[13][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[13][0][11]|int) + (group_stats[13][1][11]|int) + (group_stats[13][2][11]|int) + (group_stats[13][3][11]|int) + (group_stats[13][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[13][0][7]|int) + (group_stats[13][1][7]|int) + (group_stats[13][2][7]|int) + (group_stats[13][3][7]|int) + (group_stats[13][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[13][0][8]|int) + (group_stats[13][1][8]|int) + (group_stats[13][2][8]|int) + (group_stats[13][3][8]|int) + (group_stats[13][4][8]|int)}}</b></th>
         </tr>
@@ -965,7 +1003,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[14] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -982,7 +1020,7 @@
         <th><b>{{(group_stats[14][0][4]|int) + (group_stats[14][1][4]|int) + (group_stats[14][2][4]|int) + (group_stats[14][3][4]|int) + (group_stats[14][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[14][0][5]|int) + (group_stats[14][1][5]|int) + (group_stats[14][2][5]|int) + (group_stats[14][3][5]|int) + (group_stats[14][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[14][0][6]|int) + (group_stats[14][1][6]|int) + (group_stats[14][2][6]|int) + (group_stats[14][3][6]|int) + (group_stats[14][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[14][0][4]|int) + (group_stats[14][1][4]|int) + (group_stats[14][2][4]|int) + (group_stats[14][3][4]|int) + (group_stats[14][4][4]|int))+((group_stats[14][0][6]|int) + (group_stats[14][1][6]|int) + (group_stats[14][2][6]|int) + (group_stats[14][3][6]|int) + (group_stats[14][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[14][0][11]|int) + (group_stats[14][1][11]|int) + (group_stats[14][2][11]|int) + (group_stats[14][3][11]|int) + (group_stats[14][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[14][0][7]|int) + (group_stats[14][1][7]|int) + (group_stats[14][2][7]|int) + (group_stats[14][3][7]|int) + (group_stats[14][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[14][0][8]|int) + (group_stats[14][1][8]|int) + (group_stats[14][2][8]|int) + (group_stats[14][3][8]|int) + (group_stats[14][4][8]|int)}}</b></th>
         </tr>
@@ -1004,7 +1042,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[15] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -1021,7 +1059,7 @@
         <th><b>{{(group_stats[15][0][4]|int) + (group_stats[15][1][4]|int) + (group_stats[15][2][4]|int) + (group_stats[15][3][4]|int) + (group_stats[15][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[15][0][5]|int) + (group_stats[15][1][5]|int) + (group_stats[15][2][5]|int) + (group_stats[15][3][5]|int) + (group_stats[15][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[15][0][6]|int) + (group_stats[15][1][6]|int) + (group_stats[15][2][6]|int) + (group_stats[15][3][6]|int) + (group_stats[15][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[15][0][4]|int) + (group_stats[15][1][4]|int) + (group_stats[15][2][4]|int) + (group_stats[15][3][4]|int) + (group_stats[15][4][4]|int))+((group_stats[15][0][6]|int) + (group_stats[15][1][6]|int) + (group_stats[15][2][6]|int) + (group_stats[15][3][6]|int) + (group_stats[15][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[15][0][11]|int) + (group_stats[15][1][11]|int) + (group_stats[15][2][11]|int) + (group_stats[15][3][11]|int) + (group_stats[15][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[15][0][7]|int) + (group_stats[15][1][7]|int) + (group_stats[15][2][7]|int) + (group_stats[15][3][7]|int) + (group_stats[15][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[15][0][8]|int) + (group_stats[15][1][8]|int) + (group_stats[15][2][8]|int) + (group_stats[15][3][8]|int) + (group_stats[15][4][8]|int)}}</b></th>
         </tr>
@@ -1044,7 +1082,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[16] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -1061,7 +1099,7 @@
         <th><b>{{(group_stats[16][0][4]|int) + (group_stats[16][1][4]|int) + (group_stats[16][2][4]|int) + (group_stats[16][3][4]|int) + (group_stats[16][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[16][0][5]|int) + (group_stats[16][1][5]|int) + (group_stats[16][2][5]|int) + (group_stats[16][3][5]|int) + (group_stats[16][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[16][0][6]|int) + (group_stats[16][1][6]|int) + (group_stats[16][2][6]|int) + (group_stats[16][3][6]|int) + (group_stats[16][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[16][0][4]|int) + (group_stats[16][1][4]|int) + (group_stats[16][2][4]|int) + (group_stats[16][3][4]|int) + (group_stats[16][4][4]|int))+((group_stats[16][0][6]|int) + (group_stats[16][1][6]|int) + (group_stats[16][2][6]|int) + (group_stats[16][3][6]|int) + (group_stats[16][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[16][0][11]|int) + (group_stats[16][1][11]|int) + (group_stats[16][2][11]|int) + (group_stats[16][3][11]|int) + (group_stats[16][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[16][0][7]|int) + (group_stats[16][1][7]|int) + (group_stats[16][2][7]|int) + (group_stats[16][3][7]|int) + (group_stats[16][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[16][0][8]|int) + (group_stats[16][1][8]|int) + (group_stats[16][2][8]|int) + (group_stats[16][3][8]|int) + (group_stats[16][4][8]|int)}}</b></th>
         </tr>
@@ -1085,7 +1123,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[17] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -1102,7 +1140,7 @@
         <th><b>{{(group_stats[17][0][4]|int) + (group_stats[17][1][4]|int) + (group_stats[17][2][4]|int) + (group_stats[17][3][4]|int) + (group_stats[17][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[17][0][5]|int) + (group_stats[17][1][5]|int) + (group_stats[17][2][5]|int) + (group_stats[17][3][5]|int) + (group_stats[17][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[17][0][6]|int) + (group_stats[17][1][6]|int) + (group_stats[17][2][6]|int) + (group_stats[17][3][6]|int) + (group_stats[17][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[17][0][4]|int) + (group_stats[17][1][4]|int) + (group_stats[17][2][4]|int) + (group_stats[17][3][4]|int) + (group_stats[17][4][4]|int))+((group_stats[17][0][6]|int) + (group_stats[17][1][6]|int) + (group_stats[17][2][6]|int) + (group_stats[17][3][6]|int) + (group_stats[17][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[17][0][11]|int) + (group_stats[17][1][11]|int) + (group_stats[17][2][11]|int) + (group_stats[17][3][11]|int) + (group_stats[17][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[17][0][7]|int) + (group_stats[17][1][7]|int) + (group_stats[17][2][7]|int) + (group_stats[17][3][7]|int) + (group_stats[17][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[17][0][8]|int) + (group_stats[17][1][8]|int) + (group_stats[17][2][8]|int) + (group_stats[17][3][8]|int) + (group_stats[17][4][8]|int)}}</b></th>
         </tr>
@@ -1125,7 +1163,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[18] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -1142,7 +1180,7 @@
         <th><b>{{(group_stats[18][0][4]|int) + (group_stats[18][1][4]|int) + (group_stats[18][2][4]|int) + (group_stats[18][3][4]|int) + (group_stats[18][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[18][0][5]|int) + (group_stats[18][1][5]|int) + (group_stats[18][2][5]|int) + (group_stats[18][3][5]|int) + (group_stats[18][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[18][0][6]|int) + (group_stats[18][1][6]|int) + (group_stats[18][2][6]|int) + (group_stats[18][3][6]|int) + (group_stats[18][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[18][0][4]|int) + (group_stats[18][1][4]|int) + (group_stats[18][2][4]|int) + (group_stats[18][3][4]|int) + (group_stats[18][4][4]|int))+((group_stats[18][0][6]|int) + (group_stats[18][1][6]|int) + (group_stats[18][2][6]|int) + (group_stats[18][3][6]|int) + (group_stats[18][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[18][0][11]|int) + (group_stats[18][1][11]|int) + (group_stats[18][2][11]|int) + (group_stats[18][3][11]|int) + (group_stats[18][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[18][0][7]|int) + (group_stats[18][1][7]|int) + (group_stats[18][2][7]|int) + (group_stats[18][3][7]|int) + (group_stats[18][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[18][0][8]|int) + (group_stats[18][1][8]|int) + (group_stats[18][2][8]|int) + (group_stats[18][3][8]|int) + (group_stats[18][4][8]|int)}}</b></th>
         </tr>
@@ -1165,7 +1203,7 @@
         <th>Healing</th>
         <th>Damage</th>
         {% for player in group_stats[19] %}
-        <tr>
+        <tr style="background-color: {{user_settings[4]}}">
         <td>{{player[2]}}</td>
         <td>{{player[3]}}</td>
         <td>{{player[4]}}</td>
@@ -1176,13 +1214,13 @@
         <td>{{player[8]}}</td>
         </tr>
         {% endfor %}
-        <tr style="color: white;">
+        <tr style="color: white; ">
         <th><b>Totals</b></th>
         <th><b>{{(group_stats[19][0][3]|int) + (group_stats[19][1][3]|int) + (group_stats[19][2][3]|int) + (group_stats[19][3][3]|int) + (group_stats[19][4][3]|int)}}</b></th>
         <th><b>{{(group_stats[19][0][4]|int) + (group_stats[19][1][4]|int) + (group_stats[19][2][4]|int) + (group_stats[19][3][4]|int) + (group_stats[19][4][4]|int)}}</b></th>
         <th><b>{{(group_stats[19][0][5]|int) + (group_stats[19][1][5]|int) + (group_stats[19][2][5]|int) + (group_stats[19][3][5]|int) + (group_stats[19][4][5]|int)}}</b></th>
         <th><b>{{(group_stats[19][0][6]|int) + (group_stats[19][1][6]|int) + (group_stats[19][2][6]|int) + (group_stats[19][3][6]|int) + (group_stats[19][4][6]|int)}}</b></th>
-        <th><b>{{'%0.2f'|format(((((group_stats[19][0][4]|int) + (group_stats[19][1][4]|int) + (group_stats[19][2][4]|int) + (group_stats[19][3][4]|int) + (group_stats[19][4][4]|int))+((group_stats[19][0][6]|int) + (group_stats[19][1][6]|int) + (group_stats[19][2][6]|int) + (group_stats[19][3][6]|int) + (group_stats[19][4][6]|int))) / (info[9]+info[13]))*100|float)}}%</b></th>
+        <th><b>{{'%0.2f'|format(((group_stats[19][0][11]|int) + (group_stats[19][1][11]|int) + (group_stats[19][2][11]|int) + (group_stats[19][3][11]|int) + (group_stats[19][4][11]|int))/5)}}%</b></th>
         <th><b>{{(group_stats[19][0][7]|int) + (group_stats[19][1][7]|int) + (group_stats[19][2][7]|int) + (group_stats[19][3][7]|int) + (group_stats[19][4][7]|int)}}</b></th>
         <th><b>{{(group_stats[19][0][8]|int) + (group_stats[19][1][8]|int) + (group_stats[19][2][8]|int) + (group_stats[19][3][8]|int) + (group_stats[19][4][8]|int)}}</b></th>
         </tr>
@@ -1201,6 +1239,7 @@
 //Get the button:
 mybutton = document.getElementById("myBtn");
 mybutton2 = document.getElementById("myBtn2");
+mybutton3 = document.getElementById("myBtn3");
 
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
@@ -1209,9 +1248,11 @@ function scrollFunction() {
   if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
     mybutton.style.display = "block";
     mybutton2.style.display = "block";
+    mybutton3.style.display = "block";
   } else {
     mybutton.style.display = "none";
     mybutton2.style.display = "block";
+    mybutton3.style.display = "block";
 
   }
 }
@@ -1239,10 +1280,10 @@ function topFunction() {
 
 
 
-<div align="center" style="padding-top: 15px;">
+<div align="center" style="padding-top: 15px; width: 100%; display: inline-block; float: left; ">
     <h2 id="vods" style="color: white;">Watch Twitch Clips From This War</h2>
 {% for vod in vods[0] %}
-<iframe style="text-align: center"
+<iframe style="text-align: center; display: inline-block;"
     src="https://clips.twitch.tv/embed?clip={{vod[1]}}&parent=www.nw-stats.com"
     height="200"
     width="300"
@@ -1253,7 +1294,7 @@ function topFunction() {
 {% endif %}
 {% endfor %}
 {% for vod in vods[1] %}
-<iframe style="text-align: center"
+<iframe style="text-align: center; display: inline-block;"
     src="https://player.twitch.tv/?video=v{{vod[1]}}&parent=www.nw-stats.com&autoplay=false"
     height="200"
     width="300"
@@ -1264,7 +1305,7 @@ function topFunction() {
 {% endif %}
 {% endfor %}
 {% for vod in vods[2] %}
-<iframe style="text-align: center"
+<iframe style="text-align: center; display: inline-block;"
     src="https://www.youtube.com/embed/{{vod[1]}}"
     height="200"
     width="300"

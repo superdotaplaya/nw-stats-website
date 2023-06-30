@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <h1 style="color: white; text-align: center; font-family: Helvetica;">Company Recruitment</h1>
+    <h3 style="color: white; text-align:center; font-family: Helvetica; border-bottom-width: 20px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; padding-bottom: 6px;">Below you will find all current recruitment messages for {{server}}! If you are currently recruiting for your company, add your recruitment message on our <a href="https://discord.gg/C3b77usHZ6">Discord!</a></h3>
+    {% for item in messages %}
+    <div style="text-align: center; background-color: #1e1e1f">
+    <li style="list-style-type: none; text-align: center; padding: 20px; font-size: 30px; font-family: Helvetica; width: 100%; color: white;">{{item[0]}}</li>
+    <li style="list-style-type: none; text-align: center; padding: 20px; font-size: 22px; font-family: Helvetica; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; width: 100%; color: white;">{{item[1]}}</li>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

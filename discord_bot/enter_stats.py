@@ -922,3 +922,36 @@ def group_stats(server,war_id, attack_or_defense):
         mycursor.execute(insert_stmt, data)
         mydb.commit()
 
+
+"""mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+)
+mycursor = mydb.cursor()
+sql = "UPDATE player_records SET name = %s WHERE name = %s"
+val = ('milkyway1up','milkyway1 up')
+print(val)
+mycursor.execute(sql,val)
+mydb.commit()"""
+
+
+
+
+def fixgroupstats(server,war_id,attack_or_defense):
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    sql = "DELETE FROM group_records WHERE war_id = %s AND server = %s AND group_team = %s"
+    val = (war_id,server,attack_or_defense)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    group_stats(server,war_id,attack_or_defense)
+    print("done")
+
+
