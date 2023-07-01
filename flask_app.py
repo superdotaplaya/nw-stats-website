@@ -1486,7 +1486,7 @@ def home(server):
         page = 1
         return render_template("index.html", content = "Testing", war_list = get_war_list(page, server)[:10], pages = get_total_wars(1,server)[:], logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route, server = server, recent_wars = get_recent_wars())
     else:
-        return render_template('nwls1.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "")
+        return render_template('nwls1.html', message = "", logged_in = is_logged_in(), user_settings = get_player_settings(), has_ads = has_ads(), page = app.route, server = "", war_list = get_war_list(1, "NWL")[:10])
 
 @app.route("/<server>/invasions")
 def home_invasions(server):

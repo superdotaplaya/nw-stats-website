@@ -86,5 +86,10 @@
             Dreadal - Yellow  - Espada-  Everfall</td><br>
     </tr>
     </table>
-
+    <h2 style="color:white; text-align:center; font-size:35px;">Recent NWL Wars</h2>
+    {% for war in war_list %}
+    <div style="width=:75%; margin-left:12.5%">
+        <li style="list-style-type: none; text-align: left; padding: 20px; font-size: 24px; font-family: Helvetica; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: {{user_settings[2]}}; width: 80%; color: white;"><a href="https://www.nw-stats.com/NWL/war/{{war[0]}}" style="color: white;"><b>{{war[0]}}&nbsp;|&nbsp;{{war[1]}}&nbsp;</a><br></li></b>
+    {% endfor %}
+    </div>
 {% endblock %}

@@ -158,14 +158,22 @@ def extract_text_invasion(images, invasion_name, server):
             for text_result in read_result.analyze_result.read_results:
                 for line in text_result.lines:
                     if lines_read <= 7:
-                        player.append(line.text)
-                        lines_read += 1
+                        if line.text != "o" or "O":
+                            player.append(line.text)
+                            lines_read += 1
+                        else:
+                            player.append("0")
+                            lines_read += 1
                     else:
                         players.append(player)
                         lines_read = 0
                         player = []
-                        player.append(line.text)
-                        lines_read += 1
+                        if line.text != "o" or "O" or"O":
+                            player.append(line.text)
+                            lines_read += 1
+                        elif line.text == "o" or "O":
+                            player.append("0")
+                            lines_read += 1
         players.append(player)
         print(players)
         print()
