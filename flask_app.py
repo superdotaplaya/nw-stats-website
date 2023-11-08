@@ -1447,8 +1447,158 @@ def get_player_role_stats(player,player_role, server):
     return(player_stats)
 
 
+def get_top_healers(war_id,server):
+    defender_players = []
+    attacker_players = []
+    player_results = []
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_records WHERE war_id = %s AND server = %s"
+    val = (war_id,server)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
 
 
+
+    for row in myresult:
+        player_results.append(row)
+    
+    player_results.sort(key = lambda x: int(x[7].replace("*","").replace("^","")), reverse = True)
+    for player in player_results:
+        if player[13] == "Attack":
+            attacker_players.append(player)
+        else:
+            defender_players.append(player)
+    
+    return([attacker_players,defender_players])
+
+def get_top_damage(war_id,server):
+    defender_players = []
+    attacker_players = []
+    player_results = []
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_records WHERE war_id = %s AND server = %s"
+    val = (war_id,server)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+
+
+
+    for row in myresult:
+        player_results.append(row)
+    player_results.sort(key = lambda x: int(x[8].replace("*","").replace("^","")), reverse = True)
+    for player in player_results:
+        if player[13] == "Attack":
+            attacker_players.append(player)
+        else:
+            defender_players.append(player)
+    
+    return([attacker_players,defender_players])
+    
+def get_top_kills(war_id,server):
+    defender_players = []
+    attacker_players = []
+    player_results = []
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_records WHERE war_id = %s AND server = %s"
+    val = (war_id,server)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+
+
+
+    for row in myresult:
+        player_results.append(row)
+    player_results.sort(key = lambda x: int(x[4].replace("*","").replace("^","")), reverse = True)
+    for player in player_results:
+        if player[13] == "Attack":
+            attacker_players.append(player)
+        else:
+            defender_players.append(player)
+    
+    return([attacker_players,defender_players])
+        
+def get_top_deaths(war_id,server):
+    defender_players = []
+    attacker_players = []
+    player_results = []
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_records WHERE war_id = %s AND server = %s"
+    val = (war_id,server)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+
+
+
+    for row in myresult:
+        player_results.append(row)
+    player_results.sort(key = lambda x: int(x[5].replace("*","").replace("^","")), reverse = True)
+    for player in player_results:
+        if player[13] == "Attack":
+            attacker_players.append(player)
+        else:
+            defender_players.append(player)
+    
+    return([attacker_players,defender_players])
+
+    
+def get_top_assists(war_id,server):
+    defender_players = []
+    attacker_players = []
+    player_results = []
+    mydb = mysql.connector.connect(
+    host=config.db_host,
+    user=config.db_user,
+    password=config.db_pass,
+    database="superdotaplaya$war_stats"
+    )
+    mycursor = mydb.cursor()
+    # loop through the rows
+    sql = "SELECT * FROM player_records WHERE war_id = %s AND server = %s"
+    val = (war_id,server)
+    mycursor.execute(sql,val)
+    myresult = mycursor.fetchall()
+
+
+
+    for row in myresult:
+        player_results.append(row)
+    player_results.sort(key = lambda x: int(x[6].replace("*","").replace("^","")), reverse = True)
+    for player in player_results:
+        if player[13] == "Attack":
+            attacker_players.append(player)
+        else:
+            defender_players.append(player)
+    
+    return([attacker_players,defender_players])
+        
 def get_servers_played(player):
     mydb = mysql.connector.connect(
     host=config.db_host,
@@ -1565,6 +1715,12 @@ def invasion(server, invasion_id):
 def war(server, war_id):
     return render_template("war.html", info= get_war_stats(war_id,'none', server), war_title = get_war_title(war_id, server), war_link = war_id, sorted_by = "none", logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
 , vods = get_submitted_vods(war_id, server), server = server, group_stats = get_group_stats(war_id,server))
+
+@app.route("/<server>/war/<war_id>/breakdown", methods=["POST", "GET"])
+def war_breakdown(server, war_id):
+    return render_template("war_breakdown.html", info= get_war_stats(war_id,'none', server), war_title = get_war_title(war_id, server), war_link = war_id, sorted_by = "none", logged_in = is_logged_in(), has_ads = has_ads(), user_settings = get_player_settings(), page = app.route
+, vods = get_submitted_vods(war_id, server), server = server, group_stats = get_group_stats(war_id,server), top_healers = get_top_healers(war_id,server), top_dmg = get_top_damage(war_id,server), top_assists = get_top_assists(war_id,server), top_deaths = get_top_deaths(war_id,server), top_kills = get_top_kills(war_id,server))
+
 
 @app.route("/<server>/war/<war_id>/<sort_by>", methods=["POST", "GET"])
 def war_sorted(server, war_id,sort_by):
